@@ -12,8 +12,6 @@ public class Board {
     String id;
     String url;
     String shortUrl;
-    String key;
-    String token;
 
     public Board(){
     }
@@ -50,19 +48,4 @@ public class Board {
         this.shortUrl = shortUrl;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 }
