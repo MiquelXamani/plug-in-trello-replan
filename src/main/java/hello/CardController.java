@@ -45,6 +45,8 @@ public class CardController {
         try {
             card = restTemplate.postForObject(url, card, Card.class, vars);
             return new ResponseEntity<>(card, HttpStatus.CREATED);
+
+
         }
         catch (HttpClientErrorException e){
             throw e;
