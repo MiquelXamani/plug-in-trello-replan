@@ -31,7 +31,8 @@ public class CardController {
     public ResponseEntity<Card> createCard(@RequestBody Card card) {
 
         RestTemplate restTemplate = new RestTemplate();
-        String url = "https://api.trello.com/1/cards/?key={key}&token={token}";
+        String urlCreateCard = "https://api.trello.com/1/cards/?key={key}&token={token}";
+        String urlCreateWebhook = "https://api.trello.com/1/tokens/{token}/webhooks/?key={key}";
         String key = "504327a0a1868e4f91dae5f6c852de79";
         String token = "b9af2c827b36369367e5416dcccb657a949f4745f1b41ee7f70d2fe91f78165e";
         Map<String,String> vars = new HashMap<>();
@@ -43,7 +44,11 @@ public class CardController {
         card.setIdList(list);
 
         try {
-            card = restTemplate.postForObject(url, card, Card.class, vars);
+            card = restTemplate.postForObject(urlCreateCard, card, Card.class, vars);
+            Webhook webhook = new Webhook();
+            webhook.setModel(card.getId());
+            webhook.setCallbackURL("https://glacial-anchorage-60164.herokuapp.com/webhooks");
+            restTemplate.postForObject(urlCreateWebhook,webhook,Webhook.class,vars);
             return new ResponseEntity<>(card, HttpStatus.CREATED);
 
 

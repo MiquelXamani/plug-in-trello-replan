@@ -16,7 +16,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/webhook")
+@RequestMapping("/webhooks")
 public class WebhookController {
 
     @RequestMapping(method= RequestMethod.GET)
