@@ -20,8 +20,6 @@ import java.util.Map;
 public class BoardController {
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<Board> createBoard(@RequestBody Board board) {
-        //cridar api trello per crear board
-        //mirar quina informació torna la crida per saber quins atributs s'han d'afegir a board
 
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://api.trello.com/1/boards/?key={key}&token={token}";
