@@ -46,12 +46,11 @@ public class CardController {
         try {
             card = restTemplate.postForObject(urlCreateCard, card, Card.class, vars);
             Webhook webhook = new Webhook();
-            webhook.setModel(card.getId());
+            webhook.setIdModel(card.getId());
             webhook.setCallbackURL("https://glacial-anchorage-60164.herokuapp.com/webhooks");
-            restTemplate.postForObject(urlCreateWebhook,webhook,String.class,vars);
+            webhook = restTemplate.postForObject(urlCreateWebhook,webhook,Webhook.class,vars);
+            System.out.println(webhook);
             return new ResponseEntity<>(card, HttpStatus.CREATED);
-
-
         }
         catch (HttpClientErrorException e){
             throw e;

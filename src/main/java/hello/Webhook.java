@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Webhook {
     public String description;
     public String callbackURL;
-    public String model; //id de la card, list o board a monitoritzar
+    public String idModel; //id de la card, list o board a monitoritzar
 
     public Webhook(){
     }
@@ -31,11 +31,11 @@ public class Webhook {
         this.callbackURL = callbackURL;
     }
 
-    public String getModel() {
-        return model;
+    public String getIdModel() {
+        return idModel;
     }
 
-    public void setModel(String model) {
-        this.model = model;
+    public void setIdModel(String idModel) {
+        this.idModel = idModel;
     }
 }
