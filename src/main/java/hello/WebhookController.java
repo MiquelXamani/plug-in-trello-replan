@@ -20,20 +20,20 @@ import java.util.Map;
 public class WebhookController {
 
     @RequestMapping(method= RequestMethod.GET)
-    public HttpStatus checkG(@RequestBody Map<String,Object> payload){
+    public ResponseEntity<String> checkG(){
         System.out.println("Trello checked!!");
-        return HttpStatus.OK;
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
-    @RequestMapping(method= RequestMethod.HEAD)
+    /*@RequestMapping(method= RequestMethod.HEAD)
     public HttpStatus checkH(){
         System.out.println("Trello checked!!");
         return HttpStatus.OK;
-    }
+    }*/
 
     @RequestMapping(method= RequestMethod.POST)
-    public HttpStatus notify(@RequestBody Map<String,Object> payload) {
+    public ResponseEntity<String> notify(@RequestBody Map<String,Object> payload) {
         System.out.println("Trello notified me!!");
-        return HttpStatus.OK;
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 }
