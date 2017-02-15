@@ -29,7 +29,7 @@ public class CardController {
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<Card> createCard(@RequestBody Card card) {
-
+        System.out.println("CREATE CARD START");
         RestTemplate restTemplate = new RestTemplate();
         String urlCreateCard = "https://api.trello.com/1/cards/?key={key}&token={token}";
         String urlCreateWebhook = "https://api.trello.com/1/tokens/{token}/webhooks/?key={key}";
