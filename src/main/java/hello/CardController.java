@@ -48,7 +48,7 @@ public class CardController {
             Webhook webhook = new Webhook();
             webhook.setModel(card.getId());
             webhook.setCallbackURL("https://glacial-anchorage-60164.herokuapp.com/webhooks");
-            //restTemplate.postForObject(urlCreateWebhook,webhook,Webhook.class,vars);
+            restTemplate.postForObject(urlCreateWebhook,webhook,String.class,vars);
             return new ResponseEntity<>(card, HttpStatus.CREATED);
 
 
