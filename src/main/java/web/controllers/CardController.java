@@ -1,4 +1,4 @@
-package hello;
+package web.controllers;
 
 
 import org.springframework.http.HttpStatus;
@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import web.models.Card;
+import web.models.Webhook;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +23,8 @@ import java.util.Map;
 public class CardController {
 
     @RequestMapping(method=RequestMethod.GET)
-    public @ResponseBody Card obtainCard() {
+    public @ResponseBody
+    Card obtainCard() {
         RestTemplate restTemplate = new RestTemplate();
         Card card = restTemplate.getForObject("https://api.trello.com/1/cards/T8MhLdxN?fields=name,idList,idBoard,idMembers&key=504327a0a1868e4f91dae5f6c852de79&token=b9af2c827b36369367e5416dcccb657a949f4745f1b41ee7f70d2fe91f78165e", Card.class);
         return card;

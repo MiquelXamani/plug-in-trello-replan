@@ -1,4 +1,4 @@
-package hello;
+package web.controllers;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import web.models.Greeting;
 
 //Controller que gestiona l'endpoint /hello-world
 
@@ -17,7 +18,8 @@ public class HelloWorldController {
     private final AtomicLong counter = new AtomicLong();
 
     @RequestMapping(method=RequestMethod.GET)
-    public @ResponseBody Greeting sayHello(@RequestParam(value="name", required=false, defaultValue="Stranger") String name) {
+    public @ResponseBody
+    Greeting sayHello(@RequestParam(value="name", required=false, defaultValue="Stranger") String name) {
         return new Greeting(counter.incrementAndGet(), String.format(template, name));
     }
 }

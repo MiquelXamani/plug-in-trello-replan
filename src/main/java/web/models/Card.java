@@ -1,9 +1,6 @@
-package hello;
+package web.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Miquel on 13/02/2017.
