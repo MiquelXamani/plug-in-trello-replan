@@ -28,6 +28,9 @@
             })
 
             .otherwise({ redirectTo: '/login' });
+
+        $locationProvider.html5Mode(true);
+        $locationProvider.hashPrefix('');
     }
 
     run.$inject = ['$rootScope', '$location', '$cookies', '$http'];

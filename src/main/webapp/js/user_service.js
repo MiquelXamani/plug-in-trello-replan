@@ -46,6 +46,8 @@
 
         function handleSuccess(res) {
             console.log("SUCCESS RESPONSE");
+            console.log("res.data = " + res.data);
+            res.data.success = true;
             return res.data;
         }
 

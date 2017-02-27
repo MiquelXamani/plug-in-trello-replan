@@ -19,7 +19,7 @@
                     console.log("CONTINUE");
                     if (response.success) {
                         AlertService.Success('Registration successful', true);
-                        $location.path('#!/login');
+                        $location.path('/login');
                         console.log("SUCCESS");
                     } else {
                         AlertService.Error(response.message);
