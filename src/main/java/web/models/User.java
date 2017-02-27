@@ -2,21 +2,34 @@ package web.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.persistence.*;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
 public class User {
-    public String idUser;
-    public String username;
-    public String password;
-    public String trelloToken;
-    public String trelloUsername;
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long idUser;
+    @Column(unique = true)
+    private String username;
+    private String password;
+    private String trelloToken;
+    private String trelloUsername;
 
-    public User(){}
+    protected User(){}
 
-    public String getIdUser() {
+    public User(String username, String password, String trelloToken, String trelloUsername){
+        this.username = username;
+        this.password = password;
+        this.trelloToken = trelloToken;
+        this.trelloUsername = trelloUsername;
+    }
+
+    public Long getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(String idUser) {
+    public void setIdUser(Long idUser) {
         this.idUser = idUser;
     }
 
@@ -50,5 +63,12 @@ public class User {
 
     public void setTrelloUsername(String trelloUsername) {
         this.trelloUsername = trelloUsername;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "User[userId=%d, username='%s', password='%s', trelloToken='%s', trelloUsername='%s']",
+                idUser, username, password, trelloToken, trelloUsername);
     }
 }
