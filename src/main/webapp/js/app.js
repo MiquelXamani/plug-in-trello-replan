@@ -1,23 +1,51 @@
-angular.module('app', [ 'ngRoute', 'ngCookies' ])
-    .config(function($routeProvider, $locationProvider) {
+(function () {
+    'use strict';
 
-        $routeProvider.when('/', {
-            templateUrl : 'home.html',
-            controller : 'home',
-            controllerAs : 'vm'
-        }).when('/login', {
-            templateUrl : 'login.html',
-            controller : 'LoginController',
-            controllerAs : 'vm'
-        }).otherwise('/');
+    angular
+        .module('app', ['ngRoute', 'ngCookies'])
+        .config(config)
+        .run(run);
 
-        $locationProvider.html5Mode(true);
-        $locationProvider.hashPrefix('');
+    config.$inject = ['$routeProvider', '$locationProvider'];
+    function config($routeProvider, $locationProvider) {
+        $routeProvider
+            .when('/', {
+                controller: 'HomeController',
+                templateUrl: 'home.html',
+                controllerAs: 'vm'
+            })
 
-    })
-    .controller('home', function($scope, $http) {
-        $http.get('/hello-world/').then(function(data) {
-            $scope.greeting = data.data;
-        })
-    })
-    .controller('navigation', function() {});
+            .when('/login', {
+                controller: 'LoginController',
+                templateUrl: 'login.html',
+                controllerAs: 'vm'
+            })
+
+            .when('/register', {
+                controller: 'RegisterController',
+                templateUrl: 'register.html',
+                controllerAs: 'vm'
+            })
+
+            .otherwise({ redirectTo: '/login' });
+    }
+
+    run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
+    function run($rootScope, $location, $cookies, $http) {
+        // keep user logged in after page refresh
+        $rootScope.globals = $cookies.getObject('globals') || {};
+        if ($rootScope.globals.currentUser) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
+        }
+
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in and trying to access a restricted page
+            var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+            var loggedIn = $rootScope.globals.currentUser;
+            if (restrictedPage && !loggedIn) {
+                $location.path('/login');
+            }
+        });
+    }
+
+})();
