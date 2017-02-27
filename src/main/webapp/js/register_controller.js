@@ -13,14 +13,18 @@
 
         function register() {
             vm.dataLoading = true;
+            console.log("START");
             UserService.Create(vm.user)
                 .then(function (response) {
+                    console.log("CONTINUE");
                     if (response.success) {
                         AlertService.Success('Registration successful', true);
-                        $location.path('/login');
+                        $location.path('#!/login');
+                        console.log("SUCCESS");
                     } else {
                         AlertService.Error(response.message);
                         vm.dataLoading = false;
+                        console.log("FAIL");
                     }
                 });
         }
