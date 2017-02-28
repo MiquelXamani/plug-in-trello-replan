@@ -10,12 +10,12 @@
         var vm = this;
 
         vm.register = register;
-        vm.trelloAuth = false;
         vm.authorizeIntegration = authorizeIntegration;
 
         function register() {
             vm.dataLoading = true;
             //console.log("START");
+            vm.user.trelloToken = vm.token;
             UserService.Create(vm.user)
                 .then(function (response) {
                     //console.log("CONTINUE");
@@ -33,6 +33,7 @@
 
         //Create popup window with Trello auth loaded.
         function authorizeIntegration(){
+            vm.authorized = false;
             //Trello API key
             var key = "504327a0a1868e4f91dae5f6c852de79";
             var authWindow, authUrl, token, trello, height, left, origin, receiveMessage, ref1, top, width;
@@ -50,10 +51,12 @@
                     ref2.close();
                 }
                 if ((event.data != null) && /[0-9a-f]{64}/.test(event.data)) {
-                    //guardar el token a localstorage per recuperar-lo al moment de fer submit i borrar-lo després de localstorage
+                    vm.token = event.data;
+                    vm.authorized = true;
                     console.log(event.data);
                 } else {
                     token = null;
+                    vm.token = token;
                 }
                 if (typeof window.removeEventListener === 'function') {
                     window.removeEventListener('message', receiveMessage, false);
