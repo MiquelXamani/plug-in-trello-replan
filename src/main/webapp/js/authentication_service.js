@@ -18,7 +18,7 @@
         function Login(username, password, callback) {
 
             /* Dummy authentication for testing, uses $timeout to simulate api call
-             ----------------------------------------------*/
+             ----------------------------------------------
             $timeout(function () {
                 var response;
                 UserService.GetByUsername(username)
@@ -30,14 +30,20 @@
                         }
                         callback(response);
                     });
-            }, 1000);
+            }, 1000);*/
 
             /* Use this for real authentication
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
+            $http.post('/authenticate', { username: username, password: password })
+                .then(function successCallback(response) {
+                    //console.log(response);
+                    response = { success: true };
+                    callback(response);
+                },function errorCallback(response){
+                    //console.log(response.data.description);
+                    response = { success: false, message: response.data.description };
+                    callback(response);
+                });
 
         }
 

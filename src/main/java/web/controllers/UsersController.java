@@ -11,7 +11,9 @@ import web.models.User;
 import web.repositories.UserRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -37,12 +39,18 @@ public class UsersController {
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<Object> createUser(@RequestBody User user){
-        try {
-            User userCreated = userRepository.save(user);
-            return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
-        }
-        catch (DataIntegrityViolationException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
+            User u = userRepository.findByUsername(user.getUsername());
+            if(u == null){
+                User userCreated = userRepository.save(user);
+                return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
+            }
+            else {
+                Map<String,String> error = new HashMap<>(1);
+                error.put("description","Username is already taken");
+                return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+            }
+
+
+
     }
 }

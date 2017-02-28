@@ -27,11 +27,11 @@
         }
 
         function GetByUsername(username) {
-            return $http.get('/users/?username=' + username).then(handleSuccess, handleError('Error getting user by username'));
+            return $http.get('/users/?username=' + username).then(handleSuccess, handleError);
         }
 
         function Create(user) {
-            return $http.post('/users', user).then(handleSuccess, handleError('Error creating user'));
+            return $http.post('/users', user).then(handleSuccess, handleError);
         }
         //no implementada al servidor
         function Update(user) {
@@ -45,17 +45,17 @@
         // private functions
 
         function handleSuccess(res) {
-            console.log("SUCCESS RESPONSE");
-            console.log("res.data = " + res.data);
+            //console.log("SUCCESS RESPONSE");
             res.data.success = true;
             return res.data;
         }
 
-        function handleError(error) {
-            console.log("FAILURE RESPONSE");
-            return function () {
-                return { success: false, message: error };
-            };
+        function handleError(res) {
+            //console.log(res.data.description);
+            var r = {};
+            r.success = false;
+            r.message = res.data.description;
+            return r;
         }
     }
 

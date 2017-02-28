@@ -30,7 +30,7 @@ public class AuthenticationController {
             return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
         }
         else if(!user.getPassword().equals(password) ) {
-            errorInfo.put("description","Password is incorrect");
+            errorInfo.put("description","Incorrect password");
             return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
         }
         else {

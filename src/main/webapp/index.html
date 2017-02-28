@@ -14,7 +14,14 @@
 
 <body ng-app="app" ng-cloak class="ng-cloak">
     <h1>Trello Plug-in</h1>
-    <div ng-view class="container"></div>
+    <div class="jumbotron">
+        <div class="container">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div ng-class="{ 'alert': alert, 'alert-success': alert.type === 'success', 'alert-danger': alert.type === 'error' }" ng-if="alert" ng-bind="alert.message"></div>
+                <div ng-view class="container"></div>
+            </div>
+        </div>
+    </div>
     <script src="js/jquery-3.1.1.min.js" type="text/javascript"></script>
     <script src="js/bootstrap.js" type="text/javascript"></script>
     <script src="js/angular.min.js" type="text/javascript"></script>
