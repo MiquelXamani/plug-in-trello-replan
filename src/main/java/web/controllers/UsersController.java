@@ -41,6 +41,7 @@ public class UsersController {
     public ResponseEntity<Object> createUser(@RequestBody User user){
             User u = userRepository.findByUsername(user.getUsername());
             if(u == null){
+                //crida api trello per saber username
                 User userCreated = userRepository.save(user);
                 return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
             }

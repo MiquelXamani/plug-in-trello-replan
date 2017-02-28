@@ -1,4 +1,4 @@
-package web.controllers;
+package web.controllers.APITrello;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
