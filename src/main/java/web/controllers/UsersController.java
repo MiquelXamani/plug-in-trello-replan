@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import web.controllers.APITrello.MembersService;
 import web.models.User;
 import web.repositories.UserRepository;
 
@@ -42,6 +43,10 @@ public class UsersController {
             User u = userRepository.findByUsername(user.getUsername());
             if(u == null){
                 //crida api trello per saber username
+                MembersService membersService = new MembersService();
+                String trelloUserUsername = membersService.getTrelloUserUsername(user.getTrelloToken());
+                user.setTrelloUsername(trelloUserUsername);
+
                 User userCreated = userRepository.save(user);
                 return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
             }
