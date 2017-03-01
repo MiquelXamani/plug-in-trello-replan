@@ -5,9 +5,11 @@
         .module('app')
         .controller('RegisterController', RegisterController);
 
-    RegisterController.$inject = ['UserService', '$location', '$rootScope', 'AlertService'];
-    function RegisterController(UserService, $location, $rootScope, AlertService) {
+    RegisterController.$inject = ['$scope','UserService', '$location', '$rootScope', 'AlertService'];
+    function RegisterController($scope,UserService, $location, $rootScope, AlertService) {
         var vm = this;
+        vm.dataLoading = false;
+        vm.authorized = false;
 
         vm.register = register;
         vm.authorizeIntegration = authorizeIntegration;
@@ -33,7 +35,6 @@
 
         //Create popup window with Trello auth loaded.
         function authorizeIntegration(){
-            vm.authorized = false;
             //Trello API key
             var key = "504327a0a1868e4f91dae5f6c852de79";
             var authWindow, authUrl, token, trello, height, left, origin, receiveMessage, ref1, top, width;
@@ -53,7 +54,7 @@
                 if ((event.data != null) && /[0-9a-f]{64}/.test(event.data)) {
                     vm.token = event.data;
                     vm.authorized = true;
-                    console.log(event.data);
+                    //console.log(event.data);
                 } else {
                     token = null;
                     vm.token = token;
@@ -61,6 +62,7 @@
                 if (typeof window.removeEventListener === 'function') {
                     window.removeEventListener('message', receiveMessage, false);
                 }
+                $scope.$apply();
             };
             return typeof window.addEventListener === 'function' ? window.addEventListener('message', receiveMessage, false) : void 0;
         }
