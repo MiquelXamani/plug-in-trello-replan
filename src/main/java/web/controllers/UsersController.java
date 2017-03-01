@@ -1,19 +1,14 @@
 package web.controllers;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import web.controllers.APITrello.MembersService;
+import web.controllers.APITrello.TrelloService;
 import web.models.User;
 import web.repositories.UserRepository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,8 +38,8 @@ public class UsersController {
             User u = userRepository.findByUsername(user.getUsername());
             if(u == null){
                 //crida api trello per saber username
-                MembersService membersService = new MembersService();
-                String trelloUserUsername = membersService.getTrelloUserUsername(user.getTrelloToken());
+                TrelloService trelloService = new TrelloService();
+                String trelloUserUsername = trelloService.getTrelloUserUsername(user.getTrelloToken());
                 user.setTrelloUsername(trelloUserUsername);
 
                 User userCreated = userRepository.save(user);

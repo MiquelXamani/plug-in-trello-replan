@@ -1,11 +1,22 @@
-<h1>Hi {{vm.user.firstName}}!</h1>
-<p>You're logged in!!</p>
-<h3>All registered users:</h3>
-<ul>
-    <li ng-repeat="user in vm.allUsers">
-        {{user.username}} ({{user.firstName}} {{user.lastName}})
-        - <a ng-click="vm.deleteUser(user.id)">Delete</a>
-    </li>
-</ul>
-<p>&nbsp;</p>
+<h2>Load your Replan plan to Trello</h2>
+<form>
+    <div class="form-group">
+        <label for="teamselector">Select a Trello team</label>
+        <select class="form-control" id="teamselector">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="planselector">Select a plan</label>
+        <select class="form-control" id="planselector">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+        </select>
+    </div>
+</form>
 <p><a href="/login" class="btn btn-primary">Logout</a></p>

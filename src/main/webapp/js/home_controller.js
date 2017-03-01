@@ -10,14 +10,15 @@
         var vm = this;
 
         vm.user = null;
-        vm.allUsers = [];
-        vm.deleteUser = deleteUser;
+        vm.teams = [];
+        vm.plans = [];
 
         initController();
 
         function initController() {
             loadCurrentUser();
-            loadAllUsers();
+            loadPlans();
+            loadTeams();
         }
 
         function loadCurrentUser() {
@@ -27,17 +28,17 @@
                 });
         }
 
-        function loadAllUsers() {
+        function loadPlans() {
             UserService.GetAll()
                 .then(function (users) {
                     vm.allUsers = users;
                 });
         }
 
-        function deleteUser(id) {
-            UserService.Delete(id)
-                .then(function () {
-                    loadAllUsers();
+        function loadTeams() {
+            UserService.GetAll()
+                .then(function (users) {
+                    vm.allUsers = users;
                 });
         }
     }

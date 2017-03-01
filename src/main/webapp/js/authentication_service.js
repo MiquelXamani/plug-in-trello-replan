@@ -48,6 +48,7 @@
         }
 
         function SetCredentials(username, password) {
+            console.log("SET CREDENTIALS");
             var authdata = Base64.encode(username + ':' + password);
 
             $rootScope.globals = {
@@ -67,6 +68,7 @@
         }
 
         function ClearCredentials() {
+            console.log("CLEAR CREDENTIALS");
             $rootScope.globals = {};
             $cookies.remove('globals');
             $http.defaults.headers.common.Authorization = 'Basic';
