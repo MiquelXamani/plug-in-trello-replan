@@ -2,20 +2,16 @@
 <form>
     <div class="form-group">
         <label for="teamselector">Select a Trello team</label>
-        <select class="form-control" id="teamselector">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+        <select class="form-control" id="teamselector" ng-model="vm.selectedTeam" ng-options="team as team.displayName for team in vm.teams">
         </select>
     </div>
     <div class="form-group">
         <label for="planselector">Select a plan</label>
         <select class="form-control" id="planselector">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+            <option>Release Març</option>
+            <option>Release Febrer</option>
+            <option>Release Gener</option>
+            <option>Release Desembre</option>
         </select>
     </div>
 </form>

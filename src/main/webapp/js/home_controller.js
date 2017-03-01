@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope'];
-    function HomeController(UserService, $rootScope) {
+    HomeController.$inject = ['UserService', 'PlanService', 'TeamService', '$rootScope'];
+    function HomeController(UserService, PlanService, TeamService, $rootScope) {
         var vm = this;
 
         vm.user = null;
@@ -17,7 +17,7 @@
 
         function initController() {
             loadCurrentUser();
-            loadPlans();
+            loadPlans(); //no implementat encara
             loadTeams();
         }
 
@@ -26,19 +26,24 @@
                 .then(function (user) {
                     vm.user = user;
                 });
+            console.log($rootScope.globals.currentUser.username);
         }
 
         function loadPlans() {
-            UserService.GetAll()
-                .then(function (users) {
-                    vm.allUsers = users;
-                });
+            /*
+            PlanService.GetPlans($rootScope.globals.currentUser.username)
+                .then(function (plans) {
+                    vm.plans = plans;
+                });*/
         }
 
         function loadTeams() {
-            UserService.GetAll()
-                .then(function (users) {
-                    vm.allUsers = users;
+            TeamService.GetTeams($rootScope.globals.currentUser.username)
+                .then(function (teams) {
+                    vm.teams = teams;
+                    console.log(vm.teams);
+                    //falta comprovar si es null
+                    vm.selectedTeam = vm.teams[0];
                 });
         }
     }
