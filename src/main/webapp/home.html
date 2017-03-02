@@ -14,5 +14,10 @@
             <option>Release Desembre</option>
         </select>
     </div>
+    <div class="form-group">
+        <label for="boardName">Board name</label>
+        <input type="boardName" name="boardName" id="boardName" class="form-control" ng-model="vm.boardName" required />
+        <span ng-show="form.boardName.$dirty && form.boardName.$error.required" class="help-block">Board name is required</span>
+    </div>
 </form>
 <p><a href="/login" class="btn btn-primary">Logout</a></p>
