@@ -1,3 +1,20 @@
+<div class="modal fade" id="matchingModal" tabindex="-1" role="dialog" aria-labelledby="matchingModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="matchingModalLabel">Match each plan resources with Trello user</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Match</button>
+            </div>
+        </div>
+    </div>
+</div>
 <h2>Load your Replan plan to Trello</h2>
 <form>
     <div class="form-group">
@@ -18,6 +35,11 @@
         <label for="boardName">Board name</label>
         <input type="boardName" name="boardName" id="boardName" class="form-control" ng-model="vm.boardName" required />
         <span ng-show="form.boardName.$dirty && form.boardName.$error.required" class="help-block">Board name is required</span>
+    </div>
+    <div class="warning-message">
+        <p>
+            <strong>WARNING!</strong> there are some resources of the selected plan that aren't matched with a Trello user <a href="#matchingModal" data-toggle="modal" data-target="#matchingModal">click this message to fix it</a>
+        </p>
     </div>
 </form>
 <p><a href="/login" class="btn btn-primary">Logout</a></p>
