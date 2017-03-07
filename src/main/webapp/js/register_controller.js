@@ -5,8 +5,8 @@
         .module('app')
         .controller('RegisterController', RegisterController);
 
-    RegisterController.$inject = ['$scope','UserService', '$location', '$rootScope', 'AlertService'];
-    function RegisterController($scope,UserService, $location, $rootScope, AlertService) {
+    RegisterController.$inject = ['$scope','UserService', '$location', '$rootScope', 'AlertService', 'AuthenticationService'];
+    function RegisterController($scope,UserService, $location, $rootScope, AlertService, AuthenticationService) {
         var vm = this;
         vm.dataLoading = false;
         vm.authorized = false;
@@ -22,8 +22,8 @@
                 .then(function (response) {
                     //console.log("CONTINUE");
                     if (response.success) {
-                        AlertService.Success('Registration successful', true);
-                        $location.path('/login');
+                        AuthenticationService.SetCredentials(vm.user.username, vm.user.password);
+                        $location.path('/');
                         //console.log("SUCCESS");
                     } else {
                         AlertService.Error(response.message);
