@@ -18,12 +18,18 @@ public class TeamsController {
     @Autowired(required = true)
     private UserRepository userRepository;
 
-    @RequestMapping(method= RequestMethod.GET)//s'ha de passar paràmetre user i si retorna buit vol dir que no ha trobat cap usuari amb aquest username
-    public Team[] getUserByUsername(@RequestParam(value = "username") String username){
+    @RequestMapping(method= RequestMethod.GET)
+    public Team[] getTeams(@RequestParam(value = "username") String username){
         User u = userRepository.findByUsername(username);
         String trelloUsername = u.getTrelloUsername();
         String trelloToken = u.getTrelloToken();
         TrelloService trelloService = new TrelloService();
-        return trelloService.getTrelloTeam(trelloUsername,trelloToken);
+        //només interessa obtenir la id per poder fer la següent crida que és la que permet saber els noms dels usuaris
+        Team[] teams = trelloService.getTrelloTeams(trelloUsername,trelloToken);
+        Team[] result = new Team[teams.length];
+        for(int i = 0; i < teams.length; i++){
+            result[i] = trelloService.getTrelloTeamMembers(teams[i].getId(),trelloToken);
+        }
+        return result;
     }
 }

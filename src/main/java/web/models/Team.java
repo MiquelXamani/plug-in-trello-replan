@@ -9,10 +9,10 @@ import java.util.List;
 public class Team {
     private String id;
     private String displayName;
-    private List<DTOMember> memberships;
+    private List<Member> members;
 
     public Team(){
-        memberships = new ArrayList<>();
+        members = new ArrayList<>();
     }
 
     public String getId() {
@@ -31,11 +31,11 @@ public class Team {
         this.displayName = displayName;
     }
 
-    public List<DTOMember> getMemberships() {
-        return memberships;
+    public List<Member> getMembers() {
+        return members;
     }
 
-    public void setMemberships(List<DTOMember> memberships) {
-        this.memberships = memberships;
+    public void setMembers(List<Member> members) {
+        this.members = members;
     }
 }
