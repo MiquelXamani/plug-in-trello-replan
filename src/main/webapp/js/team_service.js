@@ -10,12 +10,23 @@
         var service = {};
 
         service.GetTeams = GetTeams;
+        service.GetUnmatchedTeamMembers = GetUnmatchedTeamMembers;
+        service.GetAllTeamMembers = GetAllTeamMembers;
 
         return service;
 
-        //get Trello teams whicha user belongs
+        //get Trello teams names which a user belongs
         function GetTeams(username) {
             return $http.get('/teams/?username=' + username).then(handleSuccess, handleError);
+        }
+
+        function GetUnmatchedTeamMembers(username, teamId){
+            return $http.get('/teams/members/?username=' + username + '&unmatchedMembersOnly=true&teamId=' + teamId)
+                .then(handleSuccess, handleError);
+        }
+
+        function GetAllTeamMembers(username, teamId){
+            return $http.get('/teams/members/?username=' + username + '&teamId=' + teamId).then(handleSuccess, handleError);
         }
 
         // private functions
