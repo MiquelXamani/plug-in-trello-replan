@@ -30,10 +30,30 @@
         }
 
         function loadPlans() {
+            //simula de forma molt bàsica el contingut de les releases
+            var release1 = {
+                name:"Release Març",
+                resources: ["Joan","Josep","Andreu"]
+            };
+
+            var release2 = {
+                name:"Release Febrer",
+                resources: ["Maria","Antoni","Jordi","Cristina"]
+            };
+
+            var release3 = {
+                name:"Release Gener",
+                resources: ["Carme","Marc","Edgard"]
+            };
+
+            vm.plans.push(release1,release2,release3);
+            vm.selectedPlan = vm.plans[0];
+
             /*
             PlanService.GetPlans($rootScope.globals.currentUser.username)
                 .then(function (plans) {
                     vm.plans = plans;
+                    vm.selectedPlan = vm.plans[0];
                 });*/
         }
 

@@ -41,11 +41,7 @@
 <form>
     <div class="form-group">
         <label for="planselector">Select a plan</label>
-        <select class="form-control" id="planselector">
-            <option>Release Març</option>
-            <option>Release Febrer</option>
-            <option>Release Gener</option>
-            <option>Release Desembre</option>
+        <select class="form-control" id="planselector" ng-model="vm.selectedPlan" ng-options="plan as plan.name for plan in vm.plans">
         </select>
     </div>
     <div class="form-group">
