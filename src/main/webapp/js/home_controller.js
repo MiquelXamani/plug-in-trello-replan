@@ -33,17 +33,57 @@
             //simula de forma molt bàsica el contingut de les releases
             var release1 = {
                 name:"Release Març",
-                resources: ["Joan","Josep","Andreu"]
+                resources: [
+                    {
+                        name:"Joan",
+                        id:"1"
+                    },
+                    {
+                        name:"Josep",
+                        id:"2"
+                    },
+                    {
+                        name:"Andreu",
+                        id:"3"
+                    }]
             };
 
             var release2 = {
                 name:"Release Febrer",
-                resources: ["Maria","Antoni","Jordi","Cristina"]
+                resources: [
+                    {
+                        name:"Maria",
+                        id:"4"
+                    },
+                    {
+                        name:"Antoni",
+                        id:"5"
+                    },
+                    {
+                        name:"Jordi",
+                        id:"6"
+                    },
+                    {
+                        name:"Cristina",
+                        id:"7"
+                    }]
             };
 
             var release3 = {
                 name:"Release Gener",
-                resources: ["Carme","Marc","Edgard"]
+                resources: [
+                    {
+                        name:"Carme",
+                        id:"8"
+                    },
+                    {
+                        name:"Marc",
+                        id:"9"
+                    },
+                    {
+                        name:"Edgard",
+                        id:"10"
+                    }]
             };
 
             vm.plans.push(release1,release2,release3);
