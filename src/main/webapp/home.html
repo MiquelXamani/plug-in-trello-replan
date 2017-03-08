@@ -40,17 +40,17 @@
 <h2>Load your Replan plan to Trello</h2>
 <form>
     <div class="form-group">
-        <label for="teamselector">Select a Trello team</label>
-        <select class="form-control" id="teamselector" ng-model="vm.selectedTeam" ng-options="team as team.displayName for team in vm.teams">
-        </select>
-    </div>
-    <div class="form-group">
         <label for="planselector">Select a plan</label>
         <select class="form-control" id="planselector">
             <option>Release Març</option>
             <option>Release Febrer</option>
             <option>Release Gener</option>
             <option>Release Desembre</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="teamselector">Select a Trello team</label>
+        <select class="form-control" id="teamselector" ng-model="vm.selectedTeam" ng-options="team as team.displayName for team in vm.teams">
         </select>
     </div>
     <div class="form-group">

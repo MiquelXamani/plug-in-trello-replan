@@ -3,6 +3,7 @@ package web.controllers.APITrello;
 import org.springframework.web.client.RestTemplate;
 import web.models.Member;
 import web.models.Team;
+import web.models.TeamWithMembers;
 import web.models.User;
 
 import java.util.ArrayList;
@@ -41,14 +42,14 @@ public class TrelloService {
     }
 
     //implementar funció semblant la dels teams però passant un array de members de .class
-    public Team getTrelloTeamMembers(String idTeam, String userToken){
+    public TeamWithMembers getTrelloTeamMembers(String idTeam, String userToken){
         url = "https://api.trello.com/1/organizations/{idTeam}?members=all&member_fields=username,fullName&fields=displayName&key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
         vars.put("idTeam",idTeam);
-        Team team = restTemplate.getForObject(url,Team.class,vars);
-        return team;
+        TeamWithMembers teamWithMembers = restTemplate.getForObject(url,TeamWithMembers.class,vars);
+        return teamWithMembers;
     }
 
 }

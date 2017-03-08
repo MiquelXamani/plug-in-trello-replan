@@ -9,10 +9,8 @@ import java.util.List;
 public class Team {
     private String id;
     private String displayName;
-    private List<Member> members;
 
     public Team(){
-        members = new ArrayList<>();
     }
 
     public String getId() {
@@ -29,13 +27,5 @@ public class Team {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
-    }
-
-    public List<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
     }
 }

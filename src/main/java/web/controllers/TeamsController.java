@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import web.controllers.APITrello.TrelloService;
 import web.models.Team;
+import web.models.TeamWithMembers;
 import web.models.User;
 import web.repositories.UserRepository;
 
@@ -18,18 +19,27 @@ public class TeamsController {
     @Autowired(required = true)
     private UserRepository userRepository;
 
+    //retorna els noms dels teams de Trello als qual pertany l'usuari
     @RequestMapping(method= RequestMethod.GET)
     public Team[] getTeams(@RequestParam(value = "username") String username){
         User u = userRepository.findByUsername(username);
         String trelloUsername = u.getTrelloUsername();
         String trelloToken = u.getTrelloToken();
         TrelloService trelloService = new TrelloService();
-        //només interessa obtenir la id per poder fer la següent crida que és la que permet saber els noms dels usuaris
         Team[] teams = trelloService.getTrelloTeams(trelloUsername,trelloToken);
-        Team[] result = new Team[teams.length];
-        for(int i = 0; i < teams.length; i++){
-            result[i] = trelloService.getTrelloTeamMembers(teams[i].getId(),trelloToken);
-        }
-        return result;
+        return teams;
+    }
+
+    @RequestMapping(value="/members", method=RequestMethod.GET)
+    public TeamWithMembers getTeamMembers(@RequestParam(value = "username") String username,
+                                          @RequestParam(value = "unmatchedMembersOnly", defaultValue = "false")String unmatchedMembersOnly,
+                                          @RequestParam(value = "teamId") String teamId){
+        User u = userRepository.findByUsername(username);
+        String trelloToken = u.getTrelloToken();
+        TrelloService trelloService = new TrelloService();
+        TeamWithMembers teamWithMembers = trelloService.getTrelloTeamMembers(teamId,trelloToken);
+        return teamWithMembers;
+        //aquesta funció retornarà els membres d'un equip: els que no estan relacionats amb cap recurs si unmatchedMembersOnly és true
+        //tots altrament
     }
 }
