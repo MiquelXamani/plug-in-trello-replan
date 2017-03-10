@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import web.controllers.APITrello.TrelloService;
-import web.models.Team;
-import web.models.TeamWithMembers;
-import web.models.User;
+import web.models.*;
+import web.repositories.ResourceMemberRepository;
 import web.repositories.UserRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -18,6 +20,8 @@ import java.util.List;
 public class TeamsController {
     @Autowired(required = true)
     private UserRepository userRepository;
+    @Autowired(required = true)
+    private ResourceMemberRepository resourceMemberRepository;
 
     //retorna els noms dels teams de Trello als qual pertany l'usuari
     @RequestMapping(method= RequestMethod.GET)
@@ -31,15 +35,49 @@ public class TeamsController {
     }
 
     @RequestMapping(value="/members", method=RequestMethod.GET)
-    public TeamWithMembers getTeamMembers(@RequestParam(value = "username") String username,
+    public List<Member> getTeamMembers(@RequestParam(value = "username") String username,
                                           @RequestParam(value = "unmatchedMembersOnly", defaultValue = "false")String unmatchedMembersOnly,
                                           @RequestParam(value = "teamId") String teamId){
         User u = userRepository.findByUsername(username);
         String trelloToken = u.getTrelloToken();
+        Long userId = u.getUserId();
         TrelloService trelloService = new TrelloService();
         TeamWithMembers teamWithMembers = trelloService.getTrelloTeamMembers(teamId,trelloToken);
-        return teamWithMembers;
         //aquesta funció retornarà els membres d'un equip: els que no estan relacionats amb cap recurs si unmatchedMembersOnly és true
         //tots altrament
+        List<Member> members = teamWithMembers.getMembers();
+
+        //s'ha d'ordenar la llista per després eliminar els que SÍ estan assignats
+        Collections.sort(members);
+
+        List<String> trelloUsernames = new ArrayList<>();
+        for(int i = 0; i < members.size(); i++){
+            trelloUsernames.add(members.get(i).getUsername());
+        }
+        List<ResourceMember> foundMembers = resourceMemberRepository.findByUserIdAndTrelloUsernameInOrderByTrelloUsernameDesc(userId,trelloUsernames);
+
+        //recórrer la llista inicial per trobar aquells membres que apareguin a la base de dades
+        List<Member> notFoundMembers = new ArrayList<>();
+        int j = 0;
+        for(int i = 0; i < foundMembers.size(); i++){
+            ResourceMember rm = foundMembers.get(i);
+            boolean found = false;
+            while(!found){
+                Member m = members.get(j);
+                if(rm.getTrelloUsername().equals(m.getUsername())){
+                    found = true;
+                }
+                else{
+                    notFoundMembers.add(m);
+                }
+                j++;
+            }
+        }
+
+        for(int k = j; k < members.size(); k++){
+            notFoundMembers.add(members.get(k));
+        }
+
+        return notFoundMembers;
     }
 }

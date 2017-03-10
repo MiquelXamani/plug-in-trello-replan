@@ -9,28 +9,30 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long idUser;
+    private Long userId;
     @Column(unique = true)
     private String username;
     private String password;
     private String trelloToken;
     private String trelloUsername;
+    private String trelloUserId;
 
     protected User(){}
 
-    public User(String username, String password, String trelloToken, String trelloUsername){
+    public User(String username, String password, String trelloToken, String trelloUsername, String trelloUserId){
         this.username = username;
         this.password = password;
         this.trelloToken = trelloToken;
         this.trelloUsername = trelloUsername;
+        this.trelloUserId = trelloUserId;
     }
 
-    public Long getIdUser() {
-        return idUser;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -65,10 +67,18 @@ public class User {
         this.trelloUsername = trelloUsername;
     }
 
+    public String getTrelloUserId() {
+        return trelloUserId;
+    }
+
+    public void setTrelloUserId(String trelloUserId) {
+        this.trelloUserId = trelloUserId;
+    }
+
     @Override
     public String toString() {
         return String.format(
                 "User[userId=%d, username='%s', password='%s', trelloToken='%s', trelloUsername='%s']",
-                idUser, username, password, trelloToken, trelloUsername);
+                userId, username, password, trelloToken, trelloUsername);
     }
 }

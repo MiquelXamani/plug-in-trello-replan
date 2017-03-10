@@ -1,12 +1,12 @@
 package web.models;
 
 //Trello user
-public class Member {
+public class Member implements Comparable<Member>{
     private String id;
     private String username;
     private String fullName;
 
-    public Member(){};
+    public Member(){}
 
     public String getId() {
         return id;
@@ -30,5 +30,9 @@ public class Member {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public int compareTo(Member other) {
+        return this.username.compareTo(other.username);
     }
 }

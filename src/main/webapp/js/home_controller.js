@@ -12,6 +12,7 @@
         vm.user = null;
         vm.teams = [];
         vm.plans = [];
+        vm.teamMembers = [];
 
         initController();
 
@@ -104,7 +105,17 @@
                     console.log(vm.teams);
                     //falta comprovar si es null
                     vm.selectedTeam = vm.teams[0];
+                    getUnlinkedTeamMembers(vm.selectedTeam);
                 });
+        }
+
+        function getUnlinkedTeamMembers(team){
+            TeamService.GetUnmatchedTeamMembers($rootScope.globals.currentUser.username,team.id)
+                .then(function(teamMembers){
+                    vm.teamMembers = teamMembers;
+                    console.log(vm.teamMembers);
+                });
+
         }
     }
 
