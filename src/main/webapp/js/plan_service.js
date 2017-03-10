@@ -19,8 +19,8 @@
             return $http.get('/plans/?username=' + username).then(handleSuccess, handleError);
         }
         //get resources of the release specified that aren't linked with any Trello user
-        function GetUnmatchedPlanResources(username,resources){
-            return $http.get('/plans/resources/?username=' + username, {params: {"resourceId":resources}}).then(handleSuccess,handleError);
+        function GetUnmatchedPlanResources(params){
+            return $http.post('/plans/resources/',params).then(handleSuccess,handleError);
         }
 
         // private functions
