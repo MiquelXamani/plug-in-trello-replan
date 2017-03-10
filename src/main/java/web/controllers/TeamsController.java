@@ -47,14 +47,14 @@ public class TeamsController {
         //tots altrament
         List<Member> members = teamWithMembers.getMembers();
 
-        //s'ha d'ordenar la llista per després eliminar els que SÍ estan assignats
+        //s'ha d'ordenar la llista per facilitar la cerca i quedar-nos amb els que NO estan assignats
         Collections.sort(members);
 
         List<String> trelloUsernames = new ArrayList<>();
         for(int i = 0; i < members.size(); i++){
             trelloUsernames.add(members.get(i).getUsername());
         }
-        List<ResourceMember> foundMembers = resourceMemberRepository.findByUserIdAndTrelloUsernameInOrderByTrelloUsernameDesc(userId,trelloUsernames);
+        List<ResourceMember> foundMembers = resourceMemberRepository.findByUserIdAndTrelloUsernameInOrderByTrelloUsernameAsc(userId,trelloUsernames);
 
         //recórrer la llista inicial per trobar aquells membres que apareguin a la base de dades
         List<Member> notFoundMembers = new ArrayList<>();
