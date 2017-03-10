@@ -12,7 +12,8 @@
         vm.user = null;
         vm.teams = [];
         vm.plans = [];
-        vm.teamMembers = [];
+        vm.unmatchedTeamMembers = [];
+        vm.unmatchedPlanResources = [];
 
         initController();
 
@@ -89,6 +90,7 @@
 
             vm.plans.push(release1,release2,release3);
             vm.selectedPlan = vm.plans[0];
+            getUnlinkedPlanResources(vm.selectedPlan);
 
             /*
             PlanService.GetPlans($rootScope.globals.currentUser.username)
@@ -111,11 +113,23 @@
 
         function getUnlinkedTeamMembers(team){
             TeamService.GetUnmatchedTeamMembers($rootScope.globals.currentUser.username,team.id)
-                .then(function(teamMembers){
-                    vm.teamMembers = teamMembers;
-                    console.log(vm.teamMembers);
+                .then(function(unmatchedTeamMembers){
+                    vm.unmatchedTeamMembers = unmatchedTeamMembers;
+                    console.log(vm.unmatchedTeamMembers);
                 });
 
+        }
+
+        function getUnlinkedPlanResources(plan){
+            var planResources = [];
+            $.each(plan.resources, function(index, value){
+                planResources.push(value.id);
+            });
+            PlanService.GetUnmatchedPlanResources($rootScope.globals.currentUser.username,planResources)
+                .then(function(unmatchedPlanResources){
+                   vm.unmatchedPlanResources = unmatchedPlanResources;
+                   console.log(unmatchedPlanResources);
+                });
         }
     }
 
