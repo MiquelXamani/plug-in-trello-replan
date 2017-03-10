@@ -1,18 +1,19 @@
 package web.models;
 
 import javax.persistence.*;
+@Table(
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"userId", "trelloUsername"})
+)
 
 @Entity
 public class ResourceMember {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long idResourceMember;
-    @Column(unique = true)
     private String resourceId;
     private String resourceName;
-    @Column(unique = true)
     private String trelloUserId;
-    @Column(unique = true)
     private String trelloUsername;
     private String trelloFullName;
     private Long userId; //usuari de la web
