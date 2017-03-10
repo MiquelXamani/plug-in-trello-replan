@@ -56,28 +56,30 @@ public class TeamsController {
         }
         List<ResourceMember> foundMembers = resourceMemberRepository.findByUserIdAndTrelloUsernameInOrderByTrelloUsernameAsc(userId,trelloUsernames);
 
-        //recórrer la llista inicial per trobar aquells membres que apareguin a la base de dades
         List<Member> notFoundMembers = new ArrayList<>();
-        int j = 0;
-        for(int i = 0; i < foundMembers.size(); i++){
-            ResourceMember rm = foundMembers.get(i);
-            boolean found = false;
-            while(!found){
-                Member m = members.get(j);
-                if(rm.getTrelloUsername().equals(m.getUsername())){
-                    found = true;
+
+        //recórrer la llista inicial per trobar aquells membres que apareguin a la base de dades
+        if(members.size() != foundMembers.size()) {
+            System.out.println("MIDES DIFERENTS!!");
+            int j = 0;
+            for (int i = 0; i < foundMembers.size(); i++) {
+                ResourceMember rm = foundMembers.get(i);
+                boolean found = false;
+                while (!found) {
+                    Member m = members.get(j);
+                    if (rm.getTrelloUsername().equals(m.getUsername())) {
+                        found = true;
+                    } else {
+                        notFoundMembers.add(m);
+                    }
+                    j++;
                 }
-                else{
-                    notFoundMembers.add(m);
-                }
-                j++;
+            }
+
+            for (int k = j; k < members.size(); k++) {
+                notFoundMembers.add(members.get(k));
             }
         }
-
-        for(int k = j; k < members.size(); k++){
-            notFoundMembers.add(members.get(k));
-        }
-
         return notFoundMembers;
     }
 }
