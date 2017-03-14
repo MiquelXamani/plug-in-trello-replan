@@ -139,7 +139,7 @@ public class PlansController {
         }
 
         Collections.sort(resourcesIds);
-        List<ResourceMember> resourcesFound = resourceMemberRepository.findByUserIdAndResourceIdIn(userId,resourcesIds);
+        List<ResourceMember> resourcesFound = resourceMemberRepository.findByUserIdAndResourceIdInOrderByResourceId(userId,resourcesIds);
         List<Resource> notFoundResources = new ArrayList<>();
         if(resourcesIds.size() != resourcesFound.size()){
             int j = 0;
