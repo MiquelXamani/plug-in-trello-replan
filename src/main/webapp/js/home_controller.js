@@ -20,6 +20,7 @@
         initController();
 
         function initController() {
+            console.log("INIT CONTROLLER");
             var promises =[PlanService.GetPlans($rootScope.globals.currentUser.username),TeamService.GetTeams($rootScope.globals.currentUser.username)];
             $q.all(promises).then(function (values){
                 vm.plans = values[0];
@@ -65,9 +66,11 @@
         function getUnlinkedTeamMembers(teamId){
             console.log("TEAM CHANGE");
             if(vm.unmatchedPlanResources.length > 0) {
+                vm.selectedResource = vm.unmatchedPlanResources[0];
                 TeamService.GetUnmatchedTeamMembers($rootScope.globals.currentUser.username, teamId)
                     .then(function (unmatchedTeamMembers) {
                         vm.unmatchedTeamMembers = unmatchedTeamMembers;
+                        vm.selectedTeamMember = unmatchedTeamMembers[0];
                         console.log(vm.unmatchedTeamMembers);
                     });
             }

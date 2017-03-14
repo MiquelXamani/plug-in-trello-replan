@@ -10,10 +10,7 @@ import web.models.*;
 import web.repositories.ResourceMemberRepository;
 import web.repositories.UserRepository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/teams")
@@ -31,6 +28,7 @@ public class TeamsController {
         String trelloToken = u.getTrelloToken();
         TrelloService trelloService = new TrelloService();
         Team[] teams = trelloService.getTrelloTeams(trelloUsername,trelloToken);
+        Arrays.sort(teams);
         return teams;
     }
 

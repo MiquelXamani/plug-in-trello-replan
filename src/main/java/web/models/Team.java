@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Miquel on 01/03/2017.
  */
-public class Team {
+public class Team implements Comparable<Team>{
     private String id;
     private String displayName;
 
@@ -27,5 +27,9 @@ public class Team {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public int compareTo(Team other) {
+        return this.displayName.compareTo(other.getDisplayName());
     }
 }
