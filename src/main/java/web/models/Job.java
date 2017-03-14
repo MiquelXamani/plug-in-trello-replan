@@ -8,13 +8,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Job {
     private String ends;
-    private List<ResourceDTO> resources;
-    private List<Feature> features;
+    private List<Resource> resources;
+    private Feature feature;
     private List<Job> depends_on;
 
     public Job(){
         this.resources = new ArrayList<>();
-        this.features = new ArrayList<>();
         this.depends_on = new ArrayList<>();
     }
 
@@ -26,20 +25,20 @@ public class Job {
         this.ends = ends;
     }
 
-    public List<ResourceDTO> getResources() {
+    public List<Resource> getResources() {
         return resources;
     }
 
-    public void setResources(List<ResourceDTO> resources) {
+    public void setResources(List<Resource> resources) {
         this.resources = resources;
     }
 
-    public List<Feature> getFeatures() {
-        return features;
+    public Feature getFeature() {
+        return feature;
     }
 
-    public void setFeatures(List<Feature> features) {
-        this.features = features;
+    public void setFeature(Feature feature) {
+        this.feature = feature;
     }
 
     public List<Job> getDepends_on() {
