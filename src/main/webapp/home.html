@@ -10,18 +10,14 @@
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             <label for="resourceselector">Select a resource</label>
-                            <select class="form-control" id="resourceselector">
+                            <select class="form-control" id="resourceselector" ng-model="vm.selectedResource" ng-options="resource as resource.name for resource in vm.unmatchedPlanResources">
                             </select>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="form-group">
                             <label for="trellouserselector">Select a Trello user</label>
-                            <select class="form-control" id="trellouserselector">
-                                <option>trellouser1</option>
-                                <option>trellouser2</option>
-                                <option>trellouser3</option>
-                                <option>trellouser4</option>
+                            <select class="form-control" id="trellouserselector" ng-model="vm.selectedTeamMember" ng-options="member as member.username for member in vm.unmatchedTeamMembers">
                             </select>
                         </div>
                     </div>
@@ -50,9 +46,9 @@
         <input type="boardName" name="boardName" id="boardName" class="form-control" ng-model="vm.boardName" required />
         <span ng-show="form.boardName.$dirty && form.boardName.$error.required" class="help-block">Board name is required</span>
     </div>
-    <div class="warning-message">
+    <div class="warning-message" ng-hide="vm.unmatchedPlanResources.length === 0">
         <p>
-            <strong>WARNING!</strong> there are some resources of the selected plan that aren't matched with a Trello user <a href="#matchingModal" data-toggle="modal" data-target="#matchingModal">click this message to fix it</a>
+            <strong>WARNING!</strong> there are some resources of the selected plan that aren't linked with a Trello user <a href="#matchingModal" data-toggle="modal" data-target="#matchingModal">click this message to fix it</a>
         </p>
     </div>
 </form>

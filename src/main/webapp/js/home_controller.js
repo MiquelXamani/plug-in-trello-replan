@@ -47,10 +47,14 @@
                         vm.unmatchedPlanResources = unmatchedPlanResources;
                         console.log(unmatchedPlanResources);
                         if(vm.unmatchedPlanResources.length > 0){
+                            vm.selectedResource = vm.unmatchedPlanResources[0];
                             TeamService.GetUnmatchedTeamMembers($rootScope.globals.currentUser.username,vm.selectedTeam.id)
                                 .then(function(unmatchedTeamMembers){
                                     vm.unmatchedTeamMembers = unmatchedTeamMembers;
                                     console.log(vm.unmatchedTeamMembers);
+                                    if(vm.unmatchedTeamMembers.length > 0){
+                                        vm.selectedTeamMember = vm.unmatchedTeamMembers[0];
+                                    }
                                 });
                         }
                     });
