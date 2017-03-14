@@ -33,12 +33,14 @@
 <form>
     <div class="form-group">
         <label for="planselector">Select a plan</label>
-        <select class="form-control" id="planselector" ng-model="vm.selectedPlan" ng-options="plan as plan.name for plan in vm.plans">
+        <select class="form-control" id="planselector" ng-model="vm.selectedPlan"
+                ng-options="plan as plan.name for plan in vm.plans" ng-change="vm.getUnlinkedPlanResources(vm.selectedPlan,vm.selectedTeam.id)">
         </select>
     </div>
     <div class="form-group">
         <label for="teamselector">Select a Trello team</label>
-        <select class="form-control" id="teamselector" ng-model="vm.selectedTeam" ng-options="team as team.displayName for team in vm.teams">
+        <select class="form-control" id="teamselector" ng-model="vm.selectedTeam"
+                ng-options="team as team.displayName for team in vm.teams" ng-change="vm.getUnlinkedTeamMembers(vm.selectedTeam.id)">
         </select>
     </div>
     <div class="form-group">

@@ -62,21 +62,26 @@
             });
         }
 
-        function getUnlinkedTeamMembers(team){
-            TeamService.GetUnmatchedTeamMembers($rootScope.globals.currentUser.username,team.id)
-                .then(function(unmatchedTeamMembers){
-                    vm.unmatchedTeamMembers = unmatchedTeamMembers;
-                    console.log(vm.unmatchedTeamMembers);
-                });
+        function getUnlinkedTeamMembers(teamId){
+            console.log("TEAM CHANGE");
+            if(vm.unmatchedPlanResources.length > 0) {
+                TeamService.GetUnmatchedTeamMembers($rootScope.globals.currentUser.username, teamId)
+                    .then(function (unmatchedTeamMembers) {
+                        vm.unmatchedTeamMembers = unmatchedTeamMembers;
+                        console.log(vm.unmatchedTeamMembers);
+                    });
+            }
 
         }
 
-        function getUnlinkedPlanResources(plan){
+        function getUnlinkedPlanResources(plan,teamId){
+            console.log("PLAN CHANGE");
             plan.username = $rootScope.globals.currentUser.username;
             PlanService.GetUnmatchedPlanResources(plan)
-                .then(function(unmatchedPlanResources){
-                   vm.unmatchedPlanResources = unmatchedPlanResources;
-                   console.log(unmatchedPlanResources);
+                .then(function (unmatchedPlanResources) {
+                    vm.unmatchedPlanResources = unmatchedPlanResources;
+                    console.log(unmatchedPlanResources);
+                    getUnlinkedTeamMembers(teamId);
                 });
         }
     }
