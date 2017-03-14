@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="00263ab8-28ac-4ce5-8d0a-665b53e088be" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/web/models/PlanDTO.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/build/classes/main/web/models/ResourceDTO.class" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/web/controllers/PlansController.java" afterPath="$PROJECT_DIR$/src/main/java/web/controllers/PlansController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/web/models/Feature.java" afterPath="$PROJECT_DIR$/src/main/java/web/models/Feature.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/web/models/Job.java" afterPath="$PROJECT_DIR$/src/main/java/web/models/Job.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/web/models/Plan.java" afterPath="$PROJECT_DIR$/src/main/java/web/models/Plan.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/web/models/Resource.java" afterPath="$PROJECT_DIR$/src/main/java/web/models/Resource.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -60,10 +55,24 @@
       <file leaf-file-name="PlansController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/web/controllers/PlansController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="63" column="25" lean-forward="true" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
+            <state relative-caret-position="444">
+              <caret line="111" column="21" lean-forward="false" selection-start-line="111" selection-start-column="21" selection-end-line="111" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlanDTO.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/web/models/PlanDTO.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="33" lean-forward="false" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+              <folding>
+                <element signature="e#218#219#0" expanded="true" />
+                <element signature="e#266#267#0" expanded="true" />
+                <element signature="e#306#307#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -115,7 +124,7 @@
       <file leaf-file-name="Plan.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/web/models/Plan.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
+            <state relative-caret-position="595">
               <caret line="35" column="20" lean-forward="true" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -145,25 +154,28 @@
       <file leaf-file-name="Job.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/web/models/Job.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="27" column="42" lean-forward="true" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
+            <state relative-caret-position="357">
+              <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#468#469#0" expanded="true" />
-                <element signature="e#495#496#0" expanded="true" />
-                <element signature="e#535#536#0" expanded="true" />
-                <element signature="e#567#568#0" expanded="true" />
-                <element signature="e#643#644#0" expanded="true" />
-                <element signature="e#701#702#0" expanded="true" />
-                <element signature="e#743#744#0" expanded="true" />
-                <element signature="e#778#779#0" expanded="true" />
-                <element signature="e#808#809#0" expanded="true" />
-                <element signature="e#855#856#0" expanded="true" />
-                <element signature="e#893#894#0" expanded="true" />
-                <element signature="e#933#934#0" expanded="true" />
-                <element signature="e#966#967#0" expanded="true" />
-                <element signature="e#1021#1022#0" expanded="true" />
-                <element signature="e#1065#1066#0" expanded="true" />
+                <element signature="e#335#336#0" expanded="true" />
+                <element signature="e#386#387#0" expanded="true" />
+                <element signature="e#417#418#0" expanded="true" />
+                <element signature="e#444#445#0" expanded="true" />
+                <element signature="e#484#485#0" expanded="true" />
+                <element signature="e#516#517#0" expanded="true" />
+                <element signature="e#553#554#0" expanded="true" />
+                <element signature="e#584#585#0" expanded="true" />
+                <element signature="e#634#635#0" expanded="true" />
+                <element signature="e#674#675#0" expanded="true" />
+                <element signature="e#709#710#0" expanded="true" />
+                <element signature="e#739#740#0" expanded="true" />
+                <element signature="e#786#787#0" expanded="true" />
+                <element signature="e#824#825#0" expanded="true" />
+                <element signature="e#864#865#0" expanded="true" />
+                <element signature="e#897#898#0" expanded="true" />
+                <element signature="e#952#953#0" expanded="true" />
+                <element signature="e#996#997#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -201,17 +213,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="697">
               <caret line="50" column="72" lean-forward="false" selection-start-line="50" selection-start-column="16" selection-end-line="50" selection-end-column="72" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="plan_service.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/js/plan_service.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="73" lean-forward="false" selection-start-line="18" selection-start-column="73" selection-end-line="18" selection-end-column="73" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -653,11 +657,11 @@
         <option value="$PROJECT_DIR$/src/main/java/web/repositories/ResourceMemberRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/web/models/ResourceDTO.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/home_controller.js" />
-        <option value="$PROJECT_DIR$/src/main/java/web/models/PlanDTO.java" />
         <option value="$PROJECT_DIR$/src/main/java/web/models/Resource.java" />
         <option value="$PROJECT_DIR$/src/main/java/web/models/Feature.java" />
-        <option value="$PROJECT_DIR$/src/main/java/web/models/Job.java" />
         <option value="$PROJECT_DIR$/src/main/java/web/models/Plan.java" />
+        <option value="$PROJECT_DIR$/src/main/java/web/models/PlanDTO.java" />
+        <option value="$PROJECT_DIR$/src/main/java/web/models/Job.java" />
         <option value="$PROJECT_DIR$/src/main/java/web/controllers/PlansController.java" />
       </list>
     </option>
@@ -1262,12 +1266,12 @@
       <workItem from="1488909586823" duration="4142000" />
       <workItem from="1488978767262" duration="16649000" />
       <workItem from="1489137426619" duration="27414000" />
-      <workItem from="1489485890479" duration="6218000" />
+      <workItem from="1489485890479" duration="7704000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="196298000" />
+    <option name="totallyTimeSpent" value="197784000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1378" height="744" extended-state="0" />
@@ -1327,7 +1331,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/web/Card.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/web/BoardController.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/web/Webhook.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/web/CardController.java" />
@@ -1593,7 +1596,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="697">
           <caret line="50" column="72" lean-forward="false" selection-start-line="50" selection-start-column="16" selection-end-line="50" selection-end-column="72" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1602,17 +1607,6 @@
         <state relative-caret-position="2465">
           <caret line="145" column="43" lean-forward="false" selection-start-line="145" selection-start-column="43" selection-end-line="145" selection-end-column="43" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/web/models/Resource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding>
-            <element signature="e#300#301#0" expanded="true" />
-            <element signature="e#327#328#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1649,34 +1643,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/web/models/Job.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/web/controllers/TeamsController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="27" column="42" lean-forward="true" selection-start-line="27" selection-start-column="42" selection-end-line="27" selection-end-column="42" />
+        <state relative-caret-position="238">
+          <caret line="27" column="27" lean-forward="true" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="76" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/web/models/Resource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#468#469#0" expanded="true" />
-            <element signature="e#495#496#0" expanded="true" />
-            <element signature="e#535#536#0" expanded="true" />
-            <element signature="e#567#568#0" expanded="true" />
-            <element signature="e#643#644#0" expanded="true" />
-            <element signature="e#701#702#0" expanded="true" />
-            <element signature="e#743#744#0" expanded="true" />
-            <element signature="e#778#779#0" expanded="true" />
-            <element signature="e#808#809#0" expanded="true" />
-            <element signature="e#855#856#0" expanded="true" />
-            <element signature="e#893#894#0" expanded="true" />
-            <element signature="e#933#934#0" expanded="true" />
-            <element signature="e#966#967#0" expanded="true" />
-            <element signature="e#1021#1022#0" expanded="true" />
-            <element signature="e#1065#1066#0" expanded="true" />
+            <element signature="e#300#301#0" expanded="true" />
+            <element signature="e#327#328#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/web/models/PlanDTO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="33" lean-forward="false" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+          <folding>
+            <element signature="e#218#219#0" expanded="true" />
+            <element signature="e#266#267#0" expanded="true" />
+            <element signature="e#306#307#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/web/models/Plan.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
+        <state relative-caret-position="595">
           <caret line="35" column="20" lean-forward="true" selection-start-line="35" selection-start-column="20" selection-end-line="35" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1702,18 +1702,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/web/controllers/TeamsController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/web/models/Job.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="27" column="27" lean-forward="true" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="76" />
-          <folding />
+        <state relative-caret-position="357">
+          <caret line="21" column="0" lean-forward="true" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#335#336#0" expanded="true" />
+            <element signature="e#386#387#0" expanded="true" />
+            <element signature="e#417#418#0" expanded="true" />
+            <element signature="e#444#445#0" expanded="true" />
+            <element signature="e#484#485#0" expanded="true" />
+            <element signature="e#516#517#0" expanded="true" />
+            <element signature="e#553#554#0" expanded="true" />
+            <element signature="e#584#585#0" expanded="true" />
+            <element signature="e#634#635#0" expanded="true" />
+            <element signature="e#674#675#0" expanded="true" />
+            <element signature="e#709#710#0" expanded="true" />
+            <element signature="e#739#740#0" expanded="true" />
+            <element signature="e#786#787#0" expanded="true" />
+            <element signature="e#824#825#0" expanded="true" />
+            <element signature="e#864#865#0" expanded="true" />
+            <element signature="e#897#898#0" expanded="true" />
+            <element signature="e#952#953#0" expanded="true" />
+            <element signature="e#996#997#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/web/controllers/PlansController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="63" column="25" lean-forward="true" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
+        <state relative-caret-position="444">
+          <caret line="111" column="21" lean-forward="false" selection-start-line="111" selection-start-column="21" selection-end-line="111" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
