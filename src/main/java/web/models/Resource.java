@@ -3,11 +3,11 @@ package web.models;
 /**
  * Created by Miquel on 10/03/2017.
  */
-public class ResourceDTO {
+public class Resource {
     private String id;
     private String name;
 
-    public ResourceDTO(){}
+    public Resource(){}
 
     public String getId() {
         return id;
