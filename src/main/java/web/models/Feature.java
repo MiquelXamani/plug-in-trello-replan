@@ -8,6 +8,7 @@ public class Feature {
     private String name;
     private String description;
     private double effort;
+    private String deadline;
 
     public Feature(){}
 
@@ -41,5 +42,13 @@ public class Feature {
 
     public void setEffort(double effort) {
         this.effort = effort;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 }

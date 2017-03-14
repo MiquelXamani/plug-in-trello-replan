@@ -7,21 +7,12 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Job {
-    private String ends;
     private Resource resource;
     private Feature feature;
     private List<Job> depends_on;
 
     public Job(){
         this.depends_on = new ArrayList<>();
-    }
-
-    public String getEnds() {
-        return ends;
-    }
-
-    public void setEnds(String ends) {
-        this.ends = ends;
     }
 
     public Resource getResource() {

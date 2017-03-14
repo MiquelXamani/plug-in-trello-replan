@@ -50,9 +50,9 @@ public class PlansController {
         f1.setName("Tasca 1");
         f1.setDescription("Aquesta serà la descripció de la tasca 1");
         f1.setEffort(1);
+        f1.setDeadline("05/03/2017");
         //Job 1
         Job j1 = new Job();
-        j1.setEnds("23/03/2017");
         j1.setFeature(f1);
         j1.setResource(r1);
         //Feature 2
@@ -61,19 +61,17 @@ public class PlansController {
         f2.setName("Tasca 2");
         f2.setDescription("Aquesta serà la descripció de la tasca 2");
         f2.setEffort(13);
+        f2.setDeadline("23/03/2017");
         //Job 2
         Job j2 = new Job();
-        j2.setEnds("30/03/2017");
         j2.setFeature(f2);
         j2.setResource(r2);
         //Job 3
         Job j3 = new Job();
-        j3.setEnds("30/03/2017");
         j3.setFeature(f2);
         j3.setResource(r3);
         //Job 4
         Job j4 = new Job();
-        j4.setEnds("30/03/2017");
         j4.setFeature(f2);
         j4.setResource(r4);
 
@@ -96,14 +94,13 @@ public class PlansController {
         f3.setName("Tasca 3");
         f3.setDescription("Aquesta serà la descripció de la tasca 3");
         f3.setEffort(5);
+        f3.setDeadline("12/02/2017");
         //Job 5
         Job j5 = new Job();
-        j5.setEnds("23/03/2017");
         j5.setFeature(f3);
         j5.setResource(r1);
         //Job 6
         Job j6 = new Job();
-        j6.setEnds("23/03/2017");
         j6.setFeature(f3);
         j6.setResource(r4);
 
@@ -133,6 +130,7 @@ public class PlansController {
 
         List<Resource> notFoundMembers = new ArrayList<>();
         //falta trobar els que no estan assignats
+        return notFoundMembers;
     }
 
 
