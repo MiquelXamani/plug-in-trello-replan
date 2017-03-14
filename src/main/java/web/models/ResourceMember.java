@@ -11,7 +11,7 @@ public class ResourceMember {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long idResourceMember;
-    private String resourceId;
+    private int resourceId;
     private String resourceName;
     private String trelloUserId;
     private String trelloUsername;
@@ -20,7 +20,7 @@ public class ResourceMember {
 
     protected ResourceMember(){}
 
-    public ResourceMember(Long userId, String resourceId, String resourceName, String trelloUserId, String trelloUsername, String trelloFullName){
+    public ResourceMember(Long userId, int resourceId, String resourceName, String trelloUserId, String trelloUsername, String trelloFullName){
         this.userId = userId;
         this.resourceId = resourceId;
         this.resourceName = resourceName;
@@ -37,11 +37,11 @@ public class ResourceMember {
         this.idResourceMember = idResourceMember;
     }
 
-    public String getResourceId() {
+    public int getResourceId() {
         return resourceId;
     }
 
-    public void setResourceId(String resourceId) {
+    public void setResourceId(int resourceId) {
         this.resourceId = resourceId;
     }
 

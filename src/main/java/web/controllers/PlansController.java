@@ -118,19 +118,57 @@ public class PlansController {
         String username = planDTO.getUsername();
         User user = userRepository.findByUsername(username);
         Long userId = user.getUserId();
-        List<String> resourcesIds = new ArrayList<>();
+        List<Integer> resourcesIds = new ArrayList<>(); //per fer cerca a BD i comparar amb els resultats
+        List<String> resourcesNames = new ArrayList<>(); //per guardar els nom dels recursos que es retornaran
         List<Job> jobs = planDTO.getJobs();
         for (Job j:jobs) {
+            boolean found = false;
+            int i = 0;
+            int rId = j.getResource().getId();
+            while(!found && i < resourcesIds.size()){
+                if(rId == resourcesIds.get(i)) {
+                    found = true;
+                }
+                i++;
+            }
+            if(!found){
+                resourcesIds.add(rId);
+                resourcesNames.add(j.getResource().getName());
+            }
 
         }
 
-
         Collections.sort(resourcesIds);
         List<ResourceMember> resourcesFound = resourceMemberRepository.findByUserIdAndResourceIdIn(userId,resourcesIds);
+        List<Resource> notFoundResources = new ArrayList<>();
+        if(resourcesIds.size() != resourcesFound.size()){
+            int j = 0;
+            for(int i = 0; i < resourcesFound.size(); i++){
+                boolean found = false;
+                while(!found){
+                    if(resourcesIds.get(j) == resourcesFound.get(i).getResourceId()){
+                        found = true;
+                    }
+                    else{
+                        Resource resource = new Resource();
+                        resource.setId(resourcesIds.get(j));
+                        resource.setName(resourcesNames.get(j));
+                        notFoundResources.add(resource);
+                    }
+                    j++;
+                }
 
-        List<Resource> notFoundMembers = new ArrayList<>();
-        //falta trobar els que no estan assignats
-        return notFoundMembers;
+            }
+            for(int k = j; k < resourcesIds.size(); k++){
+                Resource resource = new Resource();
+                resource.setId(resourcesIds.get(k));
+                resource.setName(resourcesNames.get(k));
+                notFoundResources.add(resource);
+            }
+
+        }
+
+        return notFoundResources;
     }
 
 
