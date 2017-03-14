@@ -121,21 +121,26 @@
         }
 
         function getUnlinkedPlanResources(plan){
-            var planResources = [], obj = {}, planResourcesNoRep = [], i, pr = {};
+            var planResources = [], pr = {}, ids = [];
             $.each(plan.resources, function(index, value){
-                planResources.push(value.id);
+                var found = false, i = 0;
+                while(!found && i < ids.length){
+                    if(value.id === ids[i]) {
+                        found = true;
+                    }
+                    i++;
+                }
+                if(!found){
+                    var resource = {};
+                    resource.id = value.id;
+                    resource.name = value.name;
+                    planResources.push(resource);
+                    ids.push(value.id);
+                }
             });
-            //eliminate duplicates
-            for(i = 0; i < planResources.length; i++){
-                obj[planResources[i]] = 0;
-            }
-            for (i in obj) {
-                var r = {};
-                r.id = i;
-                planResourcesNoRep.push(r);
-            }
+
             pr.username = $rootScope.globals.currentUser.username;
-            pr.resources = planResourcesNoRep;
+            pr.resources = planResources;
             console.log(pr);
             PlanService.GetUnmatchedPlanResources(pr)
                 .then(function(unmatchedPlanResources){

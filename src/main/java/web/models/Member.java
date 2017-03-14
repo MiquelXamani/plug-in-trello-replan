@@ -33,6 +33,6 @@ public class Member implements Comparable<Member>{
     }
 
     public int compareTo(Member other) {
-        return this.username.compareTo(other.username);
+        return this.username.compareTo(other.getUsername());
     }
 }
