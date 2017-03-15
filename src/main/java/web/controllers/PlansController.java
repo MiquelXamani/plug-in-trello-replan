@@ -99,14 +99,14 @@ public class PlansController {
         Job j5 = new Job();
         j5.setFeature(f3);
         j5.setResource(r1);
-        //Job 6
+        /*//Job 6
         Job j6 = new Job();
         j6.setFeature(f3);
-        j6.setResource(r4);
+        j6.setResource(r4);*/
 
         List<Job> jobsP3 = new ArrayList<>();
         jobsP3.add(j5);
-        jobsP3.add(j6);
+        //jobsP3.add(j6);
         p2.setJobs(jobsP3);
         plans[1] = p2;
 

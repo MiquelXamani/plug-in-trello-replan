@@ -1,6 +1,4 @@
-.matching{
-    display: inline-block;
-    float: left;
-    padding: 10px 15px;
-    width: 50%;
+#warning-message{
+    font-size: 14px;
+    color: red;
 }

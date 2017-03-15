@@ -25,7 +25,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                         <button type="button" class="btn btn-primary"
-                                ng-click="vm.MatchResourceMember(vm.selectedResource,vm.selectedTeamMember)">Match</button>
+                                ng-click="vm.matchResourceMember(vm.selectedResource,vm.selectedTeamMember)">Match</button>
                     </div>
                 </div>
             </div>
@@ -51,9 +51,10 @@
         <input type="boardName" name="boardName" id="boardName" class="form-control" ng-model="vm.boardName" required />
         <span ng-show="form.boardName.$dirty && form.boardName.$error.required" class="help-block">Board name is required</span>
     </div>
-    <div class="warning-message" ng-hide="vm.unmatchedPlanResources.length === 0">
-        <p>
-            <strong>WARNING!</strong> there are some resources of the selected plan that aren't linked with a Trello user <a href="#matchingModal" data-toggle="modal" data-target="#matchingModal">click this message to fix it</a>
+    <div ng-hide="vm.unmatchedPlanResources.length === 0" data-toggle="modal" data-target="#matchingModal">
+        <p id="warning-message">
+            <strong>WARNING!</strong> there are some resources of the selected plan that aren't linked with a Trello user.
+            <strong> Click this message to fix it</strong>
         </p>
     </div>
 </form>

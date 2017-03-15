@@ -16,7 +16,7 @@
         vm.unmatchedPlanResources = [];
         vm.getUnlinkedPlanResources = getUnlinkedPlanResources;
         vm.getUnlinkedTeamMembers = getUnlinkedTeamMembers;
-        vm.MatchResourceMember = MatchResourceMember;
+        vm.matchResourceMember = matchResourceMember;
 
         initController();
 
@@ -94,7 +94,7 @@
                 });
         }
 
-        function MatchResourceMember(resource,member){
+        function matchResourceMember(resource,member){
             //console.log("MATCH CLICKED");
             var obj = {};
             obj.username = $rootScope.globals.currentUser.username;
@@ -107,7 +107,15 @@
                 then(function (association){
                     console.log("ASSOCIATION");
                     console.log(association);
-                    //eliminar resource i member del select
+                    var index = vm.unmatchedPlanResources.indexOf(vm.selectedResource);
+                    vm.unmatchedPlanResources.splice(index,1);
+                    vm.selectedResource = vm.unmatchedPlanResources[0];
+                    index = vm.unmatchedTeamMembers.indexOf(vm.selectedTeamMember);
+                    vm.unmatchedTeamMembers.splice(index,1);
+                    vm.selectedTeamMember = vm.unmatchedTeamMembers[0];
+                    if(vm.unmatchedPlanResources.length === 0) {
+                        $('#matchingModal').modal('toggle');
+                    }
             });
         }
     }
