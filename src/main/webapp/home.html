@@ -25,6 +25,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                         <button type="button" class="btn btn-primary"
+                                ng-disabled="vm.unmatchedTeamMembers.length === 0"
                                 ng-click="vm.matchResourceMember(vm.selectedResource,vm.selectedTeamMember)">Match</button>
                     </div>
                 </div>
