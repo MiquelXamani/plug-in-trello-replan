@@ -14,7 +14,6 @@ import web.models.User;
 import web.repositories.ResourceMemberRepository;
 import web.repositories.UserRepository;
 
-import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,17 +35,9 @@ public class MatchingController {
             return new ResponseEntity<>(resourceMember, HttpStatus.CREATED);
         }
         catch (DataIntegrityViolationException e) {
-            Throwable t = e.getCause();
-            while ((t != null) && !(t instanceof ConstraintViolationException)) {
-                t = t.getCause();
-            }
             Map<String, String> error = new HashMap<>(1);
-            if (t instanceof ConstraintViolationException) {
-                error.put("description", "Already exists an association for this resource or team member");
-                return new ResponseEntity<>(error, HttpStatus.CONFLICT);
-            }
-            error.put("description", "Internal Server Error");
-            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+            error.put("description", "Already exists an association for this resource or team member");
+            return new ResponseEntity<>(error, HttpStatus.CONFLICT);
         }
     }
 }

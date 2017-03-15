@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', 'PlanService', 'TeamService', '$rootScope', '$q'];
-    function HomeController(UserService, PlanService, TeamService, $rootScope, $q) {
+    HomeController.$inject = ['MatchingService', 'PlanService', 'TeamService', '$rootScope', '$q'];
+    function HomeController(MatchingService, PlanService, TeamService, $rootScope, $q) {
         var vm = this;
 
         vm.user = null;
@@ -16,6 +16,7 @@
         vm.unmatchedPlanResources = [];
         vm.getUnlinkedPlanResources = getUnlinkedPlanResources;
         vm.getUnlinkedTeamMembers = getUnlinkedTeamMembers;
+        vm.MatchResourceMember = MatchResourceMember;
 
         initController();
 
@@ -86,6 +87,23 @@
                     console.log(unmatchedPlanResources);
                     getUnlinkedTeamMembers(teamId);
                 });
+        }
+
+        function MatchResourceMember(resource,member){
+            //console.log("MATCH CLICKED");
+            var obj = {};
+            obj.username = $rootScope.globals.currentUser.username;
+            obj.resourceId = resource.id;
+            obj.resourceName = resource.name;
+            obj.trelloUserId = member.id;
+            obj.trelloUsername = member.username;
+            obj.trelloFullName = member.fullName;
+            MatchingService.SavePlanResourceTeamMemberMatching(obj).
+                then(function (association){
+                    console.log("ASSOCIATION");
+                    console.log(association);
+                    //eliminar resource i member del select
+            });
         }
     }
 
