@@ -2,8 +2,9 @@ package web.models;
 
 import javax.persistence.*;
 @Table(
-        uniqueConstraints=
-        @UniqueConstraint(columnNames={"userId", "trelloUsername"})
+        uniqueConstraints={
+        @UniqueConstraint(columnNames={"userId", "trelloUsername"}),
+        @UniqueConstraint(columnNames={"userId", "resourceId"})}
 )
 
 @Entity
