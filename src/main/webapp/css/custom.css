@@ -1,4 +1,22 @@
 #warning-message{
-    font-size: 14px;
-    color: red;
+    font-size:14px;
+    color:red;
+}
+
+.header-content{
+    background-color:forestgreen;
+    overflow:auto;
+}
+
+.left{
+    float:left;
+    display:inline-block;
+    margin: 10px 10px;
+    color:whitesmoke;
+}
+
+.right{
+    float:right;
+    display:inline-block;
+    margin: 10px 10px;
 }
