@@ -29,7 +29,7 @@ public class MatchingController {
     public ResponseEntity<Object> matchResourceWithMember(@RequestBody MatchingDTO matchingDTO){
         User u = userRepository.findByUsername(matchingDTO.getUsername());
         ResourceMember resourceMember = new ResourceMember(u.getUserId(),matchingDTO.getResourceId(),matchingDTO.getResourceName(),
-                matchingDTO.getTrelloUserId(),matchingDTO.getUsername(),matchingDTO.getTrelloFullName());
+                matchingDTO.getTrelloUserId(),matchingDTO.getTrelloUsername(),matchingDTO.getTrelloFullName());
         try {
             resourceMember = resourceMemberRepository.save(resourceMember);
             return new ResponseEntity<>(resourceMember, HttpStatus.CREATED);
