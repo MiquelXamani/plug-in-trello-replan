@@ -168,6 +168,7 @@ public class PlansController {
 
         }
 
+        Collections.sort(notFoundResources);
         return notFoundResources;
     }
 
