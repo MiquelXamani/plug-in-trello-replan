@@ -12,11 +12,13 @@
         vm.user = null;
         vm.teams = [];
         vm.plans = [];
+        vm.dataLoading = false;
         vm.unmatchedTeamMembers = [];
         vm.unmatchedPlanResources = [];
         vm.getUnlinkedPlanResources = getUnlinkedPlanResources;
         vm.getUnlinkedTeamMembers = getUnlinkedTeamMembers;
         vm.matchResourceMember = matchResourceMember;
+        vm.loadToTrello = loadToTrello;
 
         initController();
 
@@ -117,6 +119,22 @@
                         $('#matchingModal').modal('toggle');
                     }
             });
+        }
+
+        function loadToTrello(){
+            vm.dataLoading = true;
+            if(vm.unmatchedPlanResources.length > 0){
+                var c = confirm("There are resources of the plan that hasn't been assigned to a Trello user. " +
+                    "These resources won't be assigned to any card. " +
+                    "Are you sure that you want to continue?");
+                if(c){
+                    console.log("CONFIRMED");
+                }
+                else{
+                    vm.dataLoading = false;
+                }
+            }
+            //fer petició per crear
         }
     }
 
