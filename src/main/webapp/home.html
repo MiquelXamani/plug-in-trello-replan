@@ -26,7 +26,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                         <button type="button" class="btn btn-primary"
                                 ng-disabled="vm.unmatchedTeamMembers.length === 0"
-                                ng-click="vm.matchResourceMember(vm.selectedResource,vm.selectedTeamMember)">Match</button>
+                                ng-click="vm.matchResourceMember()">Match</button>
                     </div>
                 </div>
             </div>
@@ -38,13 +38,13 @@
     <div class="form-group">
         <label for="planselector">Select a plan</label>
         <select class="form-control" id="planselector" ng-model="vm.selectedPlan"
-                ng-options="plan as plan.name for plan in vm.plans" ng-change="vm.getUnlinkedPlanResources(vm.selectedPlan,vm.selectedTeam.id)">
+                ng-options="plan as plan.name for plan in vm.plans" ng-change="vm.getUnlinkedPlanResources()">
         </select>
     </div>
     <div class="form-group">
         <label for="teamselector">Select a Trello team</label>
         <select class="form-control" id="teamselector" ng-model="vm.selectedTeam"
-                ng-options="team as team.displayName for team in vm.teams" ng-change="vm.getUnlinkedTeamMembers(vm.selectedTeam.id)">
+                ng-options="team as team.displayName for team in vm.teams" ng-change="vm.getUnlinkedTeamMembers()">
         </select>
     </div>
     <div class="form-group">

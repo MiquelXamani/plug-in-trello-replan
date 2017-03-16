@@ -68,11 +68,11 @@
             });
         }
 
-        function getUnlinkedTeamMembers(teamId){
+        function getUnlinkedTeamMembers(){
             console.log("TEAM CHANGE");
             if(vm.unmatchedPlanResources.length > 0) {
                 vm.selectedResource = vm.unmatchedPlanResources[0];
-                TeamService.GetUnmatchedTeamMembers($rootScope.globals.currentUser.username, teamId)
+                TeamService.GetUnmatchedTeamMembers($rootScope.globals.currentUser.username, vm.selectedTeam.id)
                     .then(function (unmatchedTeamMembers) {
                         vm.unmatchedTeamMembers = unmatchedTeamMembers;
                         vm.selectedTeamMember = unmatchedTeamMembers[0];
@@ -84,27 +84,27 @@
 
         }
 
-        function getUnlinkedPlanResources(plan,teamId){
+        function getUnlinkedPlanResources(){
             console.log("PLAN CHANGE");
-            plan.username = $rootScope.globals.currentUser.username;
-            PlanService.GetUnmatchedPlanResources(plan)
+            vm.selectedPlan.username = $rootScope.globals.currentUser.username;
+            PlanService.GetUnmatchedPlanResources(vm.selectedPlan)
                 .then(function (unmatchedPlanResources) {
                     vm.unmatchedPlanResources = unmatchedPlanResources;
                     console.log("PLAN RESOURCES");
                     console.log(unmatchedPlanResources);
-                    getUnlinkedTeamMembers(teamId);
+                    getUnlinkedTeamMembers();
                 });
         }
 
-        function matchResourceMember(resource,member){
+        function matchResourceMember(){
             //console.log("MATCH CLICKED");
             var obj = {};
             obj.username = $rootScope.globals.currentUser.username;
-            obj.resourceId = resource.id;
-            obj.resourceName = resource.name;
-            obj.trelloUserId = member.id;
-            obj.trelloUsername = member.username;
-            obj.trelloFullName = member.fullName;
+            obj.resourceId = vm.selectedResource.id;
+            obj.resourceName = vm.selectedResource.name;
+            obj.trelloUserId = vm.selectedTeamMember.id;
+            obj.trelloUsername = vm.selectedTeamMember.username;
+            obj.trelloFullName = vm.selectedTeamMember.fullName;
             MatchingService.SavePlanResourceTeamMemberMatching(obj).
                 then(function (association){
                     console.log("ASSOCIATION");
