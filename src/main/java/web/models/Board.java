@@ -2,16 +2,17 @@ package web.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.persistence.Entity;
 /**
  * Created by Miquel on 13/02/2017.
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
 public class Board {
-    String name;
-    String id;
-    String url;
-    String shortUrl;
+    private String name;
+    private String id;
+
 
     public Board(){
     }
@@ -31,21 +32,4 @@ public class Board {
     public void setId(String id) {
         this.id = id;
     }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getShortUrl() {
-        return shortUrl;
-    }
-
-    public void setShortUrl(String shortUrl) {
-        this.shortUrl = shortUrl;
-    }
-
 }

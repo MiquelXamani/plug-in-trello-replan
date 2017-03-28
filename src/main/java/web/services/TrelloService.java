@@ -1,10 +1,7 @@
 package web.services;
 
 import org.springframework.web.client.RestTemplate;
-import web.models.Member;
-import web.models.Team;
-import web.models.TeamWithMembers;
-import web.models.User;
+import web.models.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +16,7 @@ public class TrelloService {
     private String key = "504327a0a1868e4f91dae5f6c852de79";
     private String url;
     Map<String,String> vars;
+    Map<String,String> input;
 
     public TrelloService(){}
 
@@ -41,7 +39,6 @@ public class TrelloService {
         return teams;
     }
 
-    //implementar funció semblant la dels teams però passant un array de members de .class
     public TeamWithMembers getTrelloTeamMembers(String idTeam, String userToken){
         url = "https://api.trello.com/1/organizations/{idTeam}?members=all&member_fields=username,fullName&fields=displayName&key={key}&token={token}";
         vars = new HashMap<>();
@@ -50,6 +47,39 @@ public class TrelloService {
         vars.put("idTeam",idTeam);
         TeamWithMembers teamWithMembers = restTemplate.getForObject(url,TeamWithMembers.class,vars);
         return teamWithMembers;
+    }
+
+    public Board createBoard(String planName, String boardName, String idTeam, String userToken){
+        url = "https://api.trello.com/1/boards/?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        input = new HashMap<>();
+        input.put("name",boardName);
+        input.put("defaultLists","false");
+        input.put("desc",planName + " planification. Board created by Replan plug-in for Trello");
+        input.put("idOrganization",idTeam);
+        input.put("prefs_permissionLevel","org");
+        Board board = restTemplate.postForObject(url,input,Board.class,vars);
+        return board;
+    }
+
+    public List<ListTrello> createLists(String idBoard,String userToken){
+        url = "https://api.trello.com/1/lists/?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        input = new HashMap<>();
+        input.put("idBoard", idBoard);
+        String[] listNames = {"Notifications","On-hold","Ready","In Progress","Done"};
+        ArrayList<ListTrello> lists = new ArrayList<>();
+        for(int i = 0; i < listNames.length; i++){
+            input.put("name", listNames[i]);
+            ListTrello l = restTemplate.postForObject(url,input,ListTrello.class,vars);
+            lists.add(l);
+        }
+
+        return lists;
     }
 
 }
