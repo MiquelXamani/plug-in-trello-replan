@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import web.controllers.APITrello.TrelloService;
+import web.services.TrelloService;
 import web.models.User;
 import web.repositories.UserRepository;
 

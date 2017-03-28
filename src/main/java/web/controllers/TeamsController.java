@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import web.controllers.APITrello.TrelloService;
+import web.services.TrelloService;
 import web.models.*;
 import web.repositories.ResourceMemberRepository;
 import web.repositories.UserRepository;
