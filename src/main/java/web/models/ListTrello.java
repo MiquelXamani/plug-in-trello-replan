@@ -3,6 +3,7 @@ package web.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Created by Miquel on 28/03/2017.
@@ -10,6 +11,7 @@ import javax.persistence.Entity;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class ListTrello {
+    @Id
     private String id;
     private String name;
     private String idBoard;

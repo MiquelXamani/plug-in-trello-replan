@@ -3,6 +3,8 @@ package web.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * Created by Miquel on 13/02/2017.
  */
@@ -10,8 +12,10 @@ import javax.persistence.Entity;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class Board {
-    private String name;
+    @Id
     private String id;
+    private String name;
+
 
 
     public Board(){
