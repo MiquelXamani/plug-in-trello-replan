@@ -5,7 +5,7 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['MatchingService', 'PlanService', 'TeamService', '$rootScope', '$q'];
+    HomeController.$inject = ['MatchingService', 'PlanService', 'TeamService', '$rootScope', '$q', 'BoardService'];
     function HomeController(MatchingService, PlanService, TeamService, $rootScope, $q) {
         var vm = this;
 
@@ -129,6 +129,14 @@
                     "Are you sure that you want to continue?");
                 if(c){
                     console.log("CONFIRMED");
+                    vm.selectedPlan.boardName = vm.boardName;
+                    vm.selectedPlan.teamId = vm.selectedTeam.id;
+                    BoardService.LoadPlanOnTrello(vm.selectedPlan).
+                        then(function(board){
+                            console.log(board);
+                            vm.dataLoading = false;
+                            //redireccionar a gestionar taulers
+                    });
                 }
                 else{
                     vm.dataLoading = false;
