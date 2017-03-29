@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ResourceMemberRepository extends CrudRepository<ResourceMember, Long> {
     List<ResourceMember> findByUserIdAndResourceIdInOrderByResourceId(Long userId, List<Integer> resourceIds);
+    ResourceMember findByUserIdAndResourceId(Long userId, int resourceIds);
+
     //fer orderby per algun atribut, ha de ser el mateix que a TeamsController
     List<ResourceMember> findByUserIdAndTrelloUsernameInOrderByTrelloUsernameAsc(Long userId, List<String> trelloUsernames);
 }

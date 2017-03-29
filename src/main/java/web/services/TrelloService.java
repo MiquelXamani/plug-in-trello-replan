@@ -82,4 +82,14 @@ public class TrelloService {
         return lists;
     }
 
+    public void addMemberToBoard(String boardId, String trelloUserId, String userToken){
+        url = "https://api.trello.com/1/boards/{boardId}/members/{memberId}?type=normal&key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("boardId",boardId);
+        vars.put("memberId",trelloUserId);
+        vars.put("key",key);
+        vars.put("token",userToken);
+        restTemplate.put(url,vars);
+    }
+
 }
