@@ -2,6 +2,9 @@ package web.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Miquel on 13/02/2017.
  */
@@ -10,11 +13,13 @@ public class Card {
     public String id;
     public String name;
     public String idList;
-    //public List<String> idMembers; No va perquè no pot desserialitzar l'array. En el Json és un array de Strings
-    //"idMembers":["5870fd94eabd62f19de4ef5f","585bec12bec126f26851c2fb"]
-    public String idBoard;
+    public String due;
+    public String desc;
+    public List<String> idMembers;
+    public List<String> idLabels;
 
     public Card(){
+        idMembers = new ArrayList<>();
     }
 
     public String getId() {
@@ -41,19 +46,36 @@ public class Card {
         this.idList = idList;
     }
 
-    /*public List<String> getIdMembers() {
+    public String getDue() {
+        return due;
+    }
+
+    public void setDue(String due) {
+        this.due = due;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public List<String> getIdMembers() {
         return idMembers;
     }
 
-    public void setIdMembers(String idMembers) {
-        this.idMembers.add(idMembers);
-    }*/
-
-    public String getIdBoard() {
-        return idBoard;
+    public void setIdMembers(List<String> idMembers) {
+        this.idMembers = idMembers;
     }
 
-    public void setIdBoard(String idBoard) {
-        this.idBoard = idBoard;
+    public List<String> getIdLabels() {
+        return idLabels;
     }
+
+    public void setIdLabels(List<String> idLabels) {
+        this.idLabels = idLabels;
+    }
+
 }

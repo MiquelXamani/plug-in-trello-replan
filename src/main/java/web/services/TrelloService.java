@@ -92,4 +92,18 @@ public class TrelloService {
         restTemplate.put(url,vars);
     }
 
+    public List<Card> createCards(List<Card> cards,String userToken){
+        url = "https://api.trello.com/1/cards/?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        List <Card> cardsCreated = new ArrayList<>();
+        Card c;
+        for (Card card: cards) {
+            c = restTemplate.postForObject(url,card,Card.class,vars);
+            cardsCreated.add(c);
+        }
+        return cardsCreated;
+    }
+
 }

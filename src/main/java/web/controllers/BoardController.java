@@ -14,6 +14,7 @@ import web.repositories.ResourceMemberRepository;
 import web.repositories.UserRepository;
 import web.services.TrelloService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class BoardController {
     private ResourceMemberRepository resourceMemberRepository;
 
     @RequestMapping(method= RequestMethod.POST)
-    public ResponseEntity<Board> createBoard(@RequestBody PlanBoardDTO planBoardDTO){
+    public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO){
         User u = userRepository.findByUsername(planBoardDTO.getUsername());
         String trelloToken = u.getTrelloToken();
         TrelloService trelloService = new TrelloService();
@@ -47,9 +48,14 @@ public class BoardController {
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId
         Map<Integer,String> resourcesAddedBoard = new HashMap<>();
-        int resourceId;
+        //Map of featureId and card corresponding to the feature
+        Map<Integer,Card> featuresConverted = new HashMap<>();
+        int resourceId, featureId;
+        Card card;
+        Feature feature;
         for (Job j: jobs) {
             resourceId = j.getResource().getId();
+            //Add member associated with the resource to the board
             if(!resourcesAddedBoard.containsKey(resourceId)){
                 ResourceMember resourceMember = resourceMemberRepository.findByUserIdAndResourceId(u.getUserId(),resourceId);
                 if(resourceMember != null){
@@ -58,15 +64,47 @@ public class BoardController {
                     resourcesAddedBoard.put(resourceId,trelloUserId);
                 }
             }
-            //crear objecte card si no exiteix cap card per la feature o modificar l'existent
+            //Add member to a card if already exists a card for the feature
+            feature = j.getFeature();
+            featureId = feature.getId();
+            if(featuresConverted.containsKey(featureId)){
+                card = featuresConverted.get(featureId);
+                card.getIdMembers().add(Integer.toString(resourceId));
+            }
+            //Otherwise, create a card for the feature
+            else{
+                card = new Card();
+                String name = "("+feature.getEffort()+") " + feature.getName();
+                card.setName(name);
+                card.setDue(feature.getDeadline());
+                card.getIdMembers().add(Integer.toString(resourceId));
+                if(j.getDepends_on().isEmpty()){
+                    //Ready
+                    card.setIdList(lists.get(2).getId());
+                }
+                else{
+                    //On-hold
+                    card.setIdList(lists.get(1).getId());
+                }
+                String description = feature.getDescription() + "\n\n";
+                description += "**Start date:** " + j.getStarts() + "\n**Depends on:**";
+                for (Job j2: j.getDepends_on()) {
+                    description += " " + j2.getFeature().getName();
+                }
+                //card.setIdLabels();
+                featuresConverted.put(featureId,card);
+
+            }
         }
 
+        List<Card> cards = new ArrayList<>(featuresConverted.values());
+        trelloService.createCards(cards,trelloToken);
 
+        PlanTrello result = new PlanTrello();
+        result.setBoard(board);
+        result.setLists(lists);
+        result.setCards(cards);
 
-
-
-
-        //provisional
-        return new ResponseEntity<>(board,HttpStatus.MULTI_STATUS);
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 }
