@@ -89,7 +89,7 @@ public class TrelloService {
         vars.put("memberId",trelloUserId);
         vars.put("key",key);
         vars.put("token",userToken);
-        restTemplate.put(url,vars);
+        restTemplate.put(url,null,vars);
     }
 
     public List<Card> createCards(List<Card> cards,String userToken){

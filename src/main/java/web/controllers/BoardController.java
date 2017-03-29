@@ -35,6 +35,7 @@ public class BoardController {
     public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO){
         User u = userRepository.findByUsername(planBoardDTO.getUsername());
         String trelloToken = u.getTrelloToken();
+        String trelloUserIdWebUser = u.getTrelloUserId();
         TrelloService trelloService = new TrelloService();
 
         //Create board
@@ -60,16 +61,20 @@ public class BoardController {
                 ResourceMember resourceMember = resourceMemberRepository.findByUserIdAndResourceId(u.getUserId(),resourceId);
                 if(resourceMember != null){
                     String trelloUserId = resourceMember.getTrelloUserId();
-                    trelloService.addMemberToBoard(board.getId(),trelloUserId,trelloToken);
+                    if(!trelloUserId.equals(trelloUserIdWebUser)) {
+                        //si es dóna el cas que l'usuari de la web està a la planificació, no es pot convidar al board ja que n'és el propietari
+                        trelloService.addMemberToBoard(board.getId(), trelloUserId, trelloToken);
+                    }
                     resourcesAddedBoard.put(resourceId,trelloUserId);
                 }
             }
             //Add member to a card if already exists a card for the feature
             feature = j.getFeature();
             featureId = feature.getId();
+            String trelloUid = resourcesAddedBoard.get(resourceId);
             if(featuresConverted.containsKey(featureId)){
                 card = featuresConverted.get(featureId);
-                card.getIdMembers().add(Integer.toString(resourceId));
+                card.getIdMembers().add(trelloUid);
             }
             //Otherwise, create a card for the feature
             else{
@@ -77,7 +82,7 @@ public class BoardController {
                 String name = "("+feature.getEffort()+") " + feature.getName();
                 card.setName(name);
                 card.setDue(feature.getDeadline());
-                card.getIdMembers().add(Integer.toString(resourceId));
+                card.getIdMembers().add(trelloUid);
                 if(j.getDepends_on().isEmpty()){
                     //Ready
                     card.setIdList(lists.get(2).getId());

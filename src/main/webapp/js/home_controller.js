@@ -6,7 +6,7 @@
         .controller('HomeController', HomeController);
 
     HomeController.$inject = ['MatchingService', 'PlanService', 'TeamService', '$rootScope', '$q', 'BoardService'];
-    function HomeController(MatchingService, PlanService, TeamService, $rootScope, $q) {
+    function HomeController(MatchingService, PlanService, TeamService, $rootScope, $q, BoardService) {
         var vm = this;
 
         vm.user = null;
@@ -142,7 +142,6 @@
                     vm.dataLoading = false;
                 }
             }
-            //fer petició per crear
         }
     }
 
