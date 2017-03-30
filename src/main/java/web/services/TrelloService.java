@@ -113,4 +113,14 @@ public class TrelloService {
         return cardsCreated;
     }
 
+    public Label[] getLabels(String boardId,String userToken){
+        url = "https://api.trello.com/1/boards/{boardId}/labels?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        vars.put("boardId",boardId);
+        Label[] labels = restTemplate.getForObject(url,Label[].class,vars);
+        return labels;
+    }
+
 }

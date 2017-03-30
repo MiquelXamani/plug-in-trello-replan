@@ -42,10 +42,31 @@ public class BoardController {
         //Create board
         Board board = trelloService.createBoard(planBoardDTO.getName(),planBoardDTO.getBoardName(),planBoardDTO.getTeamId(),trelloToken);
         boardRepository.save(board);
+        String boardId = board.getId();
+        System.out.println("Board id: " + boardId);
 
         //Create lists
-        List<ListTrello> lists = trelloService.createLists(board.getId(),trelloToken);
+        List<ListTrello> lists = trelloService.createLists(boardId,trelloToken);
         listTrelloRepository.save(lists);
+
+        //Get labels id
+        Label[] labels = trelloService.getLabels(boardId,trelloToken);
+        //For cards which can be started now
+        Label greenLabel = new Label();
+        //For notification cards
+        Label blueLabel = new Label();
+        String labelColor;
+        for(Label l: labels){
+            labelColor = l.getColor();
+            if(labelColor.equals("green")){
+                greenLabel = l;
+            }
+            else if(labelColor.equals("blue")){
+                blueLabel = l;
+            }
+        }
+        System.out.println("Green label: " + greenLabel.getId() + " " + greenLabel.getColor());
+        System.out.println("Blue label: " + blueLabel.getId() + " " + blueLabel.getColor());
 
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId
@@ -65,7 +86,7 @@ public class BoardController {
                     trelloUserId = resourceMember.getTrelloUserId();
                     if(!trelloUserId.equals(trelloUserIdWebUser)) {
                         //si es dóna el cas que l'usuari de la web està a la planificació, no es pot convidar al board ja que n'és el propietari
-                        trelloService.addMemberToBoard(board.getId(), trelloUserId, trelloToken);
+                        trelloService.addMemberToBoard(boardId, trelloUserId, trelloToken);
                     }
                 }
                 resourcesAddedBoard.put(resourceId,trelloUserId);
