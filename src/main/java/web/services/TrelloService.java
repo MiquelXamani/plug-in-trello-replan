@@ -99,7 +99,14 @@ public class TrelloService {
         vars.put("token",userToken);
         List <Card> cardsCreated = new ArrayList<>();
         Card c;
+        System.out.println("Cards size: " + cards.size());
         for (Card card: cards) {
+            String print = "Name: " + card.getName() + " Desc: " + card.getDesc() + " Due: " + card.getDue() + " idList: " + card.getIdList() + " idMembers: [";
+            for(int i = 0; i < card.getIdMembers().size(); i++){
+                print += card.getIdMembers().get(i) + " ,";
+            }
+            print += "]";
+            System.out.println(print);
             c = restTemplate.postForObject(url,card,Card.class,vars);
             cardsCreated.add(c);
         }

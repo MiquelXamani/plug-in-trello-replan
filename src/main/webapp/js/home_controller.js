@@ -121,6 +121,18 @@
             });
         }
 
+        function createTrelloBoard(){
+            vm.selectedPlan.boardName = vm.boardName;
+            vm.selectedPlan.teamId = vm.selectedTeam.id;
+            BoardService.LoadPlanOnTrello(vm.selectedPlan).
+            then(function(board){
+                console.log("Home_controller: LOAD TO TRELLO RESPONSE");
+                console.log(board);
+                vm.dataLoading = false;
+                //redireccionar a gestionar taulers
+            });
+        }
+
         function loadToTrello(){
             vm.dataLoading = true;
             if(vm.unmatchedPlanResources.length > 0){
@@ -129,18 +141,14 @@
                     "Are you sure that you want to continue?");
                 if(c){
                     console.log("CONFIRMED");
-                    vm.selectedPlan.boardName = vm.boardName;
-                    vm.selectedPlan.teamId = vm.selectedTeam.id;
-                    BoardService.LoadPlanOnTrello(vm.selectedPlan).
-                        then(function(board){
-                            console.log(board);
-                            vm.dataLoading = false;
-                            //redireccionar a gestionar taulers
-                    });
+                    createTrelloBoard();
                 }
                 else{
                     vm.dataLoading = false;
                 }
+            }
+            else{
+                createTrelloBoard();
             }
         }
     }

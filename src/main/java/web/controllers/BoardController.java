@@ -33,6 +33,7 @@ public class BoardController {
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO){
+        System.out.println("BOARD CONTROLLER REQUEST RECEIVED");
         User u = userRepository.findByUsername(planBoardDTO.getUsername());
         String trelloToken = u.getTrelloToken();
         String trelloUserIdWebUser = u.getTrelloUserId();
@@ -79,7 +80,7 @@ public class BoardController {
             //Otherwise, create a card for the feature
             else{
                 card = new Card();
-                String name = "("+feature.getEffort()+") " + feature.getName();
+                String name = "("+ Math.round(feature.getEffort()) +") " + feature.getName();
                 card.setName(name);
                 card.setDue(feature.getDeadline());
                 card.getIdMembers().add(trelloUid);
@@ -96,6 +97,7 @@ public class BoardController {
                 for (Job j2: j.getDepends_on()) {
                     description += " " + j2.getFeature().getName();
                 }
+                card.setDesc(description);
                 //card.setIdLabels();
                 featuresConverted.put(featureId,card);
 

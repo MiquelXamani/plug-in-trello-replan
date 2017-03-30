@@ -50,7 +50,7 @@ public class PlansController {
         f1.setName("Tasca 1");
         f1.setDescription("Aquesta serà la descripció de la tasca 1");
         f1.setEffort(1);
-        f1.setDeadline("05/03/2017");
+        f1.setDeadline("03/05/2017");
         //Job 1
         Job j1 = new Job();
         j1.setFeature(f1);
@@ -61,7 +61,7 @@ public class PlansController {
         f2.setName("Tasca 2");
         f2.setDescription("Aquesta serà la descripció de la tasca 2");
         f2.setEffort(13);
-        f2.setDeadline("23/03/2017");
+        f2.setDeadline("03/23/2017");
         //Job 2
         Job j2 = new Job();
         j2.setFeature(f2);
@@ -85,7 +85,7 @@ public class PlansController {
 
         //Plan 2
         Plan p2 = new Plan();
-        p2.setCreated_at("29/01/2017");
+        p2.setCreated_at("01/29/2017");
         p2.setId(2);
         p2.setName("Release Febrer");
         //Feature 3
@@ -94,7 +94,7 @@ public class PlansController {
         f3.setName("Tasca 3");
         f3.setDescription("Aquesta serà la descripció de la tasca 3");
         f3.setEffort(5);
-        f3.setDeadline("12/02/2017");
+        f3.setDeadline("02/12/2017");
         //Job 5
         Job j5 = new Job();
         j5.setFeature(f3);
