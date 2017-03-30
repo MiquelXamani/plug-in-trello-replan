@@ -57,25 +57,33 @@ public class BoardController {
         Feature feature;
         for (Job j: jobs) {
             resourceId = j.getResource().getId();
+            String trelloUserId = "";
             //Add member associated with the resource to the board
             if(!resourcesAddedBoard.containsKey(resourceId)){
                 ResourceMember resourceMember = resourceMemberRepository.findByUserIdAndResourceId(u.getUserId(),resourceId);
                 if(resourceMember != null){
-                    String trelloUserId = resourceMember.getTrelloUserId();
+                    trelloUserId = resourceMember.getTrelloUserId();
                     if(!trelloUserId.equals(trelloUserIdWebUser)) {
                         //si es dóna el cas que l'usuari de la web està a la planificació, no es pot convidar al board ja que n'és el propietari
                         trelloService.addMemberToBoard(board.getId(), trelloUserId, trelloToken);
                     }
-                    resourcesAddedBoard.put(resourceId,trelloUserId);
                 }
+                resourcesAddedBoard.put(resourceId,trelloUserId);
             }
             //Add member to a card if already exists a card for the feature
             feature = j.getFeature();
             featureId = feature.getId();
-            String trelloUid = resourcesAddedBoard.get(resourceId);
+            //si el recurs ja està en el map, es recupera
+            if(trelloUserId.equals("")){
+                trelloUserId = resourcesAddedBoard.get(resourceId);
+            }
+
             if(featuresConverted.containsKey(featureId)){
                 card = featuresConverted.get(featureId);
-                card.getIdMembers().add(trelloUid);
+                //si el recurs està associat a un usuari s'assigna a la card
+                if(!trelloUserId.equals("")) {
+                    card.getIdMembers().add(trelloUserId);
+                }
             }
             //Otherwise, create a card for the feature
             else{
@@ -83,7 +91,10 @@ public class BoardController {
                 String name = "("+ Math.round(feature.getEffort()) +") " + feature.getName();
                 card.setName(name);
                 card.setDue(feature.getDeadline());
-                card.getIdMembers().add(trelloUid);
+                //si el recurs està associat a un usuari s'assigna a la card
+                if(!trelloUserId.equals("")) {
+                    card.getIdMembers().add(trelloUserId);
+                }
                 if(j.getDepends_on().isEmpty()){
                     //Ready
                     card.setIdList(lists.get(2).getId());
