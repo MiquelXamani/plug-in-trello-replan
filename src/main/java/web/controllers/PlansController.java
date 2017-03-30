@@ -55,6 +55,7 @@ public class PlansController {
         Job j1 = new Job();
         j1.setFeature(f1);
         j1.setResource(r1);
+        j1.setStarts("03/01/2017");
         //Feature 2
         Feature f2 = new Feature();
         f2.setId(2);
@@ -66,14 +67,17 @@ public class PlansController {
         Job j2 = new Job();
         j2.setFeature(f2);
         j2.setResource(r2);
+        j2.setStarts("03/05/2017");
         //Job 3
         Job j3 = new Job();
         j3.setFeature(f2);
         j3.setResource(r3);
+        j3.setStarts("03/05/2017");
         //Job 4
         Job j4 = new Job();
         j4.setFeature(f2);
         j4.setResource(r4);
+        j4.setStarts("03/05/2017");
 
         List<Job> jobsP1 = new ArrayList<>();
         jobsP1.add(j1);
