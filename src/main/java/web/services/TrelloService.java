@@ -73,7 +73,7 @@ public class TrelloService {
         input.put("idBoard", idBoard);
         String[] listNames = {"Notifications","On-hold","Ready","In Progress","Done"};
         ArrayList<ListTrello> lists = new ArrayList<>();
-        for(int i = 0; i < listNames.length; i++){
+        for(int i = listNames.length - 1; i >= 0; i--){
             input.put("name", listNames[i]);
             ListTrello l = restTemplate.postForObject(url,input,ListTrello.class,vars);
             lists.add(l);

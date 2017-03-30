@@ -105,8 +105,13 @@ public class BoardController {
                 }
                 String description = feature.getDescription() + "\n\n";
                 description += "**Start date:** " + j.getStarts() + "\n**Depends on:**";
-                for (Job j2: j.getDepends_on()) {
-                    description += " " + j2.getFeature().getName();
+                if(j.getDepends_on().size() == 0){
+                    description += " -";
+                }
+                else {
+                    for (Job j2 : j.getDepends_on()) {
+                        description += " " + j2.getFeature().getName();
+                    }
                 }
                 card.setDesc(description);
                 //card.setIdLabels();
