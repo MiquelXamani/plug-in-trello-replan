@@ -64,7 +64,7 @@ public class TrelloService {
         return board;
     }
 
-    public List<ListTrello> createLists(String idBoard,String userToken){
+    public ListTrello[] createLists(String idBoard,String userToken){
         url = "https://api.trello.com/1/lists/?key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
@@ -72,11 +72,11 @@ public class TrelloService {
         input = new HashMap<>();
         input.put("idBoard", idBoard);
         String[] listNames = {"Notifications","On-hold","Ready","In Progress","Done"};
-        ArrayList<ListTrello> lists = new ArrayList<>();
+        ListTrello lists[] = new ListTrello[5];
         for(int i = listNames.length - 1; i >= 0; i--){
             input.put("name", listNames[i]);
             ListTrello l = restTemplate.postForObject(url,input,ListTrello.class,vars);
-            lists.add(l);
+            lists[i] = l;
         }
 
         return lists;

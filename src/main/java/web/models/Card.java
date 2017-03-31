@@ -88,4 +88,12 @@ public class Card {
     public void setPos(String pos) {
         this.pos = pos;
     }
+
+    public void addMember(String idMember){
+        idMembers.add(idMember);
+    }
+
+    public void addLabel(String idLabel){
+        idLabels.add(idLabel);
+    }
 }

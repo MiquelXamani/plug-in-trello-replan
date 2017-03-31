@@ -45,7 +45,8 @@ public class BoardController {
         System.out.println("Board id: " + boardId);
 
         //Create lists
-        List<ListTrello> lists = trelloService.createLists(boardId,trelloToken);
+        ListTrello ls[] = trelloService.createLists(boardId,trelloToken);
+        List<ListTrello> lists = new ArrayList<>(Arrays.asList(ls));
         listTrelloRepository.save(lists);
 
         //Get labels id
@@ -109,7 +110,7 @@ public class BoardController {
                 card = featuresConverted.get(featureId);
                 //si el recurs està associat a un usuari s'assigna a la card
                 if(!trelloUserId.equals("")) {
-                    card.getIdMembers().add(trelloUserId);
+                    card.addMember(trelloUserId);
                 }
             }
             //Otherwise, create a card for the feature
@@ -120,7 +121,7 @@ public class BoardController {
                 card.setDue(feature.getDeadline());
                 //si el recurs està associat a un usuari s'assigna a la card
                 if(!trelloUserId.equals("")) {
-                    card.getIdMembers().add(trelloUserId);
+                    card.addMember(trelloUserId);
                 }
                 if(j.getDepends_on().isEmpty()){
                     //Ready
@@ -185,12 +186,24 @@ public class BoardController {
             }
 
             if(!greenLabelFound) {
-                featuresConverted.get(featureId).getIdLabels().add(greenLabel.getId());
+                featuresConverted.get(featureId).addLabel(greenLabel.getId());
                 featuresConverted.get(featureId).setPos("top");
             }
         }
 
+        //Notification card
+        Card notification = new Card();
+        Date date = new Date();
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        notification.setName("[" + dateFormat2.format(date) + "] Planification loaded");
+        notification.addLabel(blueLabel.getId());
+        notification.setPos("top");
+        notification.setDesc("Notification card");
+        notification.setIdList(lists.get(0).getId());
+
+        //Create cards on Trello
         List<Card> cards = new ArrayList<>(featuresConverted.values());
+        cards.add(notification);
         trelloService.createCards(cards,trelloToken);
 
         PlanTrello result = new PlanTrello();
