@@ -17,10 +17,12 @@ public class Card {
     public String desc;
     public List<String> idMembers;
     public List<String> idLabels;
+    public String pos;
 
     public Card(){
         idMembers = new ArrayList<>();
         idLabels = new ArrayList<>();
+        pos = "bottom";
     }
 
     public String getId() {
@@ -79,4 +81,11 @@ public class Card {
         this.idLabels = idLabels;
     }
 
+    public String getPos() {
+        return pos;
+    }
+
+    public void setPos(String pos) {
+        this.pos = pos;
+    }
 }

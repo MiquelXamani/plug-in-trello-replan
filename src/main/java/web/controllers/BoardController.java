@@ -186,6 +186,7 @@ public class BoardController {
 
             if(!greenLabelFound) {
                 featuresConverted.get(featureId).getIdLabels().add(greenLabel.getId());
+                featuresConverted.get(featureId).setPos("top");
             }
         }
 
