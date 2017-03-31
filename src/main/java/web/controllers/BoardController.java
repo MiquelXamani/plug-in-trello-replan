@@ -14,10 +14,9 @@ import web.repositories.ResourceMemberRepository;
 import web.repositories.UserRepository;
 import web.services.TrelloService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 @RequestMapping("/boards")
@@ -68,11 +67,17 @@ public class BoardController {
         System.out.println("Green label: " + greenLabel.getId() + " " + greenLabel.getColor());
         System.out.println("Blue label: " + blueLabel.getId() + " " + blueLabel.getColor());
 
+
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId
         Map<Integer,String> resourcesAddedBoard = new HashMap<>();
         //Map of featureId and card corresponding to the feature
         Map<Integer,Card> featuresConverted = new HashMap<>();
+
+        //Map to store the first job to start of each member
+        Map<String,Job> firstsJobs = new HashMap<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
         int resourceId, featureId;
         Card card;
         Feature feature;
@@ -91,7 +96,7 @@ public class BoardController {
                 }
                 resourcesAddedBoard.put(resourceId,trelloUserId);
             }
-            //Add member to a card if already exists a card for the feature
+
             feature = j.getFeature();
             featureId = feature.getId();
             //si el recurs ja està en el map, es recupera
@@ -99,6 +104,7 @@ public class BoardController {
                 trelloUserId = resourcesAddedBoard.get(resourceId);
             }
 
+            //Add member to a card if already exists a card for the feature
             if(featuresConverted.containsKey(featureId)){
                 card = featuresConverted.get(featureId);
                 //si el recurs està associat a un usuari s'assigna a la card
@@ -135,9 +141,51 @@ public class BoardController {
                     }
                 }
                 card.setDesc(description);
-                //card.setIdLabels();
                 featuresConverted.put(featureId,card);
+            }
 
+            //IMPORTANT: firstjobs are related to trello users, no green labels will be added to those cards that are "first job" only for nonassociated resources
+            if(!trelloUserId.equals("") && firstsJobs.containsKey(trelloUserId)){
+                try {
+                    Job j3 = firstsJobs.get(trelloUserId);
+                    String dateAnt = j3.getStarts();
+                    Date d1 = dateFormat.parse(dateAnt);
+                    Date d2 = dateFormat.parse(j.getStarts());
+                    //if d2 is earlier than d1, replace
+                    if(d2.compareTo(d1) <= 0){
+                        firstsJobs.put(trelloUserId,j);
+                    }
+
+                }
+                catch (ParseException e){
+                    e.printStackTrace();
+                }
+            }
+            else{
+                firstsJobs.put(trelloUserId,j);
+            }
+
+        }
+
+        //add green labels to cards that are the first job of at least one user
+        boolean greenLabelFound;
+        int i;
+        String greenLabelId = greenLabel.getId();
+        List <String> labels2;
+        for(Job value: firstsJobs.values()){
+            featureId = value.getFeature().getId();
+            greenLabelFound = false;
+            i = 0;
+            labels2 = featuresConverted.get(featureId).getIdLabels();
+            while(!greenLabelFound && i < labels2.size()){
+                if(labels2.get(i).equals(greenLabelId)){
+                    greenLabelFound = true;
+                }
+                i++;
+            }
+
+            if(!greenLabelFound) {
+                featuresConverted.get(featureId).getIdLabels().add(greenLabel.getId());
             }
         }
 

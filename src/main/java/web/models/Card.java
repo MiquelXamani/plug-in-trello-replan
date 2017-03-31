@@ -20,6 +20,7 @@ public class Card {
 
     public Card(){
         idMembers = new ArrayList<>();
+        idLabels = new ArrayList<>();
     }
 
     public String getId() {
