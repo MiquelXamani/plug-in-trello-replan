@@ -173,21 +173,26 @@ public class BoardController {
         int i;
         String greenLabelId = greenLabel.getId();
         List <String> labels2;
+        Card c;
         for(Job value: firstsJobs.values()){
             featureId = value.getFeature().getId();
             greenLabelFound = false;
             i = 0;
-            labels2 = featuresConverted.get(featureId).getIdLabels();
-            while(!greenLabelFound && i < labels2.size()){
-                if(labels2.get(i).equals(greenLabelId)){
-                    greenLabelFound = true;
+            c = featuresConverted.get(featureId);
+            //only cards of Ready list can have green label
+            if(c.getIdList().equals(lists.get(2).getId())) {
+                labels2 = c.getIdLabels();
+                while (!greenLabelFound && i < labels2.size()) {
+                    if (labels2.get(i).equals(greenLabelId)) {
+                        greenLabelFound = true;
+                    }
+                    i++;
                 }
-                i++;
-            }
 
-            if(!greenLabelFound) {
-                featuresConverted.get(featureId).addLabel(greenLabel.getId());
-                featuresConverted.get(featureId).setPos("top");
+                if (!greenLabelFound) {
+                    featuresConverted.get(featureId).addLabel(greenLabel.getId());
+                    featuresConverted.get(featureId).setPos("top");
+                }
             }
         }
 
