@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import web.models.*;
 import web.repositories.ResourceMemberRepository;
 import web.repositories.UserRepository;
+import web.services.ReplanService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +21,7 @@ public class PlansController {
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
 
-    @RequestMapping(method=RequestMethod.GET)
+    /*@RequestMapping(method=RequestMethod.GET)
     public Plan[] getPlans(@RequestParam(value = "username") String username){
         //aquí aniria la crida al replan
 
@@ -115,7 +116,7 @@ public class PlansController {
         plans[1] = p2;
 
         return plans;
-    }
+    }*/
 
     @RequestMapping(value="/resources",method= RequestMethod.POST)
     public List<Resource> getUnlinkedResources(@RequestBody PlanDTO planDTO){
@@ -174,6 +175,16 @@ public class PlansController {
 
         Collections.sort(notFoundResources);
         return notFoundResources;
+    }
+
+    @RequestMapping(method=RequestMethod.GET)
+    public Plan[] getPlans(@RequestParam(value = "username") String username){
+        //Caldrà tenir una associació entre l'usuari de la web i el del Replan per obtenir les seves planificacions
+        String replanUserId = "";
+        ReplanService replanService = new ReplanService();
+        List<Plan> planList = replanService.getPlansTest(replanUserId);
+        Plan[] plans = planList.toArray(new Plan[planList.size()]);
+        return plans;
     }
 
 
