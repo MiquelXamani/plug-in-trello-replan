@@ -31,7 +31,7 @@ public class BoardController {
     private ResourceMemberRepository resourceMemberRepository;
 
     @RequestMapping(method= RequestMethod.POST)
-    public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO){
+    public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO) throws ParseException {
         System.out.println("BOARD CONTROLLER REQUEST RECEIVED");
         User u = userRepository.findByUsername(planBoardDTO.getUsername());
         String trelloToken = u.getTrelloToken();
@@ -78,11 +78,13 @@ public class BoardController {
         //Map to store the first job to start of each member
         Map<String,Job> firstsJobs = new HashMap<>();
         //SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
         int resourceId, featureId;
         Card card;
         Feature feature;
+        Date startDate;
         for (Job j: jobs) {
             resourceId = j.getResource().getId();
             String trelloUserId = "";
@@ -132,8 +134,10 @@ public class BoardController {
                     //On-hold
                     card.setIdList(lists.get(1).getId());
                 }
+
+                startDate = dateFormat.parse(j.getStarts());
                 String description = feature.getDescription() + "\n\n";
-                description += "**Start date:** " + j.getStarts() + "\n**Depends on:**";
+                description += "**Start date:** " + dateFormat2.format(startDate) + "\n**Depends on:**";
                 if(j.getDepends_on().size() == 0){
                     description += " -";
                 }
@@ -148,19 +152,13 @@ public class BoardController {
 
             //IMPORTANT: firstjobs are related to trello users, no green labels will be added to those cards that are "first job" only for nonassociated resources
             if(!trelloUserId.equals("") && firstsJobs.containsKey(trelloUserId)){
-                try {
-                    Job j3 = firstsJobs.get(trelloUserId);
-                    String dateAnt = j3.getStarts();
-                    Date d1 = dateFormat.parse(dateAnt);
-                    Date d2 = dateFormat.parse(j.getStarts());
-                    //if d2 is earlier than d1, replace
-                    if(d2.compareTo(d1) <= 0){
-                        firstsJobs.put(trelloUserId,j);
-                    }
-
-                }
-                catch (ParseException e){
-                    e.printStackTrace();
+                Job j3 = firstsJobs.get(trelloUserId);
+                String dateAnt = j3.getStarts();
+                Date d1 = dateFormat.parse(dateAnt);
+                Date d2 = dateFormat.parse(j.getStarts());
+                //if d2 is earlier than d1, replace
+                if(d2.compareTo(d1) <= 0) {
+                    firstsJobs.put(trelloUserId, j);
                 }
             }
             else{
@@ -200,7 +198,6 @@ public class BoardController {
         //Notification card
         Card notification = new Card();
         Date date = new Date();
-        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         notification.setName("[" + dateFormat2.format(date) + "] Planification loaded");
         notification.addLabel(blueLabel.getId());
         notification.setPos("top");
