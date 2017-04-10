@@ -9,9 +9,7 @@ import web.repositories.ResourceMemberRepository;
 import web.repositories.UserRepository;
 import web.services.ReplanService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/plans")
@@ -124,7 +122,7 @@ public class PlansController {
         User user = userRepository.findByUsername(username);
         Long userId = user.getUserId();
         List<Integer> resourcesIds = new ArrayList<>(); //per fer cerca a BD i comparar amb els resultats
-        List<String> resourcesNames = new ArrayList<>(); //per guardar els nom dels recursos que es retornaran
+        Map<Integer,String> resourcesNames = new HashMap<>(); //per guardar els nom dels recursos que es retornaran
         List<Job> jobs = planDTO.getJobs();
         for (Job j:jobs) {
             boolean found = false;
@@ -138,7 +136,7 @@ public class PlansController {
             }
             if(!found){
                 resourcesIds.add(rId);
-                resourcesNames.add(j.getResource().getName());
+                resourcesNames.put(rId,j.getResource().getName());
             }
 
         }
@@ -146,6 +144,7 @@ public class PlansController {
         Collections.sort(resourcesIds);
         List<ResourceMember> resourcesFound = resourceMemberRepository.findByUserIdAndResourceIdInOrderByResourceId(userId,resourcesIds);
         List<Resource> notFoundResources = new ArrayList<>();
+        int resId;
         if(resourcesIds.size() != resourcesFound.size()){
             int j = 0;
             for(int i = 0; i < resourcesFound.size(); i++){
@@ -156,8 +155,9 @@ public class PlansController {
                     }
                     else{
                         Resource resource = new Resource();
-                        resource.setId(resourcesIds.get(j));
-                        resource.setName(resourcesNames.get(j));
+                        resId = resourcesIds.get(j);
+                        resource.setId(resId);
+                        resource.setName(resourcesNames.get(resId));
                         notFoundResources.add(resource);
                     }
                     j++;
@@ -166,8 +166,9 @@ public class PlansController {
             }
             for(int k = j; k < resourcesIds.size(); k++){
                 Resource resource = new Resource();
-                resource.setId(resourcesIds.get(k));
-                resource.setName(resourcesNames.get(k));
+                resId = resourcesIds.get(k);
+                resource.setId(resId);
+                resource.setName(resourcesNames.get(resId));
                 notFoundResources.add(resource);
             }
 
