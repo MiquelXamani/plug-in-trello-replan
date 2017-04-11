@@ -3,7 +3,7 @@
     <div class="form-group">
         <label for="projectSelector">Select a project</label>
         <select class="form-control" id="projectSelector" ng-model="vm.selectedProject"
-                ng-options="project as project.name for project in vm.projects" ng-change="vm.getProjects()">
+                ng-options="project as project.name for project in vm.projects" ng-change="vm.getReleases()">
         </select>
     </div>
     <div class="form-group">

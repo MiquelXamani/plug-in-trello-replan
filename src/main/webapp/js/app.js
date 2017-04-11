@@ -27,6 +27,12 @@
                 controllerAs: 'vm'
             })
 
+            .when('/select-team',{
+                controller: 'SelectTeamController',
+                templateUrl: 'select-team.html',
+                controllerAs: 'vm'
+            })
+
             .otherwise({ redirectTo: '/login' });
 
         $locationProvider.html5Mode(true);

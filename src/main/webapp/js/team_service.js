@@ -10,8 +10,7 @@
         var service = {};
 
         service.GetTeams = GetTeams;
-        service.GetUnmatchedTeamMembers = GetUnmatchedTeamMembers;
-        service.GetAllTeamMembers = GetAllTeamMembers;
+        service.GetTeamMembers = GetTeamMembers;
 
         return service;
 
@@ -20,14 +19,11 @@
             return $http.get('/teams/?username=' + username).then(handleSuccess, handleError);
         }
 
-        function GetUnmatchedTeamMembers(username, teamId){
-            return $http.get('/teams/members/?username=' + username + '&unmatchedMembersOnly=true&teamId=' + teamId)
+        function GetTeamMembers(username,teamId){
+            return $http.get('/teams/members/?username=' + username + '&teamId=' + teamId)
                 .then(handleSuccess, handleError);
         }
 
-        function GetAllTeamMembers(username, teamId){
-            return $http.get('/teams/members/?username=' + username + '&teamId=' + teamId).then(handleSuccess, handleError);
-        }
 
         // private functions
 
