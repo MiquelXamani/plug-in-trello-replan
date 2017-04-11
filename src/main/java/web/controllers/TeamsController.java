@@ -21,17 +21,17 @@ public class TeamsController {
     private ResourceMemberRepository resourceMemberRepository;
 
     //retorna els noms dels teams de Trello als qual pertany l'usuari
-    @RequestMapping(method= RequestMethod.GET)
-    public Team[] getTeams(@RequestParam(value = "username") String username){
+    @RequestMapping(method = RequestMethod.GET)
+    public Team[] getTeams(@RequestParam(value = "username") String username) {
         User u = userRepository.findByUsername(username);
         String trelloUsername = u.getTrelloUsername();
         String trelloToken = u.getTrelloToken();
         TrelloService trelloService = new TrelloService();
-        Team[] teams = trelloService.getTrelloTeams(trelloUsername,trelloToken);
+        Team[] teams = trelloService.getTrelloTeams(trelloUsername, trelloToken);
         Arrays.sort(teams);
         return teams;
     }
-
+/*
     @RequestMapping(value="/members", method=RequestMethod.GET)
     public List<Member> getTeamMembers(@RequestParam(value = "username") String username,
                                           @RequestParam(value = "unmatchedMembersOnly", defaultValue = "false")String unmatchedMembersOnly,
@@ -79,5 +79,16 @@ public class TeamsController {
             }
         }
         return notFoundMembers;
+    }
+    */
+
+    @RequestMapping(value = "/members", method = RequestMethod.GET)
+    public List<Member> getTeamMembers(@RequestParam(value = "username") String username,
+                                       @RequestParam(value = "teamId") String teamId) {
+        User u = userRepository.findByUsername(username);
+        String trelloToken = u.getTrelloToken();
+        TrelloService trelloService = new TrelloService();
+        TeamWithMembers teamWithMembers = trelloService.getTrelloTeamMembers(teamId,trelloToken);
+        return teamWithMembers.getMembers();
     }
 }
