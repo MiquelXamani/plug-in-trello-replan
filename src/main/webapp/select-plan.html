@@ -9,7 +9,7 @@
     <div class="form-group">
         <label for="releaseSelector">Select a release</label>
         <select class="form-control" id="releaseSelector" ng-model="vm.selectedRelease"
-                ng-options="release as release.name for release in vm.releases" ng-change="vm.getReleases()">
+                ng-options="release as release.name for release in vm.releases">
         </select>
     </div>
     <div class="form-actions">

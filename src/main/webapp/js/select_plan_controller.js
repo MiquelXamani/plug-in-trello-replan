@@ -5,8 +5,8 @@
         .module('app')
         .controller('SelectPlanController', SelectPlanController);
 
-    HomeController.$inject = ['PlanService', '$rootScope', '$q'];
-    function HomeController(PlanService, $rootScope, $q) {
+    SelectPlanController.$inject = ['PlanService', '$rootScope', '$location'];
+    function SelectPlanController(PlanService, $rootScope, $location) {
         var vm = this;
 
         vm.projects = [];
@@ -48,12 +48,15 @@
         }
 
         function getProjects() {
-            PlanService.GetProjects.then(populateProjectsSelect);
+            PlanService.GetProjects().then(populateProjectsSelect);
         }
 
         function nextStep(){
-            //guardar varaibles a rootscope
-            //redireccionar al pas 2
+            console.log(vm.selectedProject);
+            console.log(vm.selectedRelease);
+            $rootScope.project = vm.selectedProject;
+            $rootScope.release = vm.selectedRelease;
+            //$location.path('/select-team');
         }
 
         getProjects();
