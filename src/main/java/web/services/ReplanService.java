@@ -2,6 +2,8 @@ package web.services;
 
 import org.springframework.web.client.RestTemplate;
 import web.models.Plan;
+import web.models.Project;
+import web.models.Release;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,5 +35,15 @@ public class ReplanService {
         plans.get(0).setName("March Release");
         plans.get(1).setName("February Release");
         return plans;
+    }
+
+    public Project[] getProjects(){
+        url = "https://lit-savannah-17077.herokuapp.com/api/ui/v1/projects";
+        return restTemplate.getForObject(url,Project[].class);
+    }
+
+    public Release[] getReleases(int projectId){
+        url = "https://lit-savannah-17077.herokuapp.com/api/ui/v1/projects/" + projectId + "/releases";
+        return restTemplate.getForObject(url,Release[].class);
     }
 }
