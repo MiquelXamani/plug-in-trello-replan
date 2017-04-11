@@ -23,6 +23,8 @@
                 vm.teams = teams;
                 if(vm.teams.length > 0){
                     vm.selectedTeam = vm.teams[0];
+                    vm.nextEnabled = true;
+                    getTeamMembers();
                 }
                 else{
                     var noTeams = [{name:"You don't belong to any Trello team"}];
