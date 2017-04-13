@@ -4,6 +4,7 @@ package web.models;
 public class MatchingDTO {
     private int resourceId;
     private String resourceName;
+    private String resourceDescription;
     private String trelloUserId;
     private String trelloUsername;
     private String trelloFullName;
@@ -25,6 +26,14 @@ public class MatchingDTO {
 
     public void setResourceName(String resourceName) {
         this.resourceName = resourceName;
+    }
+
+    public String getResourceDescription() {
+        return resourceDescription;
+    }
+
+    public void setResourceDescription(String resourceDescription) {
+        this.resourceDescription = resourceDescription;
     }
 
     public String getTrelloUserId() {
