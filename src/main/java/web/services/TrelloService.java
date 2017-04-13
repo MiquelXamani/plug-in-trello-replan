@@ -49,7 +49,7 @@ public class TrelloService {
         return teamWithMembers;
     }
 
-    public Board createBoard(String planName, String boardName, String idTeam, String userToken){
+    public Board createBoard(String boardName, String idTeam, String userToken){
         url = "https://api.trello.com/1/boards/?key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
@@ -57,7 +57,8 @@ public class TrelloService {
         input = new HashMap<>();
         input.put("name",boardName);
         input.put("defaultLists","false");
-        input.put("desc",planName + " planification. Board created by Replan plug-in for Trello");
+        //posar el nom del projecte i de la release
+        //input.put("desc",planName + " planification. Board created by Replan plug-in for Trello");
         input.put("idOrganization",idTeam);
         input.put("prefs_permissionLevel","org");
         Board board = restTemplate.postForObject(url,input,Board.class,vars);

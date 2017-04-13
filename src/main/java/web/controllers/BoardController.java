@@ -39,7 +39,7 @@ public class BoardController {
         TrelloService trelloService = new TrelloService();
 
         //Create board
-        Board board = trelloService.createBoard(planBoardDTO.getName(),planBoardDTO.getBoardName(),planBoardDTO.getTeamId(),trelloToken);
+        Board board = trelloService.createBoard(planBoardDTO.getBoardName(),planBoardDTO.getTeamId(),trelloToken);
         boardRepository.save(board);
         String boardId = board.getId();
         System.out.println("Board id: " + boardId);

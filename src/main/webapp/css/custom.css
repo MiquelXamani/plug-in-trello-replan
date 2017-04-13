@@ -20,3 +20,13 @@
     display:inline-block;
     margin: 10px 10px;
 }
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: #D1F9D2;
+}
