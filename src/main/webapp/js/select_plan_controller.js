@@ -14,6 +14,7 @@
         vm.nextEnabled = false;
 
         vm.getProjects = getProjects;
+        vm.getReleases = getReleases;
         vm.nextStep = nextStep;
 
         function getReleases(){
@@ -25,6 +26,7 @@
                     vm.nextEnabled = true;
                 }
                 else{
+                    vm.nextEnabled = false;
                     var noReleases = [{name:"No releases of the project selected were found"}];
                     vm.selectedRelease = noReleases;
                 }
