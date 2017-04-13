@@ -1,7 +1,7 @@
 package web.models;
 
 
-public class MatchingDTO {
+public class MatchingDTO2 {
     private int resourceId;
     private String resourceName;
     private String resourceDescription;
@@ -10,7 +10,7 @@ public class MatchingDTO {
     private String trelloFullName;
     private String username; //username of the web user that made the petition
 
-    public MatchingDTO(){}
+    public MatchingDTO2(){}
 
     public int getResourceId() {
         return resourceId;

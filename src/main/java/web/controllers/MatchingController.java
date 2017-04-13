@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import web.models.MatchingDTO;
+//import web.models.MatchingDTO;
+import web.models.MatchingDTO2;
 import web.models.ResourceMember;
 import web.models.User;
 import web.repositories.ResourceMemberRepository;
@@ -26,7 +27,7 @@ public class MatchingController {
     private ResourceMemberRepository resourceMemberRepository;
 
     @RequestMapping(method= RequestMethod.POST)
-    public ResponseEntity<Object> matchResourceWithMember(@RequestBody MatchingDTO matchingDTO){
+    public ResponseEntity<Object> matchResourceWithMember(@RequestBody MatchingDTO2 matchingDTO){
         User u = userRepository.findByUsername(matchingDTO.getUsername());
         ResourceMember resourceMember = new ResourceMember(u.getUserId(),matchingDTO.getResourceId(),matchingDTO.getResourceName(),
                 matchingDTO.getResourceDescription(),matchingDTO.getTrelloUserId(),matchingDTO.getTrelloUsername(),matchingDTO.getTrelloFullName());
@@ -40,4 +41,7 @@ public class MatchingController {
             return new ResponseEntity<>(error, HttpStatus.CONFLICT);
         }
     }
+
+
+
 }
