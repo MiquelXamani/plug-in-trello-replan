@@ -9,6 +9,7 @@ import web.models.*;
 import web.repositories.ResourceMemberRepository;
 import web.repositories.UserRepository;
 import web.services.ReplanService;
+import web.services.TrelloService;
 
 import java.util.*;
 
@@ -51,6 +52,7 @@ public class MatchingsController {
         User user = userRepository.findByUsername(username);
         Long userId = user.getUserId();
 
+
         //get plan resources without repetitions
         List<Integer> resourcesIds = new ArrayList<>();
         Map<Integer,Resource> resources = new HashMap<>();
@@ -83,10 +85,11 @@ public class MatchingsController {
         Resource r;
         Member m;
         Matching matching;
+        boolean found;
         if(resourcesIds.size() != resourcesFound.size()){
             int j = 0;
             for(int i = 0; i < resourcesFound.size(); i++){
-                boolean found = false;
+                found = false;
                 while(!found){
                     resourceMember = resourcesFound.get(i);
                     if(resourcesIds.get(j) == resourceMember.getResourceId()){
@@ -111,15 +114,58 @@ public class MatchingsController {
 
         }
 
+        TrelloService trelloService = new TrelloService();
+        String trelloToken = user.getTrelloToken();
+        TeamWithMembers teamWithMembers = trelloService.getTrelloTeamMembers(teamId,trelloToken);
+        List<Member> members = teamWithMembers.getMembers();
+        //member list is sorted in order to make easier finding unmatched team members
+        Collections.sort(members);
+
+        List<String> trelloUsernames = new ArrayList<>();
+        for(int i = 0; i < members.size(); i++){
+            trelloUsernames.add(members.get(i).getUsername());
+        }
+
+        List<ResourceMember> foundMembers = resourceMemberRepository.findByUserIdAndTrelloUsernameInOrderByTrelloUsernameAsc(userId,trelloUsernames);
+
+        List<Member> unmatchedMembers = new ArrayList<>();
+
+        //recórrer la llista inicial per trobar aquells membres que apareguin a la base de dades
+        ResourceMember rm;
+        if(members.size() != foundMembers.size()) {
+            int j = 0;
+            for (int i = 0; i < foundMembers.size(); i++) {
+                rm = foundMembers.get(i);
+                found = false;
+                while (!found) {
+                    m = members.get(j);
+                    if (rm.getTrelloUsername().equals(m.getUsername())) {
+                        found = true;
+                    } else {
+                        unmatchedMembers.add(m);
+                    }
+                    j++;
+                }
+            }
+
+            for (int k = j; k < members.size(); k++) {
+                unmatchedMembers.add(members.get(k));
+            }
+        }
+
 
         //sort matching list
 
         //sort unmatched resources list
         Collections.sort(unmatchedResources);
 
+        //sort unmatchet team members
+        Collections.sort(unmatchedMembers);
+
         //create matchingDTO object
         matchingDTO.setMatchings(matchings);
         matchingDTO.setUnmatchedResources(unmatchedResources);
+        matchingDTO.setUnmatchedMembers(unmatchedMembers);
 
         return matchingDTO;
     }
