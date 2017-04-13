@@ -43,11 +43,11 @@
         function nextStep(){
             console.log(vm.selectedTeam);
             $rootScope.team = vm.selectedTeam;
-            //$location.path('/matching');
+            $location.path('/match');
         }
 
         function previousStep(){
-            //$location.path('/select-project');
+            $location.path('/select-project');
         }
 
         getTeams();

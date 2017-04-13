@@ -10,12 +10,18 @@
         var service = {};
 
         service.SavePlanResourceTeamMemberMatching = SavePlanResourceTeamMemberMatching;
+        service.GetMatchings = GetMatchings;
 
         return service;
 
+        //get current matchings, plan, and team members and resources unmatched
+        function GetMatchings(username, projectId, releaseId, teamId){
+            return $http.get('/matchings/?username='+username+"&projectId="+projectId+"&releaseId="+releaseId+"teamId="+teamId)
+                .then(handleSuccess,handleError);
+        }
         //save the resource-Trello user association
         function SavePlanResourceTeamMemberMatching(params){
-            return $http.post('/match/',params).then(handleSuccess,handleError);
+            return $http.post('/matchings/',params).then(handleSuccess,handleError);
         }
 
         // private functions

@@ -1,0 +1,35 @@
+<ul class="progress-indicator">
+    <li class="completed"> <span class="bubble"></span> Select plan </li>
+    <li class="completed"> <span class="bubble"></span> Select team </li>
+    <li class="completed"> <span class="bubble"></span> Match </li>
+    <li> <span class="bubble"></span> Create board </li>
+    <li> <span class="bubble"></span> Completed </li>
+</ul>
+<h2>Match plan resources with Trello team members</h2>
+<form name="form" ng-submit="vm.nextStep()" role="form">
+    <div class="form-group">
+        <h3>Current matchings</h3>
+        <table class="table table-striped table-responsive">
+            <thead class="thead-inverse">
+            <tr>
+                <th>Resource</th>
+                <th>Full Name in Trello</th>
+                <th>Trello Username</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="matching in vm.matchings">
+                <td>{{ matching.resource.description }}</td>
+                <td>{{ matching.member.fullName }}</td>
+                <td>{{ matching.member.username }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group">
+
+    </div>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Next</button>
+    </div>
+</form>

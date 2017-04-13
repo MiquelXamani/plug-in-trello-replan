@@ -33,6 +33,12 @@
                 controllerAs: 'vm'
             })
 
+            .when('/match',{
+                controller: 'MatchController',
+                templateUrl: 'matching.html',
+                controllerAs: 'vm'
+            })
+
             .otherwise({ redirectTo: '/login' });
 
         $locationProvider.html5Mode(true);

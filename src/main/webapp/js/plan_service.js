@@ -11,7 +11,6 @@
 
         service.GetProjects = GetProjects;
         service.GetReleases = GetReleases;
-        //service.GetPlan = GetPlan;
 
         return service;
 
