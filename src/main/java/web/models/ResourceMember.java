@@ -14,6 +14,7 @@ public class ResourceMember {
     private Long idResourceMember;
     private int resourceId;
     private String resourceName;
+    private String resourceDescription;
     private String trelloUserId;
     private String trelloUsername;
     private String trelloFullName;
@@ -21,10 +22,11 @@ public class ResourceMember {
 
     protected ResourceMember(){}
 
-    public ResourceMember(Long userId, int resourceId, String resourceName, String trelloUserId, String trelloUsername, String trelloFullName){
+    public ResourceMember(Long userId, int resourceId, String resourceName, String resourceDescription, String trelloUserId, String trelloUsername, String trelloFullName){
         this.userId = userId;
         this.resourceId = resourceId;
         this.resourceName = resourceName;
+        this.resourceDescription = resourceDescription;
         this.trelloUserId = trelloUserId;
         this.trelloUsername = trelloUsername;
         this.trelloFullName = trelloFullName;
@@ -52,6 +54,14 @@ public class ResourceMember {
 
     public void setResourceName(String resourceName) {
         this.resourceName = resourceName;
+    }
+
+    public String getResourceDescription() {
+        return resourceDescription;
+    }
+
+    public void setResourceDescription(String resourceDescription) {
+        this.resourceDescription = resourceDescription;
     }
 
     public String getTrelloUserId() {
