@@ -8,6 +8,12 @@ public class Member implements Comparable<Member>{
 
     public Member(){}
 
+    public Member(String id, String username, String fullName){
+        this.id = id;
+        this.username = username;
+        this.fullName = fullName;
+    }
+
     public String getId() {
         return id;
     }

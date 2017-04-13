@@ -178,15 +178,5 @@ public class PlansController {
         return notFoundResources;
     }
 
-    @RequestMapping(method=RequestMethod.GET)
-    public Plan[] getPlans(@RequestParam(value = "username") String username){
-        //Caldrà tenir una associació entre l'usuari de la web i el del Replan per obtenir les seves planificacions
-        String replanUserId = "";
-        ReplanService replanService = new ReplanService();
-        List<Plan> planList = replanService.getPlansTest(replanUserId);
-        Plan[] plans = planList.toArray(new Plan[planList.size()]);
-        return plans;
-    }
-
 
 }

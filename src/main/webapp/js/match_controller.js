@@ -24,6 +24,14 @@
                     vm.unmatchedResources = response.unmatchedResources;
                     vm.unmatchedMembers = response.unmatchedMembers;
                     vm.plan = response.plan;
+                    console.log("Plan:");
+                    console.log(vm.plan);
+                    console.log("Matchings:");
+                    console.log(vm.matchings);
+                    console.log("Unmatched Resources:");
+                    console.log(vm.unmatchedResources);
+                    console.log("Unmatched Team Members:");
+                    console.log(vm.unmatchedMembers);
             });
         }
 

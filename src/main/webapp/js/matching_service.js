@@ -16,7 +16,7 @@
 
         //get current matchings, plan, and team members and resources unmatched
         function GetMatchings(username, projectId, releaseId, teamId){
-            return $http.get('/matchings/?username='+username+"&projectId="+projectId+"&releaseId="+releaseId+"teamId="+teamId)
+            return $http.get('/matchings/?username='+username+"&projectId="+projectId+"&releaseId="+releaseId+"&teamId="+teamId)
                 .then(handleSuccess,handleError);
         }
         //save the resource-Trello user association

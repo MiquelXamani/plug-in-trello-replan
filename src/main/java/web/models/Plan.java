@@ -7,7 +7,6 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Plan {
-    private String name;
     private int id;
     private String created_at;
     private List<Job> jobs;
@@ -38,13 +37,5 @@ public class Plan {
 
     public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
