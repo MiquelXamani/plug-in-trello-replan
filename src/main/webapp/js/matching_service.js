@@ -20,8 +20,8 @@
                 .then(handleSuccess,handleError);
         }
         //save the resource-Trello user association
-        function SavePlanResourceTeamMemberMatching(params){
-            return $http.post('/matchings/',params).then(handleSuccess,handleError);
+        function SavePlanResourceTeamMemberMatching(username, params){
+            return $http.post('/matchings/create-matchings/?username=' + username, params).then(handleSuccess,handleError);
         }
 
         // private functions

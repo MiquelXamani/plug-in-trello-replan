@@ -22,15 +22,15 @@ public class MatchingsController {
     private ResourceMemberRepository resourceMemberRepository;
 
     @RequestMapping(value = "/create-matchings", method = RequestMethod.POST)
-    public ResponseEntity<Object> matchResourceWithMember(@RequestBody MatchingWithUser[] newMatchings){
+    public ResponseEntity<Object> matchResourceWithMember(@RequestParam(value = "username") String username, @RequestBody Matching[] newMatchings){
         Resource r;
         Member m;
-        User u = userRepository.findByUsername(newMatchings[0].getUsername());
+        User u = userRepository.findByUsername(username);
         Long userId = u.getUserId();
         List <ResourceMember> resourceMembers = new ArrayList<>();
-        for (MatchingWithUser mu: newMatchings) {
-            r = mu.getResource();
-            m = mu.getMember();
+        for (Matching matching: newMatchings) {
+            r = matching.getResource();
+            m = matching.getMember();
             ResourceMember resourceMember = new ResourceMember(userId,r.getId(),r.getName(),
                     r.getDescription(),m.getId(),m.getUsername(),m.getFullName());
             try {

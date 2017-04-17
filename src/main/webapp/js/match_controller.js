@@ -15,6 +15,8 @@
         vm.plan = {};
         vm.selectedResourceIndex = null;
         vm.selectedMemberIndex = null;
+        vm.dataLoading = false;
+        vm.newMatchings = [];
 
         vm.setSelectedResource = setSelectedResource;
         vm.setSelectedMember = setSelectedMember;
@@ -52,6 +54,7 @@
         }
 
         function match(){
+            console.log("MATCH CLICKED!!!")
             var matching = {};
             matching.resource = vm.unmatchedResources[vm.selectedResourceIndex];
             matching.member = vm.unmatchedMembers[vm.selectedMemberIndex];
@@ -60,11 +63,19 @@
             vm.unmatchedMembers.splice(vm.selectedMemberIndex,1);
             vm.selectedResourceIndex = null;
             vm.selectedMemberIndex = null;
+            vm.newMatchings.push(matching);
         }
 
         function nextStep(){
-            console.log(vm.selectedTeam);
-            $rootScope.team = vm.selectedTeam;
+            console.log("NEW MATCHINGS");
+            console.log(vm.newMatchings);
+            vm.dataLoading = true;
+            if(vm.newMatchings.length > 0) {
+                MatchingService.SavePlanResourceTeamMemberMatching($rootScope.globals.currentUser.username,vm.newMatchings).then(function(response){
+                   console.log("MATCHINGS CREATION SUCCESSFUL");
+                   vm.dataLoading = false;
+                });
+            }
             //$location.path('/create-board');
         }
 
