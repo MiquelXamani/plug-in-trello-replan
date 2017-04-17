@@ -22,19 +22,34 @@ public class MatchingsController {
     private ResourceMemberRepository resourceMemberRepository;
 
     @RequestMapping(value = "/create-matchings", method = RequestMethod.POST)
-    public ResponseEntity<Object> matchResourceWithMember(@RequestBody Matching[] matching){
-        User u = userRepository.findByUsername(matchingDTO.getUsername());
-        ResourceMember resourceMember = new ResourceMember(u.getUserId(),matchingDTO.getResourceId(),matchingDTO.getResourceName(),
-                matchingDTO.getResourceDescription(),matchingDTO.getTrelloUserId(),matchingDTO.getTrelloUsername(),matchingDTO.getTrelloFullName());
-        try {
-            resourceMember = resourceMemberRepository.save(resourceMember);
-            return new ResponseEntity<>(resourceMember, HttpStatus.CREATED);
+    public ResponseEntity<Object> matchResourceWithMember(@RequestBody MatchingWithUser[] newMatchings){
+        Resource r;
+        Member m;
+        User u = userRepository.findByUsername(newMatchings[0].getUsername());
+        Long userId = u.getUserId();
+        List <ResourceMember> resourceMembers = new ArrayList<>();
+        for (MatchingWithUser mu: newMatchings) {
+            r = mu.getResource();
+            m = mu.getMember();
+            ResourceMember resourceMember = new ResourceMember(userId,r.getId(),r.getName(),
+                    r.getDescription(),m.getId(),m.getUsername(),m.getFullName());
+            try {
+                resourceMember = resourceMemberRepository.save(resourceMember);
+
+            }
+            catch (DataIntegrityViolationException e){
+                resourceMember = resourceMemberRepository.findByUserIdAndResourceId(userId,r.getId());
+                resourceMember.setResourceId(r.getId());
+                resourceMember.setResourceName(r.getName());
+                resourceMember.setResourceDescription(r.getDescription());
+                resourceMember.setTrelloUserId(m.getId());
+                resourceMember.setTrelloUsername(m.getUsername());
+                resourceMember.setTrelloFullName(m.getFullName());
+                resourceMemberRepository.save(resourceMember);
+            }
+            resourceMembers.add(resourceMember);
         }
-        catch (DataIntegrityViolationException e) {
-            Map<String, String> error = new HashMap<>(1);
-            error.put("description", "Already exists an association for this resource or team member");
-            return new ResponseEntity<>(error, HttpStatus.CONFLICT);
-        }
+        return new ResponseEntity<>(resourceMembers, HttpStatus.CREATED);
     }
 
 
