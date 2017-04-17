@@ -26,7 +26,6 @@ th {
     color: white;
 }
 
-.table-striped>tbody>tr:nth-child(odd)>td,
-.table-striped>tbody>tr:nth-child(odd)>th {
-    background-color: #D1F9D2;
+.table-hover tbody tr.selected, .table-hover tbody tr.selected:hover{
+    background-color: #337ab7;
 }

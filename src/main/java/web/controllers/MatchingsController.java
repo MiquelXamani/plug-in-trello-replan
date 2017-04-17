@@ -21,8 +21,8 @@ public class MatchingsController {
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
 
-    @RequestMapping(method= RequestMethod.POST)
-    public ResponseEntity<Object> matchResourceWithMember(@RequestBody MatchingDTO2 matchingDTO){
+    @RequestMapping(value = "/create-matchings", method = RequestMethod.POST)
+    public ResponseEntity<Object> matchResourceWithMember(@RequestBody Matching[] matching){
         User u = userRepository.findByUsername(matchingDTO.getUsername());
         ResourceMember resourceMember = new ResourceMember(u.getUserId(),matchingDTO.getResourceId(),matchingDTO.getResourceName(),
                 matchingDTO.getResourceDescription(),matchingDTO.getTrelloUserId(),matchingDTO.getTrelloUsername(),matchingDTO.getTrelloFullName());

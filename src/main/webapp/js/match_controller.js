@@ -13,7 +13,12 @@
         vm.unmatchedResources = [];
         vm.unmatchedMembers = [];
         vm.plan = {};
+        vm.selectedResourceIndex = null;
+        vm.selectedMemberIndex = null;
 
+        vm.setSelectedResource = setSelectedResource;
+        vm.setSelectedMember = setSelectedMember;
+        vm.match = match;
         vm.nextStep = nextStep;
         vm.previousStep = previousStep;
 
@@ -33,6 +38,28 @@
                     console.log("Unmatched Team Members:");
                     console.log(vm.unmatchedMembers);
             });
+        }
+
+        function setSelectedResource(index){
+            vm.selectedResourceIndex = index;
+            console.log("RESOURCE CLICKED!!!");
+
+        }
+
+        function setSelectedMember(index){
+            vm.selectedMemberIndex = index;
+            console.log("MEMBER CLICKED!!");
+        }
+
+        function match(){
+            var matching = {};
+            matching.resource = vm.unmatchedResources[vm.selectedResourceIndex];
+            matching.member = vm.unmatchedMembers[vm.selectedMemberIndex];
+            vm.matchings.push(matching);
+            vm.unmatchedResources.splice(vm.selectedResourceIndex,1);
+            vm.unmatchedMembers.splice(vm.selectedMemberIndex,1);
+            vm.selectedResourceIndex = null;
+            vm.selectedMemberIndex = null;
         }
 
         function nextStep(){
