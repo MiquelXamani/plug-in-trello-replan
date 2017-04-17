@@ -17,6 +17,7 @@
         vm.selectedMemberIndex = null;
         vm.dataLoading = false;
         vm.newMatchings = [];
+        vm.delMatchings = [];
 
         vm.setSelectedResource = setSelectedResource;
         vm.setSelectedMember = setSelectedMember;
@@ -43,13 +44,23 @@
         }
 
         function setSelectedResource(index){
-            vm.selectedResourceIndex = index;
+            if(vm.selectedResourceIndex === index){
+                vm.selectedResourceIndex = null;
+            }
+            else{
+                vm.selectedResourceIndex = index;
+            }
             console.log("RESOURCE CLICKED!!!");
 
         }
 
         function setSelectedMember(index){
-            vm.selectedMemberIndex = index;
+            if(vm.selectedMemberIndex === index){
+                vm.selectedMemberIndex = null;
+            }
+            else {
+                vm.selectedMemberIndex = index;
+            }
             console.log("MEMBER CLICKED!!");
         }
 
@@ -71,10 +82,23 @@
             console.log(vm.newMatchings);
             vm.dataLoading = true;
             if(vm.newMatchings.length > 0) {
-                MatchingService.SavePlanResourceTeamMemberMatching($rootScope.globals.currentUser.username,vm.newMatchings).then(function(response){
-                   console.log("MATCHINGS CREATION SUCCESSFUL");
-                   vm.dataLoading = false;
+                MatchingService.SavePlanResourceTeamMemberMatchings($rootScope.globals.currentUser.username,vm.newMatchings)
+                    .then(function(response){
+                        console.log("MATCHINGS CREATION SUCCESSFUL");
+                        if(vm.delMatchings.length > 0) {
+                            MatchingService.DeletePlanResourceTeamMemberMatchings($rootScope.globals.currentUser.username, vm.delMatchings)
+                                .then(function (response) {
+                                    console.log("MATCHINGS DELETION SUCCESSFUL");
+                                    vm.dataLoading = false;
+                           });
+                   }
+                   else{
+                       vm.dataLoading = false;
+                   }
                 });
+            }
+            else{
+                vm.dataLoading = false;
             }
             //$location.path('/create-board');
         }

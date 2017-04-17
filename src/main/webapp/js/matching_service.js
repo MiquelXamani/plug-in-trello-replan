@@ -9,8 +9,9 @@
     function MatchingService($http) {
         var service = {};
 
-        service.SavePlanResourceTeamMemberMatching = SavePlanResourceTeamMemberMatching;
+        service.SavePlanResourceTeamMemberMatchings = SavePlanResourceTeamMemberMatchings;
         service.GetMatchings = GetMatchings;
+        service.DeletePlanResourceTeamMemberMatchings = DeletePlanResourceTeamMemberMatchings;
 
         return service;
 
@@ -20,8 +21,12 @@
                 .then(handleSuccess,handleError);
         }
         //save the resource-Trello user association
-        function SavePlanResourceTeamMemberMatching(username, params){
+        function SavePlanResourceTeamMemberMatchings(username, params){
             return $http.post('/matchings/create-matchings/?username=' + username, params).then(handleSuccess,handleError);
+        }
+
+        function DeletePlanResourceTeamMemberMatchings(username, params){
+            return $http.post('/matchings/delete-matchings/?username=' + username, params).then(handleSuccess,handleError);
         }
 
         // private functions
