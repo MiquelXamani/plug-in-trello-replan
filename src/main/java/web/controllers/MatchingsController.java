@@ -22,18 +22,19 @@ public class MatchingsController {
     private ResourceMemberRepository resourceMemberRepository;
 
     @RequestMapping(value = "/create-matchings", method = RequestMethod.POST)
-    public ResponseEntity<Object> matchResourceWithMember(@RequestParam(value = "username") String username, @RequestBody Matching[] newMatchings){
+    public ResponseEntity<Object> createMatchings(@RequestParam(value = "username") String username, @RequestBody Matching[] newMatchings){
         Resource r;
         Member m;
+        ResourceMember resourceMember;
         User u = userRepository.findByUsername(username);
         Long userId = u.getUserId();
         List <ResourceMember> resourceMembers = new ArrayList<>();
         for (Matching matching: newMatchings) {
             r = matching.getResource();
             m = matching.getMember();
-            ResourceMember resourceMember = new ResourceMember(userId,r.getId(),r.getName(),
-                    r.getDescription(),m.getId(),m.getUsername(),m.getFullName());
             try {
+                resourceMember = new ResourceMember(userId,r.getId(),r.getName(),r.getDescription(),m.getId(),
+                        m.getUsername(),m.getFullName());
                 resourceMember = resourceMemberRepository.save(resourceMember);
 
             }
@@ -52,6 +53,22 @@ public class MatchingsController {
         return new ResponseEntity<>(resourceMembers, HttpStatus.CREATED);
     }
 
+    @RequestMapping(value = "/delete-matchings", method = RequestMethod.POST)
+    public List<ResourceMember> deleteMatchings(@RequestParam(value = "username") String username, @RequestBody Matching[] matchingsToDelete){
+        User u = userRepository.findByUsername(username);
+        Long userId = u.getUserId();
+        List <ResourceMember> resourceMembersDeleted = new ArrayList<>();
+        ResourceMember resourceMember;
+        for (Matching matching: matchingsToDelete) {
+            resourceMember = resourceMemberRepository.findByUserIdAndResourceIdAndTrelloUserId(userId,matching.getResource().getId(),matching.getMember().getId());
+            if(resourceMember != null){
+                resourceMemberRepository.delete(resourceMember);
+                resourceMembersDeleted.add(resourceMember);
+            }
+        }
+
+        return resourceMembersDeleted;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public MatchingDTO getMatchings(@RequestParam(value = "username") String username, @RequestParam(value = "projectId") String projectId,
