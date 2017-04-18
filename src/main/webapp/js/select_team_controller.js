@@ -47,7 +47,7 @@
         }
 
         function previousStep(){
-            $location.path('/select-project');
+            $location.path('/select-plan');
         }
 
         getTeams();

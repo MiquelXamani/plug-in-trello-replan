@@ -23,6 +23,7 @@
         </div>
     </div>
     <div class="form-actions">
-        <button type="submit" ng-disabled="!vm.nextEnabled" class="btn btn-primary">Next</button>
+        <button type="button" class="btn btn-link" class="previous-step" ng-click="vm.previousStep()">&laquo; Previous</button>
+        <button type="submit" ng-disabled="!vm.nextEnabled" class="btn btn-success next-step">Next &raquo;</button>
     </div>
 </form>

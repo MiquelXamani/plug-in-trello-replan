@@ -27,6 +27,12 @@
                 controllerAs: 'vm'
             })
 
+            .when('/select-plan', {
+                controller: 'SelectPlanController',
+                templateUrl: 'select-plan.html',
+                controllerAs: 'vm'
+            })
+
             .when('/select-team',{
                 controller: 'SelectTeamController',
                 templateUrl: 'select-team.html',

@@ -33,3 +33,13 @@ th {
 .table-hover tbody tr.selected-to-delete, .table-hover tbody tr.selected-to-delete:hover{
     background-color: #d9534f;
 }
+
+.next-step{
+    float:right;
+    display:inline-block;
+}
+
+.previous-step{
+    float:left;
+    display:inline-block;
+}
