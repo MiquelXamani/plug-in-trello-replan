@@ -1,0 +1,12 @@
+<form name="form" ng-submit="vm.nextStep()" role="form">
+    <div ng-hide="$rootscope.unmatchedResources.length === 0">
+        <p id="warning-message">
+            <strong>WARNING!</strong> there are some resources of the selected plan that aren't linked with a Trello user.
+        </p>
+    </div>
+    <div class="form-group">
+        <label for="boardName">Board name</label>
+        <input type="boardName" name="boardName" id="boardName" class="form-control" ng-model="vm.boardName" required />
+        <span ng-show="form.boardName.$dirty && form.boardName.$error.required" class="help-block">Board name is required</span>
+    </div>
+</form>

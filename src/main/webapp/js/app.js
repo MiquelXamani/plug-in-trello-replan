@@ -45,6 +45,12 @@
                 controllerAs: 'vm'
             })
 
+            .when('/create-board',{
+                controller: 'CreateBoardController',
+                templateUrl: 'create-board.html',
+                controllerAs: 'vm'
+            })
+
             .otherwise({ redirectTo: '/login' });
 
         $locationProvider.html5Mode(true);

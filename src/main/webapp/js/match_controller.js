@@ -139,7 +139,9 @@
             else{
                 vm.dataLoading = false;
             }
-            //$location.path('/create-board');
+            $rootScope.plan = vm.plan;
+            $rootScope.unmatchedResources = vm.unmatchedResources;
+            $location.path('/create-board');
         }
 
         function previousStep(){
