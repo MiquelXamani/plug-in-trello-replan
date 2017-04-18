@@ -47,11 +47,15 @@ th {
 .progress-indicator{
     margin-bottom: 50px;
 }
-/*
-.table tbody td{
+
+.table tbody tr{
     background-color:ghostwhite;
 }
 
-.table-hover tbody tr:hover td {
+.table-hover tbody tr:hover {
     background-color: lightgoldenrodyellow;
-}*/
+}
+
+.progress-indicator>li .bubble{
+    border-bottom:none;
+}
