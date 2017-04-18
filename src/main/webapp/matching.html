@@ -9,7 +9,7 @@
 <form name="form" ng-submit="vm.nextStep()" role="form">
     <div class="form-group">
         <h3>Current matchings</h3>
-        <table class="table table-responsive">
+        <table class="table table-responsive table-hover">
             <thead class="thead-inverse">
             <tr>
                 <th>Resource</th>
@@ -18,7 +18,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="matching in vm.matchings">
+            <tr ng-repeat="matching in vm.matchings" ng-click="vm.setSelectedMatching($index)" ng-class="{'selected-to-delete': $index === vm.selectedMatchingIndex}">
                 <td>{{ matching.resource.description }}</td>
                 <td>{{ matching.member.fullName }}</td>
                 <td>{{ matching.member.username }}</td>
@@ -35,7 +35,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="unmatchedResource in vm.unmatchedResources" ng-click="vm.setSelectedResource($index)" ng-class="{selected: $index === vm.selectedResourceIndex}">
+            <tr ng-repeat="unmatchedResource in vm.unmatchedResources" ng-click="vm.setSelectedResource($index)" ng-class="{'selected-to-add': $index === vm.selectedResourceIndex}">
                 <td>{{ unmatchedResource.description }}</td>
             </tr>
             </tbody>
@@ -48,7 +48,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="unmatchedMember in vm.unmatchedMembers" ng-click="vm.setSelectedMember($index)" ng-class="{selected: $index === vm.selectedMemberIndex}">
+            <tr ng-repeat="unmatchedMember in vm.unmatchedMembers" ng-click="vm.setSelectedMember($index)" ng-class="{'selected-to-add': $index === vm.selectedMemberIndex}">
                 <td>{{ unmatchedMember.fullName }}</td>
                 <td>{{ unmatchedMember.username }}</td>
             </tr>

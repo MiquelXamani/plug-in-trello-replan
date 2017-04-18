@@ -26,6 +26,10 @@ th {
     color: white;
 }
 
-.table-hover tbody tr.selected, .table-hover tbody tr.selected:hover{
-    background-color: #337ab7;
+.table-hover tbody tr.selected-to-add, .table-hover tbody tr.selected-to-add:hover{
+    background-color: #428bca;
+}
+
+.table-hover tbody tr.selected-to-delete, .table-hover tbody tr.selected-to-delete:hover{
+    background-color: #d9534f;
 }
