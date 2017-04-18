@@ -5,8 +5,8 @@
         .module('app')
         .controller('MatchController', MatchController);
 
-    MatchController.$inject = ['MatchingService', '$rootScope', '$location'];
-    function MatchController(MatchingService, $rootScope, $location) {
+    MatchController.$inject = ['MatchingService', '$rootScope', '$location', '$scope'];
+    function MatchController(MatchingService, $rootScope, $location, $scope) {
         var vm = this;
 
         vm.matchings = [];
@@ -21,6 +21,7 @@
         vm.delMatchings = [];
 
         vm.setSelectedMatching = setSelectedMatching;
+        vm.deleteMatching = deleteMatching;
         vm.setSelectedResource = setSelectedResource;
         vm.setSelectedMember = setSelectedMember;
         vm.match = match;
@@ -48,7 +49,6 @@
         function setSelectedMatching(index){
             console.log("INDEX:");
             console.log(index);
-            console.log(vm.selectedMatchingIndex);
             if(vm.selectedMatchingIndex === index){
                 vm.selectedMatchingIndex = null;
             }
@@ -62,11 +62,15 @@
             console.log("DELETE CLICKED");
             var resource = vm.matchings[vm.selectedMatchingIndex].resource;
             var member = vm.matchings[vm.selectedMatchingIndex].member;
+            console.log("RESOURCE DELETED: ");
+            console.log(resource);
+            console.log("MEMBER DELETED: ");
+            console.log(member);
             vm.delMatchings.push(vm.matchings[vm.selectedMatchingIndex]);
-            vm.matchings.splice(vm.selectedMatching,1);
-            vm.selectedMatchingIndex = null;
             vm.unmatchedResources.push(resource);
             vm.unmatchedMembers.push(member);
+            vm.matchings.splice(vm.selectedMatching,1);
+            vm.selectedMatchingIndex = null;
         }
 
         function setSelectedResource(index){
@@ -122,6 +126,13 @@
                        vm.dataLoading = false;
                    }
                 });
+            }
+            else if(vm.delMatchings.length > 0) {
+                MatchingService.DeletePlanResourceTeamMemberMatchings($rootScope.globals.currentUser.username, vm.delMatchings)
+                    .then(function (response) {
+                        console.log("MATCHINGS DELETION SUCCESSFUL");
+                        vm.dataLoading = false;
+                    })
             }
             else{
                 vm.dataLoading = false;
