@@ -71,6 +71,7 @@
             vm.unmatchedMembers.push(member);
             vm.matchings.splice(vm.selectedMatching,1);
             vm.selectedMatchingIndex = null;
+            $.snackbar({content: "Matching DELETED!"});
         }
 
         function setSelectedResource(index){
@@ -105,6 +106,7 @@
             vm.selectedResourceIndex = null;
             vm.selectedMemberIndex = null;
             vm.newMatchings.push(matching);
+            $.snackbar({content: "Matching CREATED!"});
         }
 
         function nextStep(){
