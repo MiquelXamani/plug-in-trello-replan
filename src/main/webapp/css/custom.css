@@ -43,3 +43,7 @@ th {
     float:left;
     display:inline-block;
 }
+
+.progress-indicator{
+    margin-bottom: 30px;
+}
