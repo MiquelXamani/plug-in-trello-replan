@@ -14,13 +14,21 @@
         </select>
     </div>
     <div class="form-group">
-        <div class="list-group">
-            <label for="membersList">Team members</label>
-            <div class="list-group-item list-group-item-action flex-column align-items-start" id="membersList" ng-repeat="member in vm.teamMembers">
-                <p class="mb-1">{{ member.fullName }}</p>
-                <small class="text-muted">{{ member.username }}</small>
-            </div>
-        </div>
+        <label for="membersList">Team members</label>
+        <table class="table table-responsive table-hover" id="membersList">
+            <thead>
+            <tr>
+                <th>Full Name in Trello</th>
+                <th>Trello Username</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="member in vm.teamMembers"}>
+                <td>{{ member.fullName }}</td>
+                <td>{{ member.username }}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div class="form-actions">
         <button type="button" class="btn btn-link" class="previous-step" ng-click="vm.previousStep()">&laquo; Previous</button>
