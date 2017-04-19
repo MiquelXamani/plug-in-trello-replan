@@ -22,7 +22,8 @@
             plan.teamId = $rootScope.team.id;
             BoardService.LoadPlanOnTrello(plan).then(function(response){
                 if(response.success) {
-                    $rootScope.boardUrl = response.board.url;
+                    $rootScope.board = response.board;
+                    console.log(response.board);
                     //$location.path('/load-to-trello-completed');
                 }
                 else{

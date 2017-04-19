@@ -15,8 +15,7 @@ public class Board {
     @Id
     private String id;
     private String name;
-
-
+    private String url;
 
     public Board(){
     }
@@ -35,5 +34,13 @@ public class Board {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

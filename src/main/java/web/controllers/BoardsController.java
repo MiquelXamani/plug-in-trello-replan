@@ -20,7 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/boards")
-public class BoardController {
+public class BoardsController {
     @Autowired(required = true)
     private UserRepository userRepository;
     @Autowired(required = true)
