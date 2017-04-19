@@ -69,7 +69,7 @@
             vm.delMatchings.push(vm.matchings[vm.selectedMatchingIndex]);
             vm.unmatchedResources.push(resource);
             vm.unmatchedMembers.push(member);
-            vm.matchings.splice(vm.selectedMatching,1);
+            vm.matchings.splice(vm.selectedMatchingIndex,1);
             vm.selectedMatchingIndex = null;
             $.snackbar({content: "Matching DELETED!"});
         }
