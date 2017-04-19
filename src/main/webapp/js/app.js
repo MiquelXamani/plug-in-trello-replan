@@ -51,6 +51,12 @@
                 controllerAs: 'vm'
             })
 
+            .when('/load-to-trello-completed',{
+                controller: 'LoadCompletedController',
+                templateUrl: 'load-to-trello-completed.html',
+                controllerAs: 'vm'
+            })
+
             .otherwise({ redirectTo: '/login' });
 
         $locationProvider.html5Mode(true);

@@ -59,3 +59,8 @@ th {
 .progress-indicator>li .bubble{
     border-bottom:none;
 }
+
+.release-name{
+    font-weight:bold;
+    color:#4CAF50;
+}
