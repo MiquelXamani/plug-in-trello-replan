@@ -5,7 +5,7 @@
         <input type="boardName" name="boardName" id="boardName" class="form-control" ng-model="vm.boardName" required />
         <span ng-show="form.boardName.$dirty && form.boardName.$error.required" class="help-block">Board name is required</span>
     </div>
-    <div class="form-group" ng-hide="$rootscope.unmatchedResources.length === 0">
+    <div class="form-group" ng-hide="$rootScope.unmatchedResources.length === 0">
         <p class="warning-message">
             <strong>WARNING!</strong> There are some resources of the selected plan that aren't linked with a Trello user. Click <a href="/match">here</a> to fix it.
         </p>

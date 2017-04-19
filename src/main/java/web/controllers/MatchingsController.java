@@ -70,6 +70,13 @@ public class MatchingsController {
         return resourceMembersDeleted;
     }
 
+    public Matching createMatchingObject(ResourceMember resourceMember){
+        Resource resource = new Resource(resourceMember.getResourceId(),resourceMember.getResourceName(),resourceMember.getResourceDescription());
+        Member member = new Member(resourceMember.getTrelloUserId(),resourceMember.getTrelloUsername(),resourceMember.getTrelloFullName());
+        Matching matching = new Matching(resource,member);
+        return matching;
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public MatchingDTO getMatchings(@RequestParam(value = "username") String username, @RequestParam(value = "projectId") String projectId,
                                     @RequestParam(value = "releaseId") String releaseId, @RequestParam(value = "teamId") String teamId){
@@ -114,8 +121,6 @@ public class MatchingsController {
         List<Matching> matchings = new ArrayList<>();
         int resId;
         ResourceMember resourceMember;
-        Resource r;
-        Member m;
         Matching matching;
         boolean found;
         if(resourcesIds.size() != resourcesFound.size()){
@@ -126,9 +131,7 @@ public class MatchingsController {
                     resourceMember = resourcesFound.get(i);
                     if(resourcesIds.get(j) == resourceMember.getResourceId()){
                         found = true;
-                        r = new Resource(resourceMember.getResourceId(),resourceMember.getResourceName(),resourceMember.getResourceDescription());
-                        m = new Member(resourceMember.getTrelloUserId(),resourceMember.getTrelloUsername(),resourceMember.getTrelloFullName());
-                        matching = new Matching(r,m);
+                        matching = createMatchingObject(resourceMember);
                         matchings.add(matching);
                     }
                     else{
@@ -144,6 +147,13 @@ public class MatchingsController {
                 unmatchedResources.add(resources.get(resId));
             }
 
+        }
+        //all plan resources are already associated team member
+        else{
+            for (ResourceMember rm2: resourcesFound) {
+                matching = createMatchingObject(rm2);
+                matchings.add(matching);
+            }
         }
 
         TrelloService trelloService = new TrelloService();
@@ -164,6 +174,7 @@ public class MatchingsController {
 
         //recórrer la llista inicial per trobar aquells membres que apareguin a la base de dades
         ResourceMember rm;
+        Member m;
         if(members.size() != foundMembers.size()) {
             int j = 0;
             for (int i = 0; i < foundMembers.size(); i++) {
@@ -191,7 +202,7 @@ public class MatchingsController {
         //sort unmatched resources list
         Collections.sort(unmatchedResources);
 
-        //sort unmatchet team members
+        //sort unmatched team members
         Collections.sort(unmatchedMembers);
 
         //create matchingDTO object
@@ -201,6 +212,4 @@ public class MatchingsController {
 
         return matchingDTO;
     }
-
-
 }
