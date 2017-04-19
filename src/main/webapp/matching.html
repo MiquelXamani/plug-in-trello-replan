@@ -7,7 +7,7 @@
 </ul>
 <form name="form" ng-submit="vm.nextStep()" role="form">
     <h2>Match plan resources with Trello team members</h2>
-    <div class="form-group">
+    <div class="form-group top-buffer">
         <label for="matchingsTable">Current matchings</label>
         <table class="table table-responsive table-hover" id="matchingsTable">
             <thead>
@@ -25,11 +25,12 @@
             </tr>
             </tbody>
         </table>
+        <div class="col-xs-12 col-sm-3 col-md-offset-5">
+            <button type="button" class="btn btn-primary" ng-disabled="vm.dataLoading || vm.selectedMatchingIndex === null" ng-click="vm.deleteMatching()">Unmatch</button>
+        </div>
     </div>
-    <div class="form-group">
-        <button type="button" class="btn btn-primary" ng-disabled="vm.dataLoading || vm.selectedMatchingIndex === null" ng-click="vm.deleteMatching()">Unmatch</button>
-    </div>
-    <div class="form-group" ng-hide="vm.unmatchedResources.length === 0">
+
+    <div class="form-group top-buffer" ng-hide="vm.unmatchedResources.length === 0">
         <div class="row">
             <div class="col-xs-12 col-sm-5">
                 <label for="unmatchedResourcesTable">Unmatched resources</label>
@@ -64,11 +65,11 @@
                 </table>
             </div>
         </div>
+        <div class="col-xs-12 col-sm-3 col-md-offset-5">
+            <button type="button" class="btn btn-primary" ng-disabled="vm.dataLoading || vm.selectedMemberIndex === null || vm.selectedResourceIndex === null" ng-click="vm.match()">Match</button>
+        </div>
     </div>
-    <div class="form-group">
-        <button type="button" class="btn btn-primary" ng-disabled="vm.dataLoading || vm.selectedMemberIndex === null || vm.selectedResourceIndex === null" ng-click="vm.match()">Match</button>
-    </div>
-    <div form-actions>
+    <div class="form-action top-buffer">
         <button type="button" class="btn btn-link" class="previous-step" ng-click="vm.previousStep()">&laquo; Previous</button>
         <div class="next-step">
             <button type="submit" class="btn btn-success" ng-disabled="vm.dataLoading">Next &raquo;</button>

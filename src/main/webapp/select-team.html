@@ -7,13 +7,13 @@
 </ul>
 <h2>Select a Trello team</h2>
 <form name="form" ng-submit="vm.nextStep()" role="form">
-    <div class="form-group">
+    <div class="form-group top-buffer">
         <label for="teamSelector">Select a team</label>
         <select class="form-control" id="teamSelector" ng-model="vm.selectedTeam"
                 ng-options="team as team.displayName for team in vm.teams" ng-change="vm.getTeamMembers()">
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group top-buffer">
         <label for="membersList">Team members</label>
         <table class="table table-responsive table-hover" id="membersList">
             <thead>
@@ -30,7 +30,7 @@
             </tbody>
         </table>
     </div>
-    <div class="form-actions">
+    <div class="form-actions top-buffer">
         <button type="button" class="btn btn-link" class="previous-step" ng-click="vm.previousStep()">&laquo; Previous</button>
         <button type="submit" ng-disabled="!vm.nextEnabled" class="btn btn-success next-step">Next &raquo;</button>
     </div>

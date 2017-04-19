@@ -7,19 +7,19 @@
 </ul>
 <h2>Select a release plan</h2>
 <form name="form" ng-submit="vm.nextStep()" role="form">
-    <div class="form-group">
+    <div class="form-group top-buffer">
         <label for="projectSelector">Select a project</label>
         <select class="form-control" id="projectSelector" ng-model="vm.selectedProject"
                 ng-options="project as project.name for project in vm.projects" ng-change="vm.getReleases()">
         </select>
     </div>
-    <div class="form-group">
+    <div class="form-group top-buffer">
         <label for="releaseSelector">Select a release</label>
         <select class="form-control" id="releaseSelector" ng-model="vm.selectedRelease"
                 ng-options="release as release.name for release in vm.releases">
         </select>
     </div>
-    <div class="form-actions">
+    <div class="form-actions top-buffer">
         <button type="submit" ng-disabled="!vm.nextEnabled" class="btn btn-success next-step">Next &raquo;</button>
     </div>
 </form>

@@ -64,3 +64,9 @@ th {
     font-weight:bold;
     color:#4CAF50;
 }
+
+.top-buffer {
+    margin-top: 20px;
+    display:inline-block;
+    width: 100%;
+}
