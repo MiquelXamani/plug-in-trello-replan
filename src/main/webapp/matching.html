@@ -8,8 +8,8 @@
 <form name="form" ng-submit="vm.nextStep()" role="form">
     <h2>Match plan resources with Trello team members</h2>
     <div class="form-group">
-        <h3>Current matchings</h3>
-        <table class="table table-responsive table-hover">
+        <label for="matchingsTable">Current matchings</label>
+        <table class="table table-responsive table-hover" id="matchingsTable">
             <thead class="thead-inverse">
             <tr>
                 <th>Resource</th>
@@ -30,10 +30,10 @@
         <button type="button" class="btn btn-primary" ng-disabled="vm.dataLoading || vm.selectedMatchingIndex === null" ng-click="vm.deleteMatching()">Unmatch</button>
     </div>
     <div class="form-group" ng-hide="vm.unmatchedResources.length === 0">
-        <h3>Unmatched resources</h3>
         <div class="row">
             <div class="col-xs-12 col-sm-5">
-                <table class="table table-responsive table-hover">
+                <label for="unmatchedResourcesTable">Unmatched resources</label>
+                <table class="table table-responsive table-hover" id="unmatchedResourcesTable">
                     <thead class="thead-inverse">
                     <tr>
                         <th>Resource</th>
@@ -47,7 +47,8 @@
                 </table>
             </div>
             <div class="col-xs-12 col-sm-7">
-                <table class="table table-responsive table-hover">
+                <label for="unmatchedMembersTable">Unmatched resources</label>
+                <table class="table table-responsive table-hover" id="unmatchedMembersTable">
                     <thead class="thead-inverse">
                     <tr>
                         <th>Full Name in Trello</th>

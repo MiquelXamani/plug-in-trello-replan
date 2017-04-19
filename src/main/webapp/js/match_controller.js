@@ -139,9 +139,25 @@
             else{
                 vm.dataLoading = false;
             }
-            $rootScope.plan = vm.plan;
-            $rootScope.unmatchedResources = vm.unmatchedResources;
-            $location.path('/create-board');
+            if(vm.unmatchedResources.length > 0){
+                var c = confirm("There are resources of the plan that hasn't been assigned to a Trello user. " +
+                    "These resources won't be assigned to any card. " +
+                    "Are you sure that you want to continue?");
+                if(c){
+                    console.log("CONFIRMED");
+                    $rootScope.plan = vm.plan;
+                    $rootScope.unmatchedResources = vm.unmatchedResources;
+                    $location.path('/create-board');
+                }
+                else{
+
+                }
+            }
+            else{
+                $rootScope.plan = vm.plan;
+                $rootScope.unmatchedResources = vm.unmatchedResources;
+                $location.path('/create-board');
+            }
         }
 
         function previousStep(){
