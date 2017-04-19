@@ -3,10 +3,10 @@
 
     angular
         .module('app')
-        .controller('BoardController', BoardController);
+        .controller('CreateBoardController', CreateBoardController);
 
-    BoardController.$inject = ['BoardService', '$rootScope', '$location'];
-    function BoardController(BoardService, $rootScope, $location) {
+    CreateBoardController.$inject = ['BoardService', '$rootScope', '$location'];
+    function CreateBoardController(BoardService, $rootScope, $location) {
         var vm = this;
 
         vm.dataLoading = false;
