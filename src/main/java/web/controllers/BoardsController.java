@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import web.models.*;
-import web.repositories.BoardRepository;
-import web.repositories.ListTrelloRepository;
-import web.repositories.ResourceMemberRepository;
-import web.repositories.UserRepository;
+import web.repositories.*;
 import web.services.TrelloService;
 
 import java.text.ParseException;
@@ -29,6 +26,8 @@ public class BoardsController {
     private ListTrelloRepository listTrelloRepository;
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
+    @Autowired(required = true)
+    private LabelRepository labelRepository;
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO) throws ParseException {
@@ -40,7 +39,7 @@ public class BoardsController {
 
         //Create board
         Board board = trelloService.createBoard(planBoardDTO.getBoardName(),planBoardDTO.getTeamId(),trelloToken);
-        boardRepository.save(board);
+        Board b22 =boardRepository.save(board);
         String boardId = board.getId();
         System.out.println("Board id: " + boardId);
 
@@ -60,9 +59,13 @@ public class BoardsController {
             labelColor = l.getColor();
             if(labelColor.equals("green")){
                 greenLabel = l;
+                greenLabel.setBoard(board);
+                labelRepository.save(greenLabel);
             }
             else if(labelColor.equals("blue")){
                 blueLabel = l;
+                blueLabel.setBoard(board);
+                labelRepository.save(blueLabel);
             }
         }
         System.out.println("Green label: " + greenLabel.getId() + " " + greenLabel.getColor());

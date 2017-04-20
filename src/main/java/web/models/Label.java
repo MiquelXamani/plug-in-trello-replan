@@ -2,13 +2,22 @@ package web.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 /**
  * Created by Miquel on 30/03/2017.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Entity
 public class Label {
+    @Id
     private String id;
-    private String idBoard;
+    @ManyToOne
+    @JoinColumn(name = "idBoard")
+    private Board board;
     private String color;
 
     public Label (){}
@@ -21,12 +30,12 @@ public class Label {
         this.id = id;
     }
 
-    public String getIdBoard() {
-        return idBoard;
+    public Board getBoard() {
+        return board;
     }
 
-    public void setIdBoard(String idBoard) {
-        this.idBoard = idBoard;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     public String getColor() {
