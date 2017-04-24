@@ -11,6 +11,7 @@ import web.domain.*;
 import web.persistance.models.User;
 import web.persistance.repositories.*;
 import web.persistance.models.ResourceMember;
+import web.persistence_controllers.BoardPersistenceController;
 import web.services.TrelloService;
 
 import java.text.ParseException;
@@ -22,8 +23,6 @@ import java.util.*;
 public class BoardsController {
     @Autowired(required = true)
     private UserRepository userRepository;
-    @Autowired(required = true)
-    private BoardRepository boardRepository;
     @Autowired(required = true)
     private ListTrelloRepository listTrelloRepository;
     @Autowired(required = true)
@@ -59,18 +58,24 @@ public class BoardsController {
         //For notification cards
         Label blueLabel = new Label();
         String labelColor;
+        List<Label> labelList = new ArrayList<>();
         for(Label l: labels){
             labelColor = l.getColor();
             if(labelColor.equals("green")){
                 greenLabel = l;
+                labelList.add(greenLabel);
             }
             else if(labelColor.equals("blue")){
                 blueLabel = l;
+                labelList.add(blueLabel);
             }
         }
         System.out.println("Green label: " + greenLabel.getId() + " " + greenLabel.getColor());
         System.out.println("Blue label: " + blueLabel.getId() + " " + blueLabel.getColor());
 
+        //persistence
+        BoardPersistenceController bpc = new BoardPersistenceController();
+        bpc.saveBoard(board,labelList);
 
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId

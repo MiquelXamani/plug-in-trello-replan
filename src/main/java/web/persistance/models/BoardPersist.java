@@ -1,11 +1,13 @@
 package web.persistance.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import web.domain.Board;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,9 +22,15 @@ public class BoardPersist {
     private String name;
     private String url;
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private Set<LabelPersist> labels;
+    private List<LabelPersist> labels;
 
     public BoardPersist(){
+    }
+
+    public BoardPersist(String id, String name, String url){
+        this.id = id;
+        this.name = name;
+        this.url = url;
     }
 
     public String getName(){
@@ -49,11 +57,11 @@ public class BoardPersist {
         this.url = url;
     }
 
-    public Set<LabelPersist> getLabels() {
+    public List<LabelPersist> getLabels() {
         return labels;
     }
 
-    public void setLabels(Set<LabelPersist> labels) {
+    public void setLabels(List<LabelPersist> labels) {
         this.labels = labels;
     }
 }
