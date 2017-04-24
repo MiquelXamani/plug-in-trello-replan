@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import web.models.ResourceMember;
-import web.models.User;
-import web.repositories.ResourceMemberRepository;
-import web.repositories.UserRepository;
+import web.persistance.models.ResourceMember;
+import web.persistance.models.User;
+import web.persistance.repositories.ResourceMemberRepository;
+import web.persistance.repositories.UserRepository;
 
 @Component
 public class InitialDataLoader implements ApplicationRunner {

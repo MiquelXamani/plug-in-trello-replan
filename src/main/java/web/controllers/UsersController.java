@@ -5,8 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.services.TrelloService;
-import web.models.User;
-import web.repositories.UserRepository;
+import web.persistance.models.User;
+import web.persistance.repositories.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import web.models.Project;
-import web.models.Release;
+import web.domain.Project;
+import web.domain.Release;
 import web.services.ReplanService;
 
 @RestController

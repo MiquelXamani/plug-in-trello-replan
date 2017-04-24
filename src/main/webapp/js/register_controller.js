@@ -22,6 +22,8 @@
                 .then(function (response) {
                     //console.log("CONTINUE");
                     if (response.success) {
+                        console.log(vm.token);
+                        console.log(vm.user.username);
                         AuthenticationService.SetCredentials(vm.user.username, vm.user.password);
                         $location.path('/');
                         //console.log("SUCCESS");

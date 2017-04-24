@@ -5,9 +5,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import web.models.*;
-import web.repositories.ResourceMemberRepository;
-import web.repositories.UserRepository;
+import web.domain.*;
+import web.persistance.models.User;
+import web.persistance.repositories.ResourceMemberRepository;
+import web.persistance.repositories.UserRepository;
+import web.persistance.models.ResourceMember;
 import web.services.ReplanService;
 import web.services.TrelloService;
 

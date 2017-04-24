@@ -1,7 +1,8 @@
 package web.services;
 
 import org.springframework.web.client.RestTemplate;
-import web.models.*;
+import web.domain.*;
+import web.persistance.models.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;

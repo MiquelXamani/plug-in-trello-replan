@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import web.models.*;
-import web.repositories.*;
+import web.domain.*;
+import web.persistance.models.User;
+import web.persistance.repositories.*;
+import web.persistance.models.ResourceMember;
 import web.services.TrelloService;
 
 import java.text.ParseException;
@@ -33,20 +35,22 @@ public class BoardsController {
     public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO) throws ParseException {
         System.out.println("BOARD CONTROLLER REQUEST RECEIVED");
         User u = userRepository.findByUsername(planBoardDTO.getUsername());
+        System.out.println(planBoardDTO.getUsername());
+        System.out.println(u.getTrelloToken());
         String trelloToken = u.getTrelloToken();
         String trelloUserIdWebUser = u.getTrelloUserId();
         TrelloService trelloService = new TrelloService();
 
         //Create board
         Board board = trelloService.createBoard(planBoardDTO.getBoardName(),planBoardDTO.getTeamId(),trelloToken);
-        Board b22 =boardRepository.save(board);
+        //Board b22 = boardRepository.save(board);
         String boardId = board.getId();
         System.out.println("Board id: " + boardId);
 
         //Create lists
         ListTrello ls[] = trelloService.createLists(boardId,trelloToken);
         List<ListTrello> lists = new ArrayList<>(Arrays.asList(ls));
-        listTrelloRepository.save(lists);
+        //listTrelloRepository.save(lists);
 
         //Get labels id
         Label[] labels = trelloService.getLabels(boardId,trelloToken);
@@ -59,13 +63,9 @@ public class BoardsController {
             labelColor = l.getColor();
             if(labelColor.equals("green")){
                 greenLabel = l;
-                greenLabel.setBoard(board);
-                labelRepository.save(greenLabel);
             }
             else if(labelColor.equals("blue")){
                 blueLabel = l;
-                blueLabel.setBoard(board);
-                labelRepository.save(blueLabel);
             }
         }
         System.out.println("Green label: " + greenLabel.getId() + " " + greenLabel.getColor());

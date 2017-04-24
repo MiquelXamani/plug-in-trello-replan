@@ -1,13 +1,11 @@
 package web.services;
 
 import org.springframework.web.client.RestTemplate;
-import web.models.Plan;
-import web.models.Project;
-import web.models.Release;
+import web.domain.Plan;
+import web.domain.Project;
+import web.domain.Release;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ReplanService {
