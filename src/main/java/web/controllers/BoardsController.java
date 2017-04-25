@@ -53,7 +53,6 @@ public class BoardsController {
         //Create lists
         ListTrello ls[] = trelloService.createLists(boardId,trelloToken);
         List<ListTrello> lists = new ArrayList<>(Arrays.asList(ls));
-        //listTrelloRepository.save(lists);
 
         //Get labels id
         Label[] labels = trelloService.getLabels(boardId,trelloToken);
@@ -78,7 +77,7 @@ public class BoardsController {
         System.out.println("Blue label: " + blueLabel.getId() + " " + blueLabel.getColor());
 
         //persistence
-        boardPersistenceController.saveBoard(board,labelList);
+        boardPersistenceController.saveBoard(board,labelList,lists);
 
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId

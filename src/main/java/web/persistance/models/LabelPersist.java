@@ -24,7 +24,7 @@ public class LabelPersist {
 
     public LabelPersist(String id, BoardPersist board, String color){
         this.id = id;
-        this. board = board;
+        this.board = board;
         this.color = color;
     }
 

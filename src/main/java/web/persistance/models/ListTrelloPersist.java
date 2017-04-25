@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.groups.ConvertGroup;
 
 /**
  * Created by Miquel on 28/03/2017.
@@ -14,9 +17,17 @@ public class ListTrelloPersist {
     @Id
     private String id;
     private String name;
-    private String idBoard;
+    @ManyToOne
+    @JoinColumn(name = "idBoard")
+    private BoardPersist board;
 
-    public ListTrelloPersist(){};
+    public ListTrelloPersist(){}
+
+    public ListTrelloPersist(String id, String name, BoardPersist board){
+        this.id = id;
+        this.name = name;
+        this.board = board;
+    }
 
     public String getId() {
         return id;
@@ -34,11 +45,11 @@ public class ListTrelloPersist {
         this.name = name;
     }
 
-    public String getIdBoard() {
-        return idBoard;
+    public BoardPersist getBoard() {
+        return board;
     }
 
-    public void setIdBoard(String idBoard) {
-        this.idBoard = idBoard;
+    public void setBoard(BoardPersist board) {
+        this.board = board;
     }
 }

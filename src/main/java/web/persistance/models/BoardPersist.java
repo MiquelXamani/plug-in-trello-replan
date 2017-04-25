@@ -23,6 +23,8 @@ public class BoardPersist {
     private String url;
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<LabelPersist> labels;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<ListTrelloPersist> lists;
 
     public BoardPersist(){
     }
@@ -63,5 +65,13 @@ public class BoardPersist {
 
     public void setLabels(List<LabelPersist> labels) {
         this.labels = labels;
+    }
+
+    public List<ListTrelloPersist> getLists() {
+        return lists;
+    }
+
+    public void setLists(List<ListTrelloPersist> lists) {
+        this.lists = lists;
     }
 }
