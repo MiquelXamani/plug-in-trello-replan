@@ -125,4 +125,20 @@ public class TrelloService {
         return labels;
     }
 
+    public List<Webhook> createWebhooks(List<Card> cards, String userToken){
+        url = "https://api.trello.com/1/webhooks?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        List<Webhook> createdWebhooks = new ArrayList<>();
+        Webhook webhook;
+        String description = "Card webhook";
+        String callbackUrl = "https://glacial-anchorage-60164.herokuapp.com/trello-callbacks/cards";
+        for(Card card : cards) {
+            webhook = restTemplate.postForObject(url,new Webhook(description,callbackUrl,card.getId()),Webhook.class,vars);
+            createdWebhooks.add(webhook);
+        }
+        return createdWebhooks;
+    }
+
 }

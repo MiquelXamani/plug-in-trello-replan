@@ -87,7 +87,7 @@ public class BoardsController {
 
         //Map to store the first job to start of each member
         Map<String,Job> firstsJobs = new HashMap<>();
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -218,6 +218,9 @@ public class BoardsController {
         List<Card> cards = new ArrayList<>(featuresConverted.values());
         cards.add(notification);
         trelloService.createCards(cards,trelloToken);
+
+        //Create webhooks for each card to track
+        trelloService.createWebhooks(cards,trelloToken);
 
         PlanTrello result = new PlanTrello();
         result.setBoard(board);
