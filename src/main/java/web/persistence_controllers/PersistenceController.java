@@ -58,10 +58,8 @@ public class PersistenceController {
     }
 
     public boolean isReadyList(String idList){
-        System.out.println("ID LIST IS: " + idList);
         List<ListTrelloPersist> listTrelloPersist = listTrelloRepository.findByIdAndName(idList,"Done");
         if(listTrelloPersist.size() > 0){
-            System.out.println("MOVED TO DONE");
             return true;
         }
         else return false;
