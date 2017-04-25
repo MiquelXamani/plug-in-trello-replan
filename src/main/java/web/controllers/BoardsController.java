@@ -11,7 +11,7 @@ import web.domain.*;
 import web.persistance.models.User;
 import web.persistance.repositories.*;
 import web.persistance.models.ResourceMember;
-import web.persistence_controllers.BoardPersistenceController;
+import web.persistence_controllers.PersistenceController;
 import web.services.TrelloService;
 
 import java.text.ParseException;
@@ -24,14 +24,12 @@ public class BoardsController {
     @Autowired(required = true)
     private UserRepository userRepository;
     @Autowired(required = true)
-    private ListTrelloRepository listTrelloRepository;
-    @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
-    private BoardPersistenceController boardPersistenceController;
+    private PersistenceController persistenceController;
 
     @Autowired
-    public BoardsController(BoardPersistenceController boardPersistenceController){
-        this.boardPersistenceController = boardPersistenceController;
+    public BoardsController(PersistenceController persistenceController){
+        this.persistenceController = persistenceController;
     }
 
     @RequestMapping(method= RequestMethod.POST)
@@ -77,7 +75,7 @@ public class BoardsController {
         System.out.println("Blue label: " + blueLabel.getId() + " " + blueLabel.getColor());
 
         //persistence
-        boardPersistenceController.saveBoard(board,labelList,lists);
+        persistenceController.saveBoard(board,labelList,lists);
 
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId

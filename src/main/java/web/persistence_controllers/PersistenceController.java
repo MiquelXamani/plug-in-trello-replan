@@ -1,9 +1,7 @@
 package web.persistence_controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import web.domain.Board;
 import web.domain.Label;
 import web.domain.ListTrello;
@@ -18,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class BoardPersistenceController {
+public class PersistenceController {
     @Autowired(required = true)
     private BoardRepository boardRepository;
     @Autowired(required = true)
@@ -57,5 +55,9 @@ public class BoardPersistenceController {
             System.out.println(l.getName());
             System.out.println(l.getId());
         }
+    }
+
+    public boolean isReadyList(String idList){
+        return listTrelloRepository.exists(idList);
     }
 }
