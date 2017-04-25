@@ -135,7 +135,6 @@ public class TrelloService {
         String description = "Card webhook";
         String callbackUrl = "https://glacial-anchorage-60164.herokuapp.com/trello-callbacks/cards";
         for(Card card : cards) {
-            System.out.println(card.getId());
             webhook = restTemplate.postForObject(url,new Webhook(description,callbackUrl,card.getId()),Webhook.class,vars);
             createdWebhooks.add(webhook);
         }
