@@ -18,4 +18,10 @@ public class TrelloCallbacksController {
         System.out.println("Trello notified me!!");
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/cards", method= RequestMethod.GET)
+    public ResponseEntity<String> checkG(){
+        System.out.println("Trello checked!!");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
