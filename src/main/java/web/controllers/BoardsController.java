@@ -27,8 +27,12 @@ public class BoardsController {
     private ListTrelloRepository listTrelloRepository;
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
-    @Autowired(required = true)
-    private LabelRepository labelRepository;
+    private BoardPersistenceController boardPersistenceController;
+
+    @Autowired
+    public BoardsController(BoardPersistenceController boardPersistenceController){
+        this.boardPersistenceController = boardPersistenceController;
+    }
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO) throws ParseException {
@@ -74,8 +78,7 @@ public class BoardsController {
         System.out.println("Blue label: " + blueLabel.getId() + " " + blueLabel.getColor());
 
         //persistence
-        BoardPersistenceController bpc = new BoardPersistenceController();
-        bpc.saveBoard(board,labelList);
+        boardPersistenceController.saveBoard(board,labelList);
 
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId

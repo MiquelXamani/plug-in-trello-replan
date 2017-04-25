@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import web.persistance.models.ResourceMember;
 import web.persistance.models.User;
+import web.persistance.repositories.BoardRepository;
 import web.persistance.repositories.ResourceMemberRepository;
 import web.persistance.repositories.UserRepository;
 
