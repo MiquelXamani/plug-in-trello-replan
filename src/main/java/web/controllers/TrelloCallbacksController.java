@@ -30,8 +30,9 @@ public class TrelloCallbacksController {
         Action action = response.getAction();
         IdNameObject listAfter = action.getData().getListAfter();
         if (action.getType().equals("updateCard") &&  listAfter != null){
+            System.out.println(listAfter.getId() + " " + listAfter.getName());
             if(persistenceController.isReadyList(listAfter.getId())){
-                System.out.println("CARD MOVED TO READY LIST");
+                System.out.println("CARD MOVED TO DONE LIST");
                 //borrar label de la card
                 //afegir nova label a la card
                 //posar green label a les següents card

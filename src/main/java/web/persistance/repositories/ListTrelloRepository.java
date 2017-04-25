@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ListTrelloRepository extends CrudRepository<ListTrelloPersist, String> {
     List<ListTrelloPersist> findAll();
+    List<ListTrelloPersist> findByIdAndName(String id, String name);
 }
