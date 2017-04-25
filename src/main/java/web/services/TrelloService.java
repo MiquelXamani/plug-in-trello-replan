@@ -126,7 +126,7 @@ public class TrelloService {
     }
 
     public List<Webhook> createWebhooks(List<Card> cards, String userToken){
-        url = "https://api.trello.com/1/webhooks?key={key}&token={token}";
+        url = "https://api.trello.com/1/tokens/{token}/webhooks/?key={key}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
@@ -135,6 +135,7 @@ public class TrelloService {
         String description = "Card webhook";
         String callbackUrl = "https://glacial-anchorage-60164.herokuapp.com/trello-callbacks/cards";
         for(Card card : cards) {
+            System.out.println(card.getId());
             webhook = restTemplate.postForObject(url,new Webhook(description,callbackUrl,card.getId()),Webhook.class,vars);
             createdWebhooks.add(webhook);
         }

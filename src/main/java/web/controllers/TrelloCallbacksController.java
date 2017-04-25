@@ -14,9 +14,8 @@ import java.util.Map;
 public class TrelloCallbacksController {
 
     @RequestMapping(value = "/cards", method= RequestMethod.POST)
-    public ResponseEntity<String> cardModified(@RequestBody String payload) {
+    public ResponseEntity<String> cardModified(@RequestBody Map<String,Object> payload) {
         System.out.println("Trello notified me!!");
-        System.out.println(payload);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

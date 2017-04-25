@@ -217,10 +217,10 @@ public class BoardsController {
         //Create cards on Trello
         List<Card> cards = new ArrayList<>(featuresConverted.values());
         cards.add(notification);
-        trelloService.createCards(cards,trelloToken);
+        List<Card> createdCards = trelloService.createCards(cards,trelloToken);
 
         //Create webhooks for each card to track
-        trelloService.createWebhooks(cards,trelloToken);
+        trelloService.createWebhooks(createdCards,trelloToken);
 
         PlanTrello result = new PlanTrello();
         result.setBoard(board);
