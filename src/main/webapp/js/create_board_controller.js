@@ -10,7 +10,7 @@
         var vm = this;
 
         vm.dataLoading = false;
-        vm.boardName;
+        vm.boardName = $rootScope.release.name;
 
         vm.nextStep = nextStep;
         vm.previousStep = previousStep;
