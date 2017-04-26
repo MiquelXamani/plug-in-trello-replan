@@ -6,9 +6,11 @@ import web.domain.Board;
 import web.domain.Label;
 import web.domain.ListTrello;
 import web.persistance.models.BoardPersist;
+import web.persistance.models.Endpoint;
 import web.persistance.models.LabelPersist;
 import web.persistance.models.ListTrelloPersist;
 import web.persistance.repositories.BoardRepository;
+import web.persistance.repositories.EndpointRepository;
 import web.persistance.repositories.LabelRepository;
 import web.persistance.repositories.ListTrelloRepository;
 
@@ -23,6 +25,8 @@ public class PersistenceController {
     private LabelRepository labelRepository;
     @Autowired(required = true)
     private ListTrelloRepository listTrelloRepository;
+    @Autowired(required = true)
+    private EndpointRepository endpointRepository;
 
 
     public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists){
@@ -63,5 +67,17 @@ public class PersistenceController {
             return true;
         }
         else return false;
+    }
+
+    public List<Endpoint> getEndpoints(){
+        return endpointRepository.findAll();
+    }
+
+    public Endpoint getEndpoint(int endpointId){
+        return endpointRepository.findOne(endpointId);
+    }
+
+    public Endpoint saveEndpoint(String url, String name){
+        return endpointRepository.save(new Endpoint(url,name));
     }
 }

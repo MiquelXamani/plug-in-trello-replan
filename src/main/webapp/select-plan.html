@@ -8,6 +8,12 @@
 <h2>Select a release plan</h2>
 <form name="form" ng-submit="vm.nextStep()" role="form">
     <div class="form-group top-buffer">
+        <label for="endpointSelector">Select an endpoint</label>
+        <select class="form-control" id="endpointSelector" ng-model="vm.selectedEndpoint"
+                ng-options="endpoint as endpoint.name for endpoint in vm.endpoints" ng-change="vm.getProjects()">
+        </select>
+    </div>
+    <div class="form-group top-buffer">
         <label for="projectSelector">Select a project</label>
         <select class="form-control" id="projectSelector" ng-model="vm.selectedProject"
                 ng-options="project as project.name for project in vm.projects" ng-change="vm.getReleases()">

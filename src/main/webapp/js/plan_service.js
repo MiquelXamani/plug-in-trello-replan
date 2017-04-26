@@ -9,18 +9,24 @@
     function PlanService($http) {
         var service = {};
 
+        service.GetEndpoints = GetEndpoints;
         service.GetProjects = GetProjects;
         service.GetReleases = GetReleases;
 
         return service;
 
+        //get Replan endpoints
+        function GetEndpoints() {
+            return $http.get('/replan-endpoints/').then(handleSuccess, handleError);
+        }
+
         //get projects of Replan tool
-        function GetProjects() {
-            return $http.get('/projects/').then(handleSuccess, handleError);
+        function GetProjects(endpointId) {
+            return $http.get('/replan-endpoints/' + endpointId +'/projects/').then(handleSuccess, handleError);
         }
         //get releases of a given project
-        function GetReleases(projectId){
-            return $http.get('/projects/' + projectId + '/releases/').then(handleSuccess,handleError);
+        function GetReleases(endpointId, projectId){
+            return $http.get('/replan-endpoints/' + endpointId + '/projects/' + projectId + '/releases/').then(handleSuccess,handleError);
         }
 
         // private functions

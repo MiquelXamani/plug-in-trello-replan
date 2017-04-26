@@ -10,22 +10,28 @@ import web.persistance.models.User;
 import web.persistance.repositories.BoardRepository;
 import web.persistance.repositories.ResourceMemberRepository;
 import web.persistance.repositories.UserRepository;
+import web.persistence_controllers.PersistenceController;
 
 @Component
 public class InitialDataLoader implements ApplicationRunner {
 
     private UserRepository userRepository;
     private ResourceMemberRepository resourceMemberRepository;
+    private PersistenceController persistenceController;
 
     @Autowired
-    public InitialDataLoader(UserRepository userRepository, ResourceMemberRepository resourceMemberRepository) {
+    public InitialDataLoader(UserRepository userRepository, ResourceMemberRepository resourceMemberRepository, PersistenceController persistenceController) {
         this.userRepository = userRepository;
         this.resourceMemberRepository = resourceMemberRepository;
+        this.persistenceController = persistenceController;
     }
 
     public void run(ApplicationArguments args) {
         User user = new User("Miquel","123","b9af2c827b36369367e5416dcccb657a949f4745f1b41ee7f70d2fe91f78165e","miquelxamani1","585bec12bec126f26851c2fb");
         userRepository.save(user);
+
+        persistenceController.saveEndpoint("https://lit-savannah-17077.herokuapp.com/api/ui/v1","Development: Heroku Deployment");
+        //persistenceController.saveEndpoint("","Development: Local");
 
         //ResourceMember resourceMember = new ResourceMember(new Long(1),1,"Josep","589b03b9b6ee4d99b0da3dca","josep248","Josep");
         //resourceMemberRepository.save(resourceMember);

@@ -29,7 +29,7 @@
         vm.previousStep = previousStep;
 
         function getMatchings(){
-            MatchingService.GetMatchings($rootScope.globals.currentUser.username,$rootScope.project.id,$rootScope.release.id,$rootScope.team.id)
+            MatchingService.GetMatchings($rootScope.globals.currentUser.username,$rootScope.endpoint.id,$rootScope.project.id,$rootScope.release.id,$rootScope.team.id)
                 .then(function(response){
                     vm.matchings = response.matchings;
                     vm.unmatchedResources = response.unmatchedResources;

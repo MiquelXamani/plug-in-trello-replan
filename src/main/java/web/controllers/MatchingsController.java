@@ -10,6 +10,7 @@ import web.persistance.models.User;
 import web.persistance.repositories.ResourceMemberRepository;
 import web.persistance.repositories.UserRepository;
 import web.persistance.models.ResourceMember;
+import web.persistence_controllers.PersistenceController;
 import web.services.ReplanService;
 import web.services.TrelloService;
 
@@ -22,6 +23,12 @@ public class MatchingsController {
     private UserRepository userRepository;
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
+    private PersistenceController persistenceController;
+
+    @Autowired
+    public MatchingsController(PersistenceController persistenceController){
+        this.persistenceController = persistenceController;
+    }
 
     @RequestMapping(value = "/create-matchings", method = RequestMethod.POST)
     public ResponseEntity<Object> createMatchings(@RequestParam(value = "username") String username, @RequestBody Matching[] newMatchings){
@@ -80,14 +87,16 @@ public class MatchingsController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public MatchingDTO getMatchings(@RequestParam(value = "username") String username, @RequestParam(value = "projectId") String projectId,
+    public MatchingDTO getMatchings(@RequestParam(value = "username") String username, @RequestParam(value = "endpointId") String endpointId,
+                                    @RequestParam(value = "projectId") String projectId,
                                     @RequestParam(value = "releaseId") String releaseId, @RequestParam(value = "teamId") String teamId){
 
         MatchingDTO matchingDTO = new MatchingDTO();
         ReplanService replanService = new ReplanService();
 
         //get plan
-        Plan plan = replanService.getPlan(projectId,releaseId);
+        String url = persistenceController.getEndpoint(Integer.parseInt(endpointId)).getUrl();
+        Plan plan = replanService.getPlan(url,projectId,releaseId);
         matchingDTO.setPlan(plan);
 
         User user = userRepository.findByUsername(username);
