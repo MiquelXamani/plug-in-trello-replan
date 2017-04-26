@@ -4,13 +4,13 @@ package web.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchingDTO {
+public class MatchingsContainer {
     private Plan plan;
     private List<Matching> matchings;
     private List<Resource> unmatchedResources;
     private List<Member> unmatchedMembers;
 
-    public MatchingDTO(){
+    public MatchingsContainer(){
         matchings = new ArrayList<>();
         unmatchedResources = new ArrayList<>();
         unmatchedMembers = new ArrayList<>();

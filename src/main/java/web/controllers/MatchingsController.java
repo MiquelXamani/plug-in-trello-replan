@@ -87,11 +87,11 @@ public class MatchingsController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public MatchingDTO getMatchings(@RequestParam(value = "username") String username, @RequestParam(value = "endpointId") String endpointId,
+    public MatchingsContainer getMatchings(@RequestParam(value = "username") String username, @RequestParam(value = "endpointId") String endpointId,
                                     @RequestParam(value = "projectId") String projectId,
                                     @RequestParam(value = "releaseId") String releaseId, @RequestParam(value = "teamId") String teamId){
 
-        MatchingDTO matchingDTO = new MatchingDTO();
+        MatchingsContainer matchingDTO = new MatchingsContainer();
         ReplanService replanService = new ReplanService();
 
         //get plan
