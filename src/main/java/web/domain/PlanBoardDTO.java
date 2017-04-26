@@ -1,9 +1,10 @@
 package web.domain;
 
 
-public class PlanBoardDTO extends PlanDTO {
+public class PlanBoardDTO extends Plan {
     private String boardName;
     private String teamId;
+    private String username;
 
     public PlanBoardDTO(){}
 
@@ -21,5 +22,13 @@ public class PlanBoardDTO extends PlanDTO {
 
     public void setTeamId(String teamId) {
         this.teamId = teamId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
