@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface LabelRepository extends CrudRepository<LabelPersist,String> {
     List<LabelPersist> findAll();
-    LabelPersist findByColorAndIdBoard(String color, String boardId);
+    LabelPersist findByColorAndBoardId(String color, String boardId);
 }
