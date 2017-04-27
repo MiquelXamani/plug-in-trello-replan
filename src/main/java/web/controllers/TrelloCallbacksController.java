@@ -53,6 +53,7 @@ public class TrelloCallbacksController {
                     if(idLabels.get(i).equals(greenLabelId)){
                         System.out.println("GREEN LABEL FOUND!");
                         found = true;
+                        System.out.println("Card id: "+ card.getId());
                         trelloService.removeLabel(card.getId(),greenLabelId,userToken);
                     }
                 }
