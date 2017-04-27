@@ -143,7 +143,7 @@ public class TrelloService {
     }
 
     public void removeLabel(String cardId, String labelId, String userToken) throws RestClientException{
-        url = "https://api.trello.com/1/cards/{cardId}/labels/{labelId}?key={key}&token={token}";
+        url = "https://api.trello.com/1/cards/{cardId}/idLabels/{labelId}?key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
