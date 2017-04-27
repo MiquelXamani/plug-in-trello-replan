@@ -1,11 +1,13 @@
 package web.domain.aux_classes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import web.domain.Board;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CardMovedList {
     IdNameObject listBefore;
     IdNameObject listAfter;
+    Board board;
 
     CardMovedList(){}
 
@@ -23,5 +25,13 @@ public class CardMovedList {
 
     public void setListAfter(IdNameObject listAfter) {
         this.listAfter = listAfter;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }
