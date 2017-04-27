@@ -85,4 +85,9 @@ public class PersistenceController {
         LabelPersist labelPersist = labelRepository.findByColorAndBoardId("green",boardId);
         return labelPersist.getId();
     }
+
+    public String getPurpleLabelId(String boardId){
+        LabelPersist labelPersist = labelRepository.findByColorAndBoardId("purple",boardId);
+        return labelPersist.getId();
+    }
 }

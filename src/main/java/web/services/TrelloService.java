@@ -152,4 +152,16 @@ public class TrelloService {
         restTemplate.delete(url,vars);
     }
 
+    public String[] addLabel(String cardId, String labelId, String userToken){
+        url = "https://api.trello.com/1/cards/{cardId}/idLabels?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        vars.put("cardId",cardId);
+        vars.put("labelId",labelId);
+        input = new HashMap<>();
+        input.put("value",labelId);
+        return restTemplate.postForObject(url,input,String[].class,vars);
+    }
+
 }

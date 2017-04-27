@@ -43,7 +43,8 @@ public class TrelloCallbacksController {
 
                 //borrar label de la card
                 System.out.println("Board id: " + action.getData().getBoard().getId());
-                String greenLabelId = persistenceController.getGreenLabelId(action.getData().getBoard().getId());
+                String boardId = action.getData().getBoard().getId();
+                String greenLabelId = persistenceController.getGreenLabelId(boardId);
                 System.out.println("Green label id: " + greenLabelId);
                 Card card = response.getModel();
                 List<String> idLabels = card.getIdLabels();
@@ -58,9 +59,12 @@ public class TrelloCallbacksController {
                     }
                 }
 
-
-
                 //afegir nova label a la card
+                String purpleLabelId = persistenceController.getPurpleLabelId(boardId);
+                System.out.println("Purple label id: " + purpleLabelId);
+                trelloService.addLabel(card.getId(),purpleLabelId,userToken);
+
+
                 //moure les cards que depenien de la card moguda d'on-hold a ready
                 //posar green label a les següents card
 
