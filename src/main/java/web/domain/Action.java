@@ -8,6 +8,7 @@ public class Action {
     private String idMemberCreator;
     private String type;
     private CardMovedList data;
+    private Board board;
 
     public Action(){}
 
@@ -33,5 +34,13 @@ public class Action {
 
     public void setData(CardMovedList data) {
         this.data = data;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }

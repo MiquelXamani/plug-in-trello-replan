@@ -58,6 +58,8 @@ public class BoardsController {
         Label greenLabel = new Label();
         //For notification cards
         Label blueLabel = new Label();
+        //For cards done
+        Label purpleLabel;
         String labelColor;
         List<Label> labelList = new ArrayList<>();
         for(Label l: labels){
@@ -70,9 +72,11 @@ public class BoardsController {
                 blueLabel = l;
                 labelList.add(blueLabel);
             }
+            else if(labelColor.equals("purple")){
+                purpleLabel = l;
+                labelList.add(purpleLabel);
+            }
         }
-        System.out.println("Green label: " + greenLabel.getId() + " " + greenLabel.getColor());
-        System.out.println("Blue label: " + blueLabel.getId() + " " + blueLabel.getColor());
 
         //persistence
         persistenceController.saveBoard(board,labelList,lists);
@@ -151,7 +155,7 @@ public class BoardsController {
                 }
                 else {
                     for (Job j2 : j.getDepends_on()) {
-                        description += " " + j2.getFeature().getName();
+                        description += " ("+ Math.round(j2.getFeature().getEffort()) +") " + j2.getFeature().getName();
                     }
                 }
                 card.setDesc(description);

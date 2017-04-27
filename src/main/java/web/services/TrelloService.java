@@ -1,5 +1,6 @@
 package web.services;
 
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import web.domain.*;
 import web.persistance.models.User;
@@ -139,6 +140,16 @@ public class TrelloService {
             createdWebhooks.add(webhook);
         }
         return createdWebhooks;
+    }
+
+    public void removeLabel(String cardId, String labelId, String userToken) throws RestClientException{
+        url = "https://api.trello.com/1/cards/{cardId}/labels/{labelId}?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        vars.put("cardId",cardId);
+        vars.put("labelId",labelId);
+        restTemplate.delete(url,vars);
     }
 
 }

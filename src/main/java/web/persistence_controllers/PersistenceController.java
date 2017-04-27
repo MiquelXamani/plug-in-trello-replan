@@ -80,4 +80,9 @@ public class PersistenceController {
     public Endpoint saveEndpoint(String url, String name){
         return endpointRepository.save(new Endpoint(url,name));
     }
+
+    public String getGreenLabelId(String boardId){
+        LabelPersist labelPersist = labelRepository.findByColorAndIdBoard("green",boardId);
+        return labelPersist.getId();
+    }
 }
