@@ -210,6 +210,7 @@ public class TrelloService {
         try
         {
             result = URLEncoder.encode(component, "UTF-8")
+                    .replaceAll("\\+", "%20")
                     .replaceAll("\\%21", "!")
                     .replaceAll("\\%27", "'")
                     .replaceAll("\\%28", "(")
