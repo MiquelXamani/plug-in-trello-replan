@@ -72,7 +72,7 @@ public class TrelloCallbacksController {
                     System.out.println(c.getName());
                 }
 
-                String onHoldListId =  persistenceController.getListId(boardId,"On-hold");
+                String onHoldListId =  persistenceController.getListId(boardId,"Ready");
                 System.out.println("On-hold list id: " + onHoldListId);
                 trelloService.moveCards(dependingCards,onHoldListId,userToken);
 
