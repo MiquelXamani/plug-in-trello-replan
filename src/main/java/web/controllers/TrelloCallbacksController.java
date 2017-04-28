@@ -73,7 +73,7 @@ public class TrelloCallbacksController {
                 }
 
                 String onHoldListId =  persistenceController.getListId(boardId,"Ready");
-                System.out.println("On-hold list id: " + onHoldListId);
+                System.out.println("Ready list id: " + onHoldListId);
                 trelloService.moveCards(dependingCards,onHoldListId,userToken);
 
                 //posar green label a les següents card

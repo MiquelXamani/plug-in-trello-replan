@@ -177,8 +177,9 @@ public class TrelloService {
         dependsText += encodeURIComponent(cardName);
         System.out.println(dependsText);
         vars.put("depends",dependsText);
+        url = "https://api.trello.com/1/search?query=board%3A"+boardId+"%20%26%20description%3A"+dependsText+"&modelTypes=cards&key="+key+"&token="+userToken;
         System.out.println(url);
-        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
+        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
         List <Card> cardsFound = searchCardResponse.getCards();
         System.out.println("Cards found size: " + cardsFound.size());
         boolean found = false;
