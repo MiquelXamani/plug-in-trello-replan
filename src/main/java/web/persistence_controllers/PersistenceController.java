@@ -61,8 +61,9 @@ public class PersistenceController {
         }
     }
 
-    public boolean isReadyList(String idList){
-        List<ListTrelloPersist> listTrelloPersist = listTrelloRepository.findByIdAndName(idList,"Done");
+    public boolean isReadyList(String boardId, String idList){
+        //TODO: ha d'obtenir un sol objecte, no una llista
+        List<ListTrelloPersist> listTrelloPersist = listTrelloRepository.findByIdAndNameAndBoardId(idList,"Done",boardId);
         if(listTrelloPersist.size() > 0){
             return true;
         }
@@ -89,5 +90,9 @@ public class PersistenceController {
     public String getPurpleLabelId(String boardId){
         LabelPersist labelPersist = labelRepository.findByColorAndBoardId("purple",boardId);
         return labelPersist.getId();
+    }
+
+    public String getListId(String boardId, String name){
+        return listTrelloRepository.findByNameAndBoardId(name,boardId).getId();
     }
 }

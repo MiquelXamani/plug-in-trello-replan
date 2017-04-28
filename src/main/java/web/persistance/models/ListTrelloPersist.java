@@ -2,15 +2,14 @@ package web.persistance.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.groups.ConvertGroup;
 
-/**
- * Created by Miquel on 28/03/2017.
- */
+@Table(
+        uniqueConstraints= {
+                @UniqueConstraint(columnNames = {"name", "idBoard"})
+        }
+)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 public class ListTrelloPersist {

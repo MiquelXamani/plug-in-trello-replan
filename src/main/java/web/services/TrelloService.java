@@ -3,8 +3,11 @@ package web.services;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import web.domain.*;
+import web.domain.aux_classes.SearchCardResponse;
 import web.persistance.models.User;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -164,4 +167,62 @@ public class TrelloService {
         return restTemplate.postForObject(url,input,String[].class,vars);
     }
 
+    public List<Card> getDependingCards(String boardId, String cardId, String cardName, String userToken){
+        url = "https://api.trello.com/1/search?query=board%3A{boardId}%20%26%20description%3A{depends}&modelTypes=cards&key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        vars.put("boardId",boardId);
+        String dependsText = "depends%20on%3A%20";
+        dependsText += encodeURIComponent(cardName);
+        System.out.println(dependsText);
+        vars.put("depends",dependsText);
+        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
+        List <Card> cardsFound = searchCardResponse.getCards();
+        boolean found = false;
+        //this call not only returns depending cards, it also returns the card moved to done list
+        for(int i = 0; !found && i < cardsFound.size(); i++){
+            if(cardsFound.get(i).getId().equals(cardId)){
+                found = true;
+                System.out.println("Card found: " + cardsFound.remove(i).getName());
+                //cardsFound.remove(i);
+            }
+        }
+        return cardsFound;
+    }
+
+    public void moveCards(List<Card> cards, String listId, String userToken){
+        url = "https://api.trello.com/1/cards/{cardId}?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        input = new HashMap<>();
+        input.put("idList",listId);
+        for (Card card : cards) {
+            vars.put("cardId",card.getId());
+            restTemplate.put(url,input,vars);
+        }
+    }
+
+    private String encodeURIComponent(String component){
+        String result;
+
+        try
+        {
+            result = URLEncoder.encode(component, "UTF-8")
+                    .replaceAll("\\%21", "!")
+                    .replaceAll("\\%27", "'")
+                    .replaceAll("\\%28", "(")
+                    .replaceAll("\\%29", ")")
+                    .replaceAll("\\%7E", "~");
+        }
+
+        // This exception should never occur.
+        catch (UnsupportedEncodingException e)
+        {
+            result = component;
+        }
+
+        return result;
+    }
 }
