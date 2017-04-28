@@ -177,8 +177,10 @@ public class TrelloService {
         dependsText += encodeURIComponent(cardName);
         System.out.println(dependsText);
         vars.put("depends",dependsText);
+        System.out.println(url);
         SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
         List <Card> cardsFound = searchCardResponse.getCards();
+        System.out.println("Cards found size: " + cardsFound.size());
         boolean found = false;
         //this call not only returns depending cards, it also returns the card moved to done list
         for(int i = 0; !found && i < cardsFound.size(); i++){
