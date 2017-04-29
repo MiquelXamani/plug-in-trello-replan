@@ -169,7 +169,7 @@ public class TrelloService {
 
     public List<Card> getDependingCards(String boardId, String cardId, String cardName, String userToken){
         //url = "https://api.trello.com/1/search?query=board%3A{boardId}%20%26%20description%3A{depends}&modelTypes=cards&key={key}&token={token}";
-        url = "https://api.trello.com/1/search?query=idBoards:"+boardId+"&key="+key+"&token="+userToken;
+        url = "https://api.trello.com/1/search?query=board:"+boardId+"&key="+key+"&token="+userToken;
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
