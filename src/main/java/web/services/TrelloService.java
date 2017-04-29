@@ -180,6 +180,7 @@ public class TrelloService {
         System.out.println("https://api.trello.com/1/search?query=board:"+boardId+"description:depends on: "+cardName+"&key="+key+"&token="+userToken);
         //List <Card> cardsFound = new ArrayList<>(); //for testing
         List <Card> cardsFound = searchCardResponse.getCards();
+        System.out.println("Cards in response number: " + searchCardResponse.getCards());
         System.out.println("Cards found size: " + cardsFound.size());
         boolean found = false;
         //this call not only returns depending cards, it also returns the card moved to done list
