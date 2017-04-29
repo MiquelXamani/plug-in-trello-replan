@@ -168,14 +168,17 @@ public class TrelloService {
     }
 
     public List<Card> getDependingCards(String boardId, String cardId, String cardName, String userToken){
-        url = "https://api.trello.com/1/search?query=board:{boardId} description:depends on: {cardName}&cards_limit=1&key={key}&token={token}";
+        //url = "https://api.trello.com/1/search?query=board:{boardId} description:depends on: {cardName}&cards_limit=1&key={key}&token={token}";
+        url = "https://api.trello.com/1/search?query=board:"+boardId+" description:depends on: "+cardName+"&cards_limit=1&key="+key+"&token="+userToken";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
         vars.put("boardId",boardId);
         vars.put("cardName",cardName);
-        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
-        String s = restTemplate.getForObject(url,String.class,vars);
+        //SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
+        //String s = restTemplate.getForObject(url,String.class,vars);
+        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
+        String s = restTemplate.getForObject(url,String.class);
         System.out.println(s);
         System.out.println("https://api.trello.com/1/search?query=board:"+boardId+" description:depends on: "+cardName+"&cards_limit=1&key="+key+"&token="+userToken);
         //List <Card> cardsFound = new ArrayList<>(); //for testing
