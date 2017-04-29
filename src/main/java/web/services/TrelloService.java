@@ -174,14 +174,13 @@ public class TrelloService {
         vars.put("token",userToken);
         vars.put("boardId",boardId);
         vars.put("cardName",cardName);
-        //SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
-        String s = restTemplate.getForObject(url,String.class,vars);
-        //String s = restTemplate.getForObject(url,String.class);
-        System.out.println(s);
+        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
+        //String s = restTemplate.getForObject(url,String.class,vars);
+        //System.out.println(s);
         System.out.println("https://api.trello.com/1/search?query=board:"+boardId+"description:depends on: "+cardName+"&key="+key+"&token="+userToken);
-        List <Card> cardsFound = new ArrayList<>(); //for testing
-        //List <Card> cardsFound = searchCardResponse.getCards();
-        //System.out.println("Cards found size: " + cardsFound.size());
+        //List <Card> cardsFound = new ArrayList<>(); //for testing
+        List <Card> cardsFound = searchCardResponse.getCards();
+        System.out.println("Cards found size: " + cardsFound.size());
         boolean found = false;
         //this call not only returns depending cards, it also returns the card moved to done list
         for(int i = 0; !found && i < cardsFound.size(); i++){
