@@ -19,4 +19,12 @@ public class SearchCardResponse {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
+
+    public String printCardNames(){
+        String result = "";
+        for(int i=0; i< cards.size(); i++){
+            result += "Card " + i + ": " + cards.get(i).getName() + "\n";
+        }
+        return result;
+    }
 }
