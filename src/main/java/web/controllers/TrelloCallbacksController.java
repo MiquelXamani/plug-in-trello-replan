@@ -43,7 +43,7 @@ public class TrelloCallbacksController {
                 String userToken = "b9af2c827b36369367e5416dcccb657a949f4745f1b41ee7f70d2fe91f78165e";
 
                 //borrar label de la card
-                System.out.println("Board id: " + action.getData().getBoard().getId());
+                System.out.println("Board id: " + boardId);
                 String greenLabelId = persistenceController.getGreenLabelId(boardId);
                 System.out.println("Green label id: " + greenLabelId);
                 Card card = response.getModel();

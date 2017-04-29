@@ -169,7 +169,7 @@ public class TrelloService {
 
     public List<Card> getDependingCards(String boardId, String cardId, String cardName, String userToken){
         //url = "https://api.trello.com/1/search?query=board%3A{boardId}%20%26%20description%3A{depends}&modelTypes=cards&key={key}&token={token}";
-        url = "https://api.trello.com/1/search?query=description%3A{depends}&idBoards={boardId}&modelTypes=cards&key={key}&token={token}";
+        url = "https://api.trello.com/1/search?query=idBoards:[{boardId}]&key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
@@ -177,13 +177,13 @@ public class TrelloService {
         String dependsText = "depends%20on%3A%20";
         dependsText += encodeURIComponent(cardName);
         System.out.println(dependsText);
-        vars.put("depends",dependsText);
+        //vars.put("depends",dependsText);
         //SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
         String s = restTemplate.getForObject(url,String.class,vars);
         System.out.println(s);
         List <Card> cardsFound = new ArrayList<>(); //for testing
         //List <Card> cardsFound = searchCardResponse.getCards();
-        System.out.println("Cards found size: " + cardsFound.size());
+        //System.out.println("Cards found size: " + cardsFound.size());
         boolean found = false;
         //this call not only returns depending cards, it also returns the card moved to done list
         for(int i = 0; !found && i < cardsFound.size(); i++){
