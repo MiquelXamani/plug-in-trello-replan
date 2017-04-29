@@ -169,7 +169,7 @@ public class TrelloService {
 
     public List<Card> getDependingCards(String boardId, String cardId, String cardName, String userToken){
         //url = "https://api.trello.com/1/search?query=board:{boardId} description:depends on: {cardName}&cards_limit=1&key={key}&token={token}";
-        url = "https://api.trello.com/1/search?query=board:"+boardId+" description:depends on: "+cardName+"&cards_limit=5&key="+key+"&token="+userToken;
+        url = "https://api.trello.com/1/search?query=board:"+boardId+" description:depends on: "+cardName+"&cards_limit=1000&key="+key+"&token="+userToken;
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
@@ -181,7 +181,7 @@ public class TrelloService {
         System.out.println(searchCardResponse.printCardNames());
         //String s = restTemplate.getForObject(url,String.class);
         //System.out.println(s);
-        System.out.println("https://api.trello.com/1/search?query=board:"+boardId+" description:depends on: "+cardName+"&cards_limit=5&key="+key+"&token="+userToken);
+        System.out.println(url);
         //List <Card> cardsFound = new ArrayList<>(); //for testing
         List <Card> cardsFound = searchCardResponse.getCards();
         System.out.println("Cards in response number: " + searchCardResponse.getCards().size());
