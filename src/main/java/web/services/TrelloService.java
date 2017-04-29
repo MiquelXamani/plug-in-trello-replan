@@ -174,7 +174,7 @@ public class TrelloService {
         vars.put("token",userToken);
         vars.put("boardId",boardId);
         vars.put("cardName",cardName);
-        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
+        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
         //String s = restTemplate.getForObject(url,String.class,vars);
         //String s = restTemplate.getForObject(url,String.class);
         //System.out.println(s);
