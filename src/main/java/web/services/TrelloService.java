@@ -168,24 +168,20 @@ public class TrelloService {
     }
 
     public List<Card> getDependingCards(String boardId, String cardId, String cardName, String userToken){
-        //url = "https://api.trello.com/1/search?query=board%3A{boardId}%20%26%20description%3A{depends}&modelTypes=cards&key={key}&token={token}";
-        url = "https://api.trello.com/1/search?query=board:"+boardId+" description:depends on: "+cardName+"&key="+key+"&token="+userToken;
+        url = "https://api.trello.com/1/search?query=board:{boardId} description:depends on: {cardName}&key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
         vars.put("boardId",boardId);
-        String dependsText = "depends%20on%3A%20";
-        dependsText += encodeURIComponent(cardName);
-        System.out.println(dependsText);
-        //vars.put("depends",dependsText);
-        //SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
+        vars.put("cardName",cardName);
+        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
         //String s = restTemplate.getForObject(url,String.class,vars);
-        String s = restTemplate.getForObject(url,String.class);
-        System.out.println(s);
-        System.out.println(url);
-        List <Card> cardsFound = new ArrayList<>(); //for testing
-        //List <Card> cardsFound = searchCardResponse.getCards();
-        //System.out.println("Cards found size: " + cardsFound.size());
+        //String s = restTemplate.getForObject(url,String.class);
+        //System.out.println(s);
+        //System.out.println(url);
+        //List <Card> cardsFound = new ArrayList<>(); //for testing
+        List <Card> cardsFound = searchCardResponse.getCards();
+        System.out.println("Cards found size: " + cardsFound.size());
         boolean found = false;
         //this call not only returns depending cards, it also returns the card moved to done list
         for(int i = 0; !found && i < cardsFound.size(); i++){
@@ -209,28 +205,5 @@ public class TrelloService {
             vars.put("cardId",card.getId());
             restTemplate.put(url,input,vars);
         }
-    }
-
-    private String encodeURIComponent(String component){
-        String result;
-
-        try
-        {
-            result = URLEncoder.encode(component, "UTF-8")
-                    .replaceAll("\\+", "%20")
-                    .replaceAll("\\%21", "!")
-                    .replaceAll("\\%27", "'")
-                    .replaceAll("\\%28", "(")
-                    .replaceAll("\\%29", ")")
-                    .replaceAll("\\%7E", "~");
-        }
-
-        // This exception should never occur.
-        catch (UnsupportedEncodingException e)
-        {
-            result = component;
-        }
-
-        return result;
     }
 }
