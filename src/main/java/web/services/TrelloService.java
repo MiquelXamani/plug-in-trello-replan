@@ -174,20 +174,20 @@ public class TrelloService {
         vars.put("token",userToken);
         vars.put("boardId",boardId);
         vars.put("cardName",cardName);
-        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
-        //String s = restTemplate.getForObject(url,String.class,vars);
+        //SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
+        String s = restTemplate.getForObject(url,String.class,vars);
         //String s = restTemplate.getForObject(url,String.class);
-        //System.out.println(s);
-        //System.out.println(url);
-        //List <Card> cardsFound = new ArrayList<>(); //for testing
-        List <Card> cardsFound = searchCardResponse.getCards();
-        System.out.println("Cards found size: " + cardsFound.size());
+        System.out.println(s);
+        System.out.println("https://api.trello.com/1/search?query=board:"+boardId+"description:depends on: "+cardName+"&key="+key+"&token="+userToken);
+        List <Card> cardsFound = new ArrayList<>(); //for testing
+        //List <Card> cardsFound = searchCardResponse.getCards();
+        //System.out.println("Cards found size: " + cardsFound.size());
         boolean found = false;
         //this call not only returns depending cards, it also returns the card moved to done list
         for(int i = 0; !found && i < cardsFound.size(); i++){
             if(cardsFound.get(i).getId().equals(cardId)){
                 found = true;
-                System.out.println("Card found: " + cardsFound.remove(i).getName());
+                System.out.println("Card removed: " + cardsFound.remove(i).getName());
                 //cardsFound.remove(i);
             }
         }

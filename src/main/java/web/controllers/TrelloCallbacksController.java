@@ -45,15 +45,12 @@ public class TrelloCallbacksController {
                 //borrar label de la card
                 System.out.println("Board id: " + boardId);
                 String greenLabelId = persistenceController.getGreenLabelId(boardId);
-                System.out.println("Green label id: " + greenLabelId);
                 Card card = response.getModel();
                 String cardId = card.getId();
                 List<String> idLabels = card.getIdLabels();
                 boolean found = false;
                 for(int i = 0; !found && i < idLabels.size(); i++){
-                    System.out.println("id label" + i + ": " + idLabels.get(i));
                     if(idLabels.get(i).equals(greenLabelId)){
-                        System.out.println("GREEN LABEL FOUND!");
                         found = true;
                         System.out.println("Card id: "+ cardId);
                         trelloService.removeLabel(cardId,greenLabelId,userToken);
@@ -62,7 +59,6 @@ public class TrelloCallbacksController {
 
                 //afegir nova label a la card
                 String purpleLabelId = persistenceController.getPurpleLabelId(boardId);
-                System.out.println("Purple label id: " + purpleLabelId);
                 trelloService.addLabel(card.getId(),purpleLabelId,userToken);
 
                 //moure les cards que depenien de la card moguda d'on-hold a ready
@@ -72,9 +68,8 @@ public class TrelloCallbacksController {
                     System.out.println(c.getName());
                 }
 
-                String onHoldListId =  persistenceController.getListId(boardId,"Ready");
-                System.out.println("Ready list id: " + onHoldListId);
-                trelloService.moveCards(dependingCards,onHoldListId,userToken);
+                String readyListId =  persistenceController.getListId(boardId,"Ready");
+                trelloService.moveCards(dependingCards,readyListId,userToken);
 
                 //posar green label a les següents card
 
