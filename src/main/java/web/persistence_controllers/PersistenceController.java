@@ -61,9 +61,12 @@ public class PersistenceController {
             System.out.println(l.getId());
         }
     }
-    //retorna User2 no userpersist
-    public UserPersist getBoardUser(String boardId){
-        return boardRepository.findOne(boardId).getUser();
+
+    public User2 getBoardUser(String boardId){
+        UserPersist userPersist = boardRepository.findOne(boardId).getUser();
+        User2 user = new User2(userPersist.getUsername(),userPersist.getPassword(),userPersist.getTrelloToken(),userPersist.getTrelloUsername(),userPersist.getTrelloUserId());
+        user.setUserId(userPersist.getUserId());
+        return user;
     }
 
     public boolean isReadyList(String boardId, String idList){

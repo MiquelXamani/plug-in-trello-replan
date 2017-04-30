@@ -38,10 +38,10 @@ public class TrelloCallbacksController {
             System.out.println(listAfter.getId() + " " + listAfter.getName());
             if(persistenceController.isReadyList(boardId,listAfter.getId())){
                 System.out.println("CARD MOVED TO DONE LIST");
+
+                //get usertoken
                 TrelloService trelloService = new TrelloService();
                 String userToken = persistenceController.getBoardUser(boardId).getTrelloToken();
-                //TODO: canviar usertoken per un de veritat
-                //String userToken = "b9af2c827b36369367e5416dcccb657a949f4745f1b41ee7f70d2fe91f78165e";
 
                 //borrar label de la card
                 System.out.println("Board id: " + boardId);
