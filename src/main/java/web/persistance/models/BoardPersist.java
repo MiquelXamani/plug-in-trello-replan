@@ -24,7 +24,7 @@ public class BoardPersist {
     private List<ListTrelloPersist> lists;
     @ManyToOne
     @JoinColumn(name = "userId")
-    private User user;
+    private UserPersist user;
 
     public BoardPersist(){
     }
@@ -75,11 +75,11 @@ public class BoardPersist {
         this.lists = lists;
     }
 
-    public User getUser() {
+    public UserPersist getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserPersist user) {
         this.user = user;
     }
 }

@@ -4,7 +4,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import web.domain.*;
 import web.domain.aux_classes.SearchCardResponse;
-import web.persistance.models.User;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -30,7 +29,7 @@ public class TrelloService {
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
-        User u = restTemplate.getForObject(url,User.class,vars);
+        User2 u = restTemplate.getForObject(url,User2.class,vars);
         return u.getUsername();
     }
 

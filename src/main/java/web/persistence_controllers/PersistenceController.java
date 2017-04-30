@@ -5,11 +5,9 @@ import org.springframework.stereotype.Component;
 import web.domain.Board;
 import web.domain.Label;
 import web.domain.ListTrello;
+import web.domain.User2;
 import web.persistance.models.*;
-import web.persistance.repositories.BoardRepository;
-import web.persistance.repositories.EndpointRepository;
-import web.persistance.repositories.LabelRepository;
-import web.persistance.repositories.ListTrelloRepository;
+import web.persistance.repositories.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +22,11 @@ public class PersistenceController {
     private ListTrelloRepository listTrelloRepository;
     @Autowired(required = true)
     private EndpointRepository endpointRepository;
+    @Autowired (required = true)
+    private UserRepository userRepository;
 
 
-    public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists, User user){
+    public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists, User2 user2){
         //create board
         BoardPersist boardPersist = new BoardPersist(board.getId(),board.getName(),board.getUrl());
 
@@ -48,6 +48,7 @@ public class PersistenceController {
         }
         boardPersist.setLists(listTrelloPersists);
 
+        UserPersist user = userRepository.findByUsername(user2.getUsername());
         user.addBoard(boardPersist);
         boardPersist.setUser(user);
 
@@ -60,8 +61,8 @@ public class PersistenceController {
             System.out.println(l.getId());
         }
     }
-
-    public User getBoardUser(String boardId){
+    //retorna User2 no userpersist
+    public UserPersist getBoardUser(String boardId){
         return boardRepository.findOne(boardId).getUser();
     }
 
@@ -98,5 +99,20 @@ public class PersistenceController {
 
     public String getListId(String boardId, String name){
         return listTrelloRepository.findByNameAndBoardId(name,boardId).getId();
+    }
+
+    public User2 getUser(String username){
+        UserPersist user = userRepository.findByUsername(username);
+        if(user == null) return null;
+        User2 user2 = new User2(user.getUsername(),user.getPassword(),user.getTrelloToken(),user.getTrelloUsername(),user.getTrelloUserId());
+        user2.setUserId(user.getUserId());
+        return user2;
+    }
+
+    public User2 saveUser(User2 user2){
+        UserPersist user = new UserPersist(user2.getUsername(),user2.getPassword(),user2.getTrelloToken(),user2.getTrelloUsername(),user2.getTrelloUserId());
+        user = userRepository.save(user);
+        user2.setUserId(user.getUserId());
+        return user2;
     }
 }

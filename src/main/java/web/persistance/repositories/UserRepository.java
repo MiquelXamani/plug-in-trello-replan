@@ -2,9 +2,9 @@ package web.persistance.repositories;
 
 
 import org.springframework.data.repository.CrudRepository;
-import web.persistance.models.User;
+import web.persistance.models.UserPersist;
 
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<UserPersist, Long> {
 
-    User findByUsername(String username);
+    UserPersist findByUsername(String username);
 }

@@ -6,9 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.domain.*;
-import web.persistance.models.User;
 import web.persistance.repositories.ResourceMemberRepository;
-import web.persistance.repositories.UserRepository;
 import web.persistance.models.ResourceMember;
 import web.persistence_controllers.PersistenceController;
 import web.services.ReplanService;
@@ -19,8 +17,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/matchings")
 public class MatchingsController {
-    @Autowired(required = true)
-    private UserRepository userRepository;
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
     private PersistenceController persistenceController;
@@ -35,7 +31,7 @@ public class MatchingsController {
         Resource r;
         Member m;
         ResourceMember resourceMember;
-        User u = userRepository.findByUsername(username);
+        User2 u = persistenceController.getUser(username);
         Long userId = u.getUserId();
         List <ResourceMember> resourceMembers = new ArrayList<>();
         for (Matching matching: newMatchings) {
@@ -64,7 +60,7 @@ public class MatchingsController {
 
     @RequestMapping(value = "/delete-matchings", method = RequestMethod.POST)
     public List<ResourceMember> deleteMatchings(@RequestParam(value = "username") String username, @RequestBody Matching[] matchingsToDelete){
-        User u = userRepository.findByUsername(username);
+        User2 u = persistenceController.getUser(username);
         Long userId = u.getUserId();
         List <ResourceMember> resourceMembersDeleted = new ArrayList<>();
         ResourceMember resourceMember;
@@ -99,8 +95,9 @@ public class MatchingsController {
         Plan plan = replanService.getPlan(url,projectId,releaseId);
         matchingDTO.setPlan(plan);
 
-        User user = userRepository.findByUsername(username);
+        User2 user = persistenceController.getUser(username);
         Long userId = user.getUserId();
+        System.out.println("****************" + userId.toString());
 
 
         //get plan resources without repetitions

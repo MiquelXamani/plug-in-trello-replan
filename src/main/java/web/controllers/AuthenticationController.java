@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import web.persistance.models.User;
+import web.domain.User2;
 import web.persistance.repositories.UserRepository;
+import web.persistence_controllers.PersistenceController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,14 +17,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/authenticate")
 public class AuthenticationController {
-    @Autowired(required = true)
-    private UserRepository userRepository;
+    private PersistenceController persistenceController;
+
+    @Autowired
+    public AuthenticationController(PersistenceController persistenceController){
+        this.persistenceController = persistenceController;
+    }
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<Object> createUser(@RequestBody Map<String,String> authInfo){
         String username = authInfo.get("username");
         String password = authInfo.get("password");
-        User user = userRepository.findByUsername(username);
+        User2 user = persistenceController.getUser(username);
         Map<String,String> errorInfo = new HashMap<>();
         if(user == null){
             errorInfo.put("description","User doesn't exist");

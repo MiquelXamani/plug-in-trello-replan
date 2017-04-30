@@ -1,4 +1,4 @@
-package web.persistance.models;
+package web.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -6,23 +6,17 @@ import javax.persistence.*;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+public class User2 {
     private Long userId;
-    @Column(unique = true)
     private String username;
     private String password;
     private String trelloToken;
     private String trelloUsername;
     private String trelloUserId;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<BoardPersist> boards;
 
-    protected User(){}
+    protected User2(){}
 
-    public User(String username, String password, String trelloToken, String trelloUsername, String trelloUserId){
+    public User2(String username, String password, String trelloToken, String trelloUsername, String trelloUserId){
         this.username = username;
         this.password = password;
         this.trelloToken = trelloToken;
@@ -78,17 +72,6 @@ public class User {
         this.trelloUserId = trelloUserId;
     }
 
-    public List<BoardPersist> getBoards() {
-        return boards;
-    }
-
-    public void setBoards(List<BoardPersist> boards) {
-        this.boards = boards;
-    }
-
-    public void addBoard(BoardPersist boardPersist){
-        this.boards.add(boardPersist);
-    }
 
     @Override
     public String toString() {

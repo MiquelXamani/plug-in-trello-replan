@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import web.domain.User2;
+import web.persistence_controllers.PersistenceController;
 import web.services.TrelloService;
-import web.persistance.models.User;
-import web.persistance.repositories.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,13 +14,17 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UsersController {
-    @Autowired(required = true)
-    private UserRepository userRepository;
+    private PersistenceController persistenceController;
 
+    @Autowired
+    public UsersController(PersistenceController persistenceController){
+        this.persistenceController = persistenceController;
+    }
+/*
     @RequestMapping(method= RequestMethod.GET)//s'ha de passar paràmetre user i si retorna buit vol dir que no ha trobat cap usuari amb aquest username
     public User getUserByUsername(@RequestParam(value = "username") String username){
         return userRepository.findByUsername(username);
-    }
+    }*/
 
     /*//funció per retornar tots els users (només per test)
     @RequestMapping(method=RequestMethod.GET)
@@ -34,15 +38,15 @@ public class UsersController {
     }*/
 
     @RequestMapping(method= RequestMethod.POST)
-    public ResponseEntity<Object> createUser(@RequestBody User user){
-            User u = userRepository.findByUsername(user.getUsername());
+    public ResponseEntity<Object> createUser(@RequestBody User2 user){
+            User2 u = persistenceController.getUser(user.getUsername());
             if(u == null){
                 //crida api trello per saber username
                 TrelloService trelloService = new TrelloService();
                 String trelloUserUsername = trelloService.getTrelloUserUsername(user.getTrelloToken());
                 user.setTrelloUsername(trelloUserUsername);
 
-                User userCreated = userRepository.save(user);
+                User2 userCreated = persistenceController.saveUser(user);
                 return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
             }
             else {

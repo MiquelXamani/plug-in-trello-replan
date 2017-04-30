@@ -6,7 +6,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import web.persistance.models.ResourceMember;
-import web.persistance.models.User;
+import web.persistance.models.UserPersist;
 import web.persistance.repositories.BoardRepository;
 import web.persistance.repositories.ResourceMemberRepository;
 import web.persistance.repositories.UserRepository;
@@ -27,7 +27,7 @@ public class InitialDataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        User user = new User("Miquel","123","b9af2c827b36369367e5416dcccb657a949f4745f1b41ee7f70d2fe91f78165e","miquelxamani1","585bec12bec126f26851c2fb");
+        UserPersist user = new UserPersist("Miquel","123","b9af2c827b36369367e5416dcccb657a949f4745f1b41ee7f70d2fe91f78165e","miquelxamani1","585bec12bec126f26851c2fb");
         userRepository.save(user);
 
         persistenceController.saveEndpoint("https://lit-savannah-17077.herokuapp.com/api/ui/v1","Development: Heroku Deployment");

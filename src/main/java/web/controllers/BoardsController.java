@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import web.domain.*;
-import web.persistance.models.User;
 import web.persistance.repositories.*;
 import web.persistance.models.ResourceMember;
 import web.persistence_controllers.PersistenceController;
@@ -22,8 +21,6 @@ import java.util.*;
 @RequestMapping("/boards")
 public class BoardsController {
     @Autowired(required = true)
-    private UserRepository userRepository;
-    @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
     private PersistenceController persistenceController;
 
@@ -35,7 +32,7 @@ public class BoardsController {
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO) throws ParseException {
         System.out.println("BOARD CONTROLLER REQUEST RECEIVED");
-        User u = userRepository.findByUsername(planBoardDTO.getUsername());
+        User2 u = persistenceController.getUser(planBoardDTO.getUsername());
         System.out.println(planBoardDTO.getUsername());
         System.out.println(u.getTrelloToken());
         String trelloToken = u.getTrelloToken();
@@ -44,7 +41,6 @@ public class BoardsController {
 
         //Create board
         Board board = trelloService.createBoard(planBoardDTO.getBoardName(),planBoardDTO.getTeamId(),trelloToken);
-        //Board b22 = boardRepository.save(board);
         String boardId = board.getId();
         System.out.println("Board id: " + boardId);
 
