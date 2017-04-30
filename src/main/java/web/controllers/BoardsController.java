@@ -112,13 +112,12 @@ public class BoardsController {
                 }
                 resourcesAddedBoard.put(resourceId,trelloUserId);
             }
+            else{
+                trelloUserId = resourcesAddedBoard.get(resourceId);
+            }
 
             feature = j.getFeature();
             featureId = feature.getId();
-            //si el recurs ja està en el map, es recupera
-            if(trelloUserId.equals("")){
-                trelloUserId = resourcesAddedBoard.get(resourceId);
-            }
 
             //Add member to a card if already exists a card for the feature
             if(featuresConverted.containsKey(featureId)){
@@ -150,31 +149,39 @@ public class BoardsController {
                 startDate = dateFormat.parse(j.getStarts());
                 String description = feature.getDescription() + "\n\n";
                 description += "**Start date:** " + dateFormat2.format(startDate) + "\n**Depends on:**";
-                if(j.getDepends_on().size() == 0){
+                int dependsOnSize = j.getDepends_on().size();
+                if( dependsOnSize == 0){
                     description += " -";
                 }
                 else {
+                    int count = 0;
                     for (Job j2 : j.getDepends_on()) {
                         description += " ("+ Math.round(j2.getFeature().getEffort()) +") " + j2.getFeature().getName();
+                        if(count < dependsOnSize - 1) {
+                            description += " ,";
+                        }
+                        ++count;
                     }
                 }
                 card.setDesc(description);
                 featuresConverted.put(featureId,card);
             }
 
-            //IMPORTANT: firstjobs are related to trello users, no green labels will be added to those cards that are "first job" only for nonassociated resources
-            if(!trelloUserId.equals("") && firstsJobs.containsKey(trelloUserId)){
-                Job j3 = firstsJobs.get(trelloUserId);
-                String dateAnt = j3.getStarts();
-                Date d1 = dateFormat.parse(dateAnt);
-                Date d2 = dateFormat.parse(j.getStarts());
-                //if d2 is earlier than d1, replace
-                if(d2.compareTo(d1) <= 0) {
+            //IMPORTANT: firstjobs are related to trello users, no green labels will be added to those cards that are "first job" only of nonassociated resources
+            if(!trelloUserId.equals("")) {
+                if (firstsJobs.containsKey(trelloUserId)) {
+                    Job j3 = firstsJobs.get(trelloUserId);
+                    String dateAnt = j3.getStarts();
+                    Date d1 = dateFormat.parse(dateAnt);
+                    Date d2 = dateFormat.parse(j.getStarts());
+                    //if d2 is earlier than d1, replace
+                    if (d2.compareTo(d1) <= 0) {
+                        firstsJobs.put(trelloUserId, j);
+                    }
+                }
+                else {
                     firstsJobs.put(trelloUserId, j);
                 }
-            }
-            else{
-                firstsJobs.put(trelloUserId,j);
             }
 
         }
