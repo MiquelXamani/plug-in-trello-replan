@@ -3,10 +3,7 @@ package web.persistance.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import web.domain.Board;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
@@ -25,6 +22,9 @@ public class BoardPersist {
     private List<LabelPersist> labels;
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<ListTrelloPersist> lists;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
 
     public BoardPersist(){
     }
@@ -73,5 +73,13 @@ public class BoardPersist {
 
     public void setLists(List<ListTrelloPersist> lists) {
         this.lists = lists;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

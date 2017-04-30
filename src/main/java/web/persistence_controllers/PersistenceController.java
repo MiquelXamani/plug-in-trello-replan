@@ -5,10 +5,7 @@ import org.springframework.stereotype.Component;
 import web.domain.Board;
 import web.domain.Label;
 import web.domain.ListTrello;
-import web.persistance.models.BoardPersist;
-import web.persistance.models.Endpoint;
-import web.persistance.models.LabelPersist;
-import web.persistance.models.ListTrelloPersist;
+import web.persistance.models.*;
 import web.persistance.repositories.BoardRepository;
 import web.persistance.repositories.EndpointRepository;
 import web.persistance.repositories.LabelRepository;
@@ -29,7 +26,7 @@ public class PersistenceController {
     private EndpointRepository endpointRepository;
 
 
-    public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists){
+    public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists, User user){
         //create board
         BoardPersist boardPersist = new BoardPersist(board.getId(),board.getName(),board.getUrl());
 
@@ -51,6 +48,9 @@ public class PersistenceController {
         }
         boardPersist.setLists(listTrelloPersists);
 
+        user.addBoard(boardPersist);
+        boardPersist.setUser(user);
+
         //save db
         boardRepository.save(boardPersist);
 
@@ -59,6 +59,10 @@ public class PersistenceController {
             System.out.println(l.getName());
             System.out.println(l.getId());
         }
+    }
+
+    public User getBoardUser(String boardId){
+        return boardRepository.findOne(boardId).getUser();
     }
 
     public boolean isReadyList(String boardId, String idList){

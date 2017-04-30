@@ -79,7 +79,7 @@ public class BoardsController {
         }
 
         //persistence
-        persistenceController.saveBoard(board,labelList,lists);
+        persistenceController.saveBoard(board,labelList,lists,u);
 
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId

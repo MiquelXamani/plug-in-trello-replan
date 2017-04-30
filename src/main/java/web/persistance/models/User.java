@@ -3,6 +3,7 @@ package web.persistance.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
@@ -16,6 +17,8 @@ public class User {
     private String trelloToken;
     private String trelloUsername;
     private String trelloUserId;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BoardPersist> boards;
 
     protected User(){}
 
@@ -73,6 +76,18 @@ public class User {
 
     public void setTrelloUserId(String trelloUserId) {
         this.trelloUserId = trelloUserId;
+    }
+
+    public List<BoardPersist> getBoards() {
+        return boards;
+    }
+
+    public void setBoards(List<BoardPersist> boards) {
+        this.boards = boards;
+    }
+
+    public void addBoard(BoardPersist boardPersist){
+        this.boards.add(boardPersist);
     }
 
     @Override
