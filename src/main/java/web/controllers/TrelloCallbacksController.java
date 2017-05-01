@@ -89,7 +89,7 @@ public class TrelloCallbacksController {
                 System.out.println("green labels added to: ");
                 for (Card nextCard:nextCards) {
                     System.out.println(nextCard.getName());
-                    if(!cardHasLabel(greenLabelId,card.getIdLabels())) {
+                    if(!cardHasLabel(greenLabelId,nextCard.getIdLabels())) {
                         trelloService.addLabel(nextCard.getId(), greenLabelId, userToken);
                     }
                 }
