@@ -1,5 +1,6 @@
 package web.services;
 
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import web.domain.*;
@@ -144,14 +145,20 @@ public class TrelloService {
         return createdWebhooks;
     }
 
-    public void removeLabel(String cardId, String labelId, String userToken) throws RestClientException{
+    public void removeLabel(String cardId, String labelId, String userToken){
         url = "https://api.trello.com/1/cards/{cardId}/idLabels/{labelId}?key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
         vars.put("cardId",cardId);
         vars.put("labelId",labelId);
-        restTemplate.delete(url,vars);
+        try {
+            restTemplate.delete(url, vars);
+        }
+        catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode());
+            System.out.println(e.getResponseBodyAsString());
+        }
     }
 
     public String[] addLabel(String cardId, String labelId, String userToken){
@@ -164,7 +171,15 @@ public class TrelloService {
         input = new HashMap<>();
         input.put("value",labelId);
         System.out.println("Add label parameters: cardId = " + cardId + " labelId = " + labelId + " key = " + key + " token = " + userToken);
-        return restTemplate.postForObject(url,input,String[].class,vars);
+        String[] result = new String[0];
+        try {
+            result = restTemplate.postForObject(url, input, String[].class, vars);
+        }
+        catch (HttpClientErrorException e) {
+            System.out.println(e.getStatusCode());
+            System.out.println(e.getResponseBodyAsString());
+        }
+        return result;
     }
 
     public List<Card> getDependingCards(String boardId, String cardId, String cardName, String userToken){
