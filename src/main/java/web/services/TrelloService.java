@@ -247,7 +247,7 @@ public class TrelloService {
             System.out.println("-------------------");
             vars.put("memberId",id);
             System.out.println("https://api.trello.com/1/search?query=board:"+boardId+" member:"+id+"&cards_limit=1000&key="+key+"&token="+userToken);
-            SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
+            SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
             System.out.println(searchCardResponse.printCardNames());
             nextCardId = getNextCardId(searchCardResponse.getCards(),doneListId);
             if(!nextCardId.equals("")){
