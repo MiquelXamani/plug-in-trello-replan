@@ -163,6 +163,7 @@ public class TrelloService {
         vars.put("labelId",labelId);
         input = new HashMap<>();
         input.put("value",labelId);
+        System.out.println("Add label parameters: cardId = " + cardId + " labelId = " + labelId + " key = " + key + " token = " + userToken);
         return restTemplate.postForObject(url,input,String[].class,vars);
     }
 
