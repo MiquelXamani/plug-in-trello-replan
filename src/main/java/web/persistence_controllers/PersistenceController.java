@@ -69,13 +69,17 @@ public class PersistenceController {
         return user;
     }
 
-    public boolean isReadyList(String boardId, String idList){
+    public boolean isDoneList(String boardId, String idList){
         //TODO: ha d'obtenir un sol objecte, no una llista
         List<ListTrelloPersist> listTrelloPersist = listTrelloRepository.findByIdAndNameAndBoardId(idList,"Done",boardId);
         if(listTrelloPersist.size() > 0){
             return true;
         }
         else return false;
+    }
+
+    public String getDoneListId(String boardId){
+        return listTrelloRepository.findByNameAndBoardId("Done",boardId).getId();
     }
 
     public List<Endpoint> getEndpoints(){

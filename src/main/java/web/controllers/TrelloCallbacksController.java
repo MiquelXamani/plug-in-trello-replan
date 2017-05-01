@@ -15,6 +15,7 @@ import web.domain.aux_classes.WebhookCardTrelloResponse;
 import web.persistence_controllers.PersistenceController;
 import web.services.TrelloService;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +30,14 @@ public class TrelloCallbacksController {
     }
 
     @RequestMapping(value = "/cards", method= RequestMethod.POST)
-    public ResponseEntity<String> cardModified(@RequestBody WebhookCardTrelloResponse response) {
+    public ResponseEntity<String> cardModified(@RequestBody WebhookCardTrelloResponse response) throws ParseException {
         System.out.println("Trello notified me!!");
         Action action = response.getAction();
         String boardId = action.getData().getBoard().getId();
         IdNameObject listAfter = action.getData().getListAfter();
         if (action.getType().equals("updateCard") &&  listAfter != null){
             System.out.println(listAfter.getId() + " " + listAfter.getName());
-            if(persistenceController.isReadyList(boardId,listAfter.getId())){
+            if(persistenceController.isDoneList(boardId,listAfter.getId())){
                 System.out.println("CARD MOVED TO DONE LIST");
 
                 //get usertoken
@@ -73,6 +74,14 @@ public class TrelloCallbacksController {
                 trelloService.moveCards(dependingCards,readyListId,userToken);
 
                 //posar green label a les següents card, l'actual de cada membre
+                String doneListId = persistenceController.getDoneListId(boardId);
+                System.out.println(card.getIdMembers().size());
+                List<String> nextCardsIds = trelloService.getNextCardsIds(boardId,card.getIdMembers(),cardId,doneListId,userToken);
+                System.out.println("green labels added to: ");
+                for (String id:nextCardsIds) {
+                    System.out.println(id);
+                    trelloService.addLabel(id,greenLabelId,userToken);
+                }
 
 
             }

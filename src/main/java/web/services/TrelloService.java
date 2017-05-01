@@ -7,10 +7,9 @@ import web.domain.aux_classes.SearchCardResponse;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Miquel on 28/02/2017.
@@ -204,28 +203,59 @@ public class TrelloService {
         }
     }
 
-    public List<Card> getNextCards(String boardId, List<String> idMembers, String cardId, String userToken){
-        url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}+&token={userToken}";
+    //return the card with the earliest start date
+    private String getNextCardId(List<Card> cards, String doneListId) throws ParseException{
+        String description, date, earliestDate = "", earliestCardId = "";
+        String startDateText = "**Start date:** ";
+        int textLength = startDateText.length();
+        String datePattern = "yyyy/MM/dd HH:mm:ss";
+        int dateLength = datePattern.length();
+        int startDateTextIndex, startDateValueIndex, startDateValueIndexFinal;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+        Date d;
+        Date earliestD = new Date();
+
+        for (Card card:cards) {
+            if (!doneListId.equals(card.getIdList())) {
+                description = card.getDesc();
+                startDateTextIndex = description.indexOf(startDateText);
+                if (startDateTextIndex > -1) {
+                    startDateValueIndex = startDateTextIndex + textLength;
+                    startDateValueIndexFinal = startDateValueIndex + dateLength;
+                    date = description.substring(startDateValueIndex, startDateValueIndexFinal);
+                    d = dateFormat.parse(date);
+                    if (earliestDate.equals("") || earliestD.after(d)) {
+                        earliestDate = date;
+                        earliestD = d;
+                        earliestCardId = card.getId();
+                    }
+                }
+            }
+        }
+        return earliestCardId;
+    }
+
+    public List<String> getNextCardsIds(String boardId, List<String> idMembers, String cardId, String doneListId, String userToken) throws ParseException {
+        url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={userToken}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
         vars.put("boardId",boardId);
-
-        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
-        System.out.println(searchCardResponse.printCardNames());
-        System.out.println(url);
-        List <Card> cardsFound = searchCardResponse.getCards();
-        System.out.println("Cards in response number: " + searchCardResponse.getCards().size());
-        System.out.println("Cards found size: " + cardsFound.size());
-        boolean found = false;
-        //this call not only returns depending cards, it also returns the card moved to done list
-        for(int i = 0; !found && i < cardsFound.size(); i++){
-            if(cardsFound.get(i).getId().equals(cardId)){
-                found = true;
-                cardsFound.remove(i);
+        List <String> nextCardIds = new ArrayList<>();
+        String nextCardId;
+        for (String id:idMembers) {
+            System.out.println("-------------------");
+            vars.put("memberId",id);
+            System.out.println("https://api.trello.com/1/search?query=board:"+boardId+" member:"+id+"&cards_limit=1000&key="+key+"&token="+userToken);
+            SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
+            System.out.println(searchCardResponse.printCardNames());
+            nextCardId = getNextCardId(searchCardResponse.getCards(),doneListId);
+            if(!nextCardId.equals("")){
+                System.out.println("next card id: " + nextCardId);
+                nextCardIds.add(nextCardId);
             }
         }
-        return cardsFound;
+        return nextCardIds;
     }
 
 }
