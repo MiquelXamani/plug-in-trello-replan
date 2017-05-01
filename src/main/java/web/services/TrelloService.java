@@ -160,10 +160,8 @@ public class TrelloService {
         catch (HttpClientErrorException e) {
             HttpStatus errorStatus = e.getStatusCode();
             String errorResponse = e.getResponseBodyAsString();
-            if(errorStatus.equals(HttpStatus.BAD_REQUEST) && errorResponse.equals("that label is already on the card")) {
-                System.out.println("Error: " + errorStatus + " msg: " + errorResponse);
-            }
-            else throw e;
+            System.out.println("Error: " + errorStatus + " msg: " + errorResponse);
+            throw e;
         }
     }
 
@@ -230,8 +228,8 @@ public class TrelloService {
     }
 
     //return the card with the earliest start date
-    private String getNextCardId(List<Card> cards, String doneListId) throws ParseException{
-        String description, date, earliestDate = "", earliestCardId = "";
+    private Card getNextCard(List<Card> cards, String doneListId) throws ParseException{
+        String description, date, earliestDate = "";
         String startDateText = "**Start date:** ";
         int textLength = startDateText.length();
         String datePattern = "yyyy/MM/dd HH:mm:ss";
@@ -240,6 +238,7 @@ public class TrelloService {
         SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
         Date d;
         Date earliestD = new Date();
+        Card nextCard = null;
         System.out.println("*** getnexcardid function ***");
         for (Card card:cards) {
             System.out.println(card.getName());
@@ -254,22 +253,22 @@ public class TrelloService {
                     if (earliestDate.equals("") || earliestD.after(d)) {
                         earliestDate = date;
                         earliestD = d;
-                        earliestCardId = card.getId();
+                        nextCard = card;
                     }
                 }
             }
         }
-        return earliestCardId;
+        return nextCard;
     }
 
-    public List<String> getNextCardsIds(String boardId, List<String> idMembers, String doneListId, String userToken) throws ParseException {
+    public List<Card> getNextCards(String boardId, List<String> idMembers, String doneListId, String userToken) throws ParseException {
         //url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={token}";
         //vars = new HashMap<>();
         //vars.put("key",key);
         //vars.put("token",userToken);
         //vars.put("boardId",boardId);
-        List <String> nextCardIds = new ArrayList<>();
-        String nextCardId;
+        List <Card> nextCards = new ArrayList<>();
+        Card nextCard;
         for (String id:idMembers) {
             System.out.println("-------------------");
             //vars.put("memberId",id);
@@ -279,13 +278,13 @@ public class TrelloService {
             SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
             System.out.println("cards found: " + searchCardResponse.getCards().size());
             System.out.println(searchCardResponse.printCardNames());
-            nextCardId = getNextCardId(searchCardResponse.getCards(),doneListId);
-            if(!nextCardId.equals("")){
-                System.out.println("next card id: " + nextCardId);
-                nextCardIds.add(nextCardId);
+            nextCard = getNextCard(searchCardResponse.getCards(),doneListId);
+            if(nextCard != null){
+                System.out.println("next card id: " + nextCard.getName());
+                nextCards.add(nextCard);
             }
         }
-        return nextCardIds;
+        return nextCards;
     }
 
 }

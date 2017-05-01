@@ -29,6 +29,16 @@ public class TrelloCallbacksController {
         this.persistenceController = persistenceController;
     }
 
+    private boolean cardHasLabel(String idLabel, List<String> idLabels){
+        boolean found = false;
+        for(int i = 0; !found && i < idLabels.size(); i++){
+            if(idLabels.get(i).equals(idLabel)){
+                found = true;
+            }
+        }
+        return found;
+    }
+
     @RequestMapping(value = "/cards", method= RequestMethod.POST)
     public ResponseEntity<String> cardModified(@RequestBody WebhookCardTrelloResponse response) throws ParseException {
         System.out.println("Trello notified me!!");
@@ -49,19 +59,17 @@ public class TrelloCallbacksController {
                 String greenLabelId = persistenceController.getGreenLabelId(boardId);
                 Card card = response.getModel();
                 String cardId = card.getId();
-                List<String> idLabels = card.getIdLabels();
-                boolean found = false;
-                for(int i = 0; !found && i < idLabels.size(); i++){
-                    if(idLabels.get(i).equals(greenLabelId)){
-                        found = true;
-                        System.out.println("Card id: "+ cardId);
-                        trelloService.removeLabel(cardId,greenLabelId,userToken);
-                    }
+                if(cardHasLabel(greenLabelId,card.getIdLabels())){
+                    System.out.println("Card id: "+ cardId);
+                    trelloService.removeLabel(cardId,greenLabelId,userToken);
                 }
+
 
                 //afegir nova label a la card
                 String purpleLabelId = persistenceController.getPurpleLabelId(boardId);
-                trelloService.addLabel(card.getId(),purpleLabelId,userToken);
+                if(!cardHasLabel(purpleLabelId,card.getIdLabels())) {
+                    trelloService.addLabel(card.getId(), purpleLabelId, userToken);
+                }
 
                 //moure les cards que depenien de la card moguda d'on-hold a ready
                 List<Card> dependingCards = trelloService.getDependingCards(boardId,cardId,card.getName(),userToken);
@@ -77,11 +85,13 @@ public class TrelloCallbacksController {
                 //posar green label a les següents card, l'actual de cada membre
                 String doneListId = persistenceController.getDoneListId(boardId);
                 System.out.println(card.getIdMembers().size());
-                List<String> nextCardsIds = trelloService.getNextCardsIds(boardId,card.getIdMembers(),doneListId,userToken);
+                List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),doneListId,userToken);
                 System.out.println("green labels added to: ");
-                for (String id:nextCardsIds) {
-                    System.out.println(id);
-                    trelloService.addLabel(id,greenLabelId,userToken);
+                for (Card nextCard:nextCards) {
+                    System.out.println(nextCard.getName());
+                    if(!cardHasLabel(greenLabelId,card.getIdLabels())) {
+                        trelloService.addLabel(nextCard.getId(), greenLabelId, userToken);
+                    }
                 }
 
 
