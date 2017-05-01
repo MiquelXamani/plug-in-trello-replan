@@ -238,15 +238,15 @@ public class TrelloService {
 
     public List<String> getNextCardsIds(String boardId, List<String> idMembers, String doneListId, String userToken) throws ParseException {
         //url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={token}";
-        vars = new HashMap<>();
-        vars.put("key",key);
-        vars.put("token",userToken);
-        vars.put("boardId",boardId);
+        //vars = new HashMap<>();
+        //vars.put("key",key);
+        //vars.put("token",userToken);
+        //vars.put("boardId",boardId);
         List <String> nextCardIds = new ArrayList<>();
         String nextCardId;
         for (String id:idMembers) {
             System.out.println("-------------------");
-            vars.put("memberId",id);
+            //vars.put("memberId",id);
             url = "https://api.trello.com/1/search?query=board:"+boardId+" member:"+id+"&cards_limit=1000&key="+key+"&token="+userToken;
             System.out.println("https://api.trello.com/1/search?query=board:"+boardId+" member:"+id+"&cards_limit=1000&key="+key+"&token="+userToken);
             //SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
