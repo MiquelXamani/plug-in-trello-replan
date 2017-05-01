@@ -1,5 +1,6 @@
 package web.services;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -153,10 +154,16 @@ public class TrelloService {
         vars.put("cardId",cardId);
         vars.put("labelId",labelId);
         try {
+            System.out.println("Remove label parameters: cardId = " + cardId + " labelId = " + labelId + " key = " + key + " token = " + userToken);
             restTemplate.delete(url, vars);
         }
         catch (HttpClientErrorException e) {
-            System.out.println("Error: "+e.getStatusCode()+" msg: "+e.getResponseBodyAsString());
+            HttpStatus errorStatus = e.getStatusCode();
+            String errorResponse = e.getResponseBodyAsString();
+            if(errorStatus.equals(HttpStatus.BAD_REQUEST) && errorResponse.equals("that label is already on the card")) {
+                System.out.println("Error: " + errorStatus + " msg: " + errorResponse);
+            }
+            else throw e;
         }
     }
 
@@ -175,7 +182,12 @@ public class TrelloService {
             result = restTemplate.postForObject(url, input, String[].class, vars);
         }
         catch (HttpClientErrorException e) {
-            System.out.println("Error: "+e.getStatusCode()+" msg: "+e.getResponseBodyAsString());
+            HttpStatus errorStatus = e.getStatusCode();
+            String errorResponse = e.getResponseBodyAsString();
+            if(errorStatus.equals(HttpStatus.BAD_REQUEST) && errorResponse.equals("that label is already on the card")) {
+                System.out.println("Error: " + errorStatus + " msg: " + errorResponse);
+            }
+            else throw e;
         }
         return result;
     }
