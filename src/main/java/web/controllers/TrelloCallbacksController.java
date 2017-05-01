@@ -76,7 +76,7 @@ public class TrelloCallbacksController {
                 //posar green label a les següents card, l'actual de cada membre
                 String doneListId = persistenceController.getDoneListId(boardId);
                 System.out.println(card.getIdMembers().size());
-                List<String> nextCardsIds = trelloService.getNextCardsIds(boardId,card.getIdMembers(),cardId,doneListId,userToken);
+                List<String> nextCardsIds = trelloService.getNextCardsIds(boardId,card.getIdMembers(),doneListId,userToken);
                 System.out.println("green labels added to: ");
                 for (String id:nextCardsIds) {
                     System.out.println(id);

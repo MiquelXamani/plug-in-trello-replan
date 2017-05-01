@@ -235,8 +235,8 @@ public class TrelloService {
         return earliestCardId;
     }
 
-    public List<String> getNextCardsIds(String boardId, List<String> idMembers, String cardId, String doneListId, String userToken) throws ParseException {
-        url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={userToken}";
+    public List<String> getNextCardsIds(String boardId, List<String> idMembers, String doneListId, String userToken) throws ParseException {
+        url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
