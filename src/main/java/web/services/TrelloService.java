@@ -156,8 +156,7 @@ public class TrelloService {
             restTemplate.delete(url, vars);
         }
         catch (HttpClientErrorException e) {
-            System.out.println(e.getStatusCode());
-            System.out.println(e.getResponseBodyAsString());
+            System.out.println("Error: "+e.getStatusCode()+" msg: "+e.getResponseBodyAsString());
         }
     }
 
@@ -176,8 +175,7 @@ public class TrelloService {
             result = restTemplate.postForObject(url, input, String[].class, vars);
         }
         catch (HttpClientErrorException e) {
-            System.out.println(e.getStatusCode());
-            System.out.println(e.getResponseBodyAsString());
+            System.out.println("Error: "+e.getStatusCode()+" msg: "+e.getResponseBodyAsString());
         }
         return result;
     }
