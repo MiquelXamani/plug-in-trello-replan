@@ -214,8 +214,9 @@ public class TrelloService {
         SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
         Date d;
         Date earliestD = new Date();
-
+        System.out.println("*** getnexcardid function ***");
         for (Card card:cards) {
+            System.out.println(card.getName());
             if (!doneListId.equals(card.getIdList())) {
                 description = card.getDesc();
                 startDateTextIndex = description.indexOf(startDateText);
@@ -236,7 +237,7 @@ public class TrelloService {
     }
 
     public List<String> getNextCardsIds(String boardId, List<String> idMembers, String doneListId, String userToken) throws ParseException {
-        url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={token}";
+        //url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
@@ -246,8 +247,11 @@ public class TrelloService {
         for (String id:idMembers) {
             System.out.println("-------------------");
             vars.put("memberId",id);
+            url = "https://api.trello.com/1/search?query=board:"+boardId+" member:"+id+"&cards_limit=1000&key="+key+"&token="+userToken;
             System.out.println("https://api.trello.com/1/search?query=board:"+boardId+" member:"+id+"&cards_limit=1000&key="+key+"&token="+userToken);
-            SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
+            //SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class,vars);
+            SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
+            System.out.println("cards found: " + searchCardResponse.getCards().size());
             System.out.println(searchCardResponse.printCardNames());
             nextCardId = getNextCardId(searchCardResponse.getCards(),doneListId);
             if(!nextCardId.equals("")){
