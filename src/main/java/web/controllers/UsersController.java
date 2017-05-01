@@ -44,7 +44,10 @@ public class UsersController {
                 //crida api trello per saber username
                 TrelloService trelloService = new TrelloService();
                 String trelloUserUsername = trelloService.getTrelloUserUsername(user.getTrelloToken());
+                System.out.println("Trello username: " + trelloUserUsername);
                 user.setTrelloUsername(trelloUserUsername);
+
+                System.out.println("Usertoken: " + user.getTrelloToken());
 
                 User2 userCreated = persistenceController.saveUser(user);
                 return new ResponseEntity<>(userCreated, HttpStatus.CREATED);

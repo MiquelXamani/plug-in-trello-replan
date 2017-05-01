@@ -72,7 +72,8 @@ public class TrelloCallbacksController {
                 String readyListId =  persistenceController.getListId(boardId,"Ready");
                 trelloService.moveCards(dependingCards,readyListId,userToken);
 
-                //posar green label a les següents card
+                //posar green label a les següents card, l'actual de cada membre
+
 
             }
             else {

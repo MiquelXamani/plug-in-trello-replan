@@ -27,7 +27,7 @@ public class InitialDataLoader implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        UserPersist user = new UserPersist("Miquel","123","b9af2c827b36369367e5416dcccb657a949f4745f1b41ee7f70d2fe91f78165e","miquelxamani1","585bec12bec126f26851c2fb");
+        UserPersist user = new UserPersist("Miquel","123","4b2d5f773dde255207efd4f32f7dcea0966fc4009fafd157ffc4d2a6c5f475b7","miquelxamani1","585bec12bec126f26851c2fb");
         userRepository.save(user);
 
         persistenceController.saveEndpoint("https://lit-savannah-17077.herokuapp.com/api/ui/v1","Development: Heroku Deployment");

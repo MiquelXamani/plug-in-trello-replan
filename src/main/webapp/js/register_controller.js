@@ -46,7 +46,7 @@
             top = window.screenY + (window.innerHeight - height) / 2;
             origin = (ref1 = /^[a-z]+:\/\/[^\/]*/.exec(location)) != null ? ref1[0] : void 0;
             //call_back=postMessage is necessary to enable cross-origin communication
-            authUrl = `https://trello.com/1/authorize?return_url=${origin}&callback_method=postMessage&expiration=never&name=Replan plug-in for Trello&key=${key}`
+            authUrl = `https://trello.com/1/authorize?return_url=${origin}&callback_method=postMessage&expiration=never&scope=write,read&name=Replan plug-in for Trello&key=${key}`
             authWindow = window.open(authUrl, 'trello', `width=${width},height=${height},left=${left},top=${top}`);
             var receiveMessage = function(event) {
                 var ref2;

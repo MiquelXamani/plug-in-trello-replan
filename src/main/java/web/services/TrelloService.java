@@ -65,6 +65,7 @@ public class TrelloService {
         //input.put("desc",planName + " planification. Board created by Replan plug-in for Trello");
         input.put("idOrganization",idTeam);
         input.put("prefs_permissionLevel","org");
+        System.out.println("UserToken createBoard: " + userToken);
         Board board = restTemplate.postForObject(url,input,Board.class,vars);
         return board;
     }
@@ -202,4 +203,29 @@ public class TrelloService {
             restTemplate.put(url,input,vars);
         }
     }
+
+    public List<Card> getNextCards(String boardId, List<String> idMembers, String cardId, String userToken){
+        url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}+&token={userToken}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        vars.put("boardId",boardId);
+
+        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
+        System.out.println(searchCardResponse.printCardNames());
+        System.out.println(url);
+        List <Card> cardsFound = searchCardResponse.getCards();
+        System.out.println("Cards in response number: " + searchCardResponse.getCards().size());
+        System.out.println("Cards found size: " + cardsFound.size());
+        boolean found = false;
+        //this call not only returns depending cards, it also returns the card moved to done list
+        for(int i = 0; !found && i < cardsFound.size(); i++){
+            if(cardsFound.get(i).getId().equals(cardId)){
+                found = true;
+                cardsFound.remove(i);
+            }
+        }
+        return cardsFound;
+    }
+
 }
