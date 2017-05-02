@@ -24,7 +24,7 @@
                 if(response.success) {
                     $rootScope.board = response.board;
                     console.log(response.board);
-                    $location.path('/load-to-trello-completed');
+                    $location.path('/load-to-trello/completed');
                 }
                 else{
                     //show error
@@ -57,7 +57,7 @@
 
 
         function previousStep(){
-            $location.path('/match');
+            $location.path('/load-to-trello/match');
         }
 
 

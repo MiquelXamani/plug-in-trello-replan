@@ -147,7 +147,7 @@
                     console.log("CONFIRMED");
                     $rootScope.plan = vm.plan;
                     $rootScope.unmatchedResources = vm.unmatchedResources;
-                    $location.path('/create-board');
+                    $location.path('/load-to-trello/create-board');
                 }
                 else{
 
@@ -156,12 +156,12 @@
             else{
                 $rootScope.plan = vm.plan;
                 $rootScope.unmatchedResources = vm.unmatchedResources;
-                $location.path('/create-board');
+                $location.path('/load-to-trello/create-board');
             }
         }
 
         function previousStep(){
-            $location.path('/select-team');
+            $location.path('/load-to-trello/select-team');
         }
 
         getMatchings();

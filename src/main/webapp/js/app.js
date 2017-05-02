@@ -4,14 +4,28 @@
     angular
         .module('app', ['ngRoute', 'ngCookies'])
         .config(config)
-        .run(run);
+        .run(run)
+        .controller('HeaderController', ['$scope', '$location', function($scope, $location) {
+            $scope.isActive = function (viewLocation) {
+                if(viewLocation === $location.path()){
+                    return true;
+                }
+                else if(viewLocation !== '/'){
+                    return $location.path().indexOf(viewLocation) == 0;
+                }
+                else return false;
+
+            };
+
+
+        }]);
 
     config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
-                controller: 'SelectPlanController',
-                templateUrl: 'select-plan.html',
+                controller: 'LogsController',
+                templateUrl: 'logs.html',
                 controllerAs: 'vm'
             })
 
@@ -27,33 +41,39 @@
                 controllerAs: 'vm'
             })
 
-            .when('/select-plan', {
+            .when('/load-to-trello/select-plan', {
                 controller: 'SelectPlanController',
                 templateUrl: 'select-plan.html',
                 controllerAs: 'vm'
             })
 
-            .when('/select-team',{
+            .when('/load-to-trello/select-team',{
                 controller: 'SelectTeamController',
                 templateUrl: 'select-team.html',
                 controllerAs: 'vm'
             })
 
-            .when('/match',{
+            .when('/load-to-trello/match',{
                 controller: 'MatchController',
                 templateUrl: 'matching.html',
                 controllerAs: 'vm'
             })
 
-            .when('/create-board',{
+            .when('/load-to-trello/create-board',{
                 controller: 'CreateBoardController',
                 templateUrl: 'create-board.html',
                 controllerAs: 'vm'
             })
 
-            .when('/load-to-trello-completed',{
+            .when('/load-to-trello/completed',{
                 controller: 'LoadCompletedController',
                 templateUrl: 'load-to-trello-completed.html',
+                controllerAs: 'vm'
+            })
+
+            .when('/logs',{
+                controller: 'LogsController',
+                templateUrl: 'logs.html',
                 controllerAs: 'vm'
             })
 
@@ -76,15 +96,14 @@
             var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if(restrictedPage){
-                $('.right').show();
+                $('#bs-example-navbar-collapse-1').show();
                 if(!loggedIn){
                     $location.path('/login');
                 }
             }
             else{
-                $('.right').hide();
+                $('#bs-example-navbar-collapse-1').hide();
             }
-
         });
     }
 

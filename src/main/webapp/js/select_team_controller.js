@@ -43,11 +43,11 @@
         function nextStep(){
             console.log(vm.selectedTeam);
             $rootScope.team = vm.selectedTeam;
-            $location.path('/match');
+            $location.path('/load-to-trello/match');
         }
 
         function previousStep(){
-            $location.path('/select-plan');
+            $location.path('/load-to-trello/select-plan');
         }
 
         getTeams();

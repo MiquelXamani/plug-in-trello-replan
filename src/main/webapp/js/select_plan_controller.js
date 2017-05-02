@@ -78,7 +78,7 @@
             $rootScope.endpoint = vm.selectedEndpoint;
             $rootScope.project = vm.selectedProject;
             $rootScope.release = vm.selectedRelease;
-            $location.path('/select-team');
+            $location.path('/load-to-trello/select-team');
         }
 
         getEndpoints();
