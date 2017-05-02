@@ -96,13 +96,13 @@
             var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if(restrictedPage){
-                $('#bs-example-navbar-collapse-1').show();
+                $('#bs-example-navbar-collapse-1').removeClass('visible_important');
                 if(!loggedIn){
                     $location.path('/login');
                 }
             }
             else{
-                $('#bs-example-navbar-collapse-1').hide();
+                $('#bs-example-navbar-collapse-1').addClass('visible_important');
             }
         });
     }
