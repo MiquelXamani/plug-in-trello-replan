@@ -68,7 +68,7 @@
 
         function reject(index){
             vm.logToRefuseIndex = index;
-            $('#commentModalModal').modal('toggle');
+            $('#commentModal').modal('toggle');
         }
 
         function submitComment(){
