@@ -11,7 +11,7 @@ import web.persistence_controllers.PersistenceController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/logs")
+@RequestMapping("/api/logs")
 public class LogsController {
     private PersistenceController persistenceController;
 
