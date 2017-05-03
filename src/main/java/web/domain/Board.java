@@ -21,6 +21,12 @@ public class Board {
     public Board(){
     }
 
+    public Board(String id, String name, String url){
+        this.id = id;
+        this.name = name;
+        this.url = url;
+    }
+
     public String getName(){
         return this.name;
     }

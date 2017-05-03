@@ -122,4 +122,17 @@ public class PersistenceController {
         user2.setUserId(user.getUserId());
         return user2;
     }
+
+    public List<Board> getUserBoards(String username){
+        UserPersist userPersist = userRepository.findByUsername(username);
+        List<Board> boards = new ArrayList<>();
+        if(userPersist != null) {
+            List<BoardPersist> boardPersists = userPersist.getBoards();
+            System.out.println("Number of boards found: " + boardPersists.size());
+            for (BoardPersist bp : boardPersists) {
+                boards.add(new Board(bp.getId(), bp.getName(), bp.getUrl()));
+            }
+        }
+        return boards;
+    }
 }

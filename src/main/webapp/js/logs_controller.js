@@ -27,16 +27,18 @@
 
         function getBoards(){
             LogService.GetBoards($rootScope.globals.currentUser.username).then(function(boards){
-               vm.boards = boards;
-               if(vm.boards.length > 0){
+               if(boards.length > 0){
+                   vm.boards = boards;
                    var allBoards = {name:"All"};
                    vm.boards.splice(0,0,allBoards);
                    vm.selectedBoard = vm.boards[0];
                    getAllLogs();
                }
                else{
+                   console.log("No boards found");
                    var noBoards = [{name:"--- No boards found ---"}];
-                   vm.selectedBoard = noBoards;
+                   vm.boards = noBoards;
+                   vm.selectedBoard = vm.boards[0];
                }
             });
         }
