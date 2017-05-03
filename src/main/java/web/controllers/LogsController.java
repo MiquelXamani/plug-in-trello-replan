@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import web.domain.Log;
 import web.persistence_controllers.PersistenceController;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -22,12 +23,15 @@ public class LogsController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Log> getLogs(@RequestParam(value = "username") String username, @RequestParam(value = "boardId",required=false) String boardId) {
+        List<Log> logs;
         //all logs
         if(boardId == null){
-            return persistenceController.getLogs(username);
+            logs = persistenceController.getLogs(username);
         }
         else{
-           return persistenceController.getBoardLogs(boardId);
+           logs = persistenceController.getBoardLogs(boardId);
         }
+        Collections.sort(logs);
+        return logs;
     }
 }

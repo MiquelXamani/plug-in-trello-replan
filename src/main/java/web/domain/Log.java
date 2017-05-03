@@ -1,7 +1,7 @@
 package web.domain;
 
 
-public class Log {
+public class Log implements Comparable<Log>{
     private int id;
     private String createdAt;
     private String boardId;
@@ -105,5 +105,9 @@ public class Log {
 
     public void setCardName(String cardName) {
         this.cardName = cardName;
+    }
+
+    public int compareTo(Log other) {
+        return Integer.compare(other.getId(),this.id);
     }
 }

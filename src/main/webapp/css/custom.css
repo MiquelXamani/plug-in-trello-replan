@@ -109,3 +109,7 @@ th {
 .navbar {
     margin-bottom: 0px;
 }
+
+.date_column{
+    width: 250px;
+}
