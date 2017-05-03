@@ -23,7 +23,7 @@ public class LogPersist {
 
     public LogPersist(){}
 
-    public LogPersist(String createdAt,boolean read, BoardPersist boardPersist,String cardId,String cardName,String memberUsername,String type){
+    public LogPersist(String createdAt,boolean read, BoardPersist boardPersist,String cardId,String cardName,String memberUsername,String type, String description){
         this.createdAt = createdAt;
         this.read = read;
         this.board = boardPersist;
@@ -31,6 +31,7 @@ public class LogPersist {
         this.cardName = cardName;
         this.memberUsername = memberUsername;
         this.type = type;
+        this.description = description;
     }
 
     public int getId() {

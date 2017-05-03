@@ -145,7 +145,7 @@ public class PersistenceController {
         String description = cardName+" marked as finished by "+memberUsername+" earlier than expected";
         Log log = new Log(createdAt, boardId, cardId, cardName, type, description);
         BoardPersist boardPersist = boardRepository.findOne(boardId);
-        LogPersist logPersist = new LogPersist(createdAt,false,boardPersist,cardId,cardName,memberUsername,type);
+        LogPersist logPersist = new LogPersist(createdAt,false,boardPersist,cardId,cardName,memberUsername,type,description);
         boardPersist.addLog(logPersist);
         boardRepository.save(boardPersist);
         log.setId(logPersist.getId());
