@@ -2,14 +2,13 @@ package web.persistence_controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import web.domain.Board;
-import web.domain.Label;
-import web.domain.ListTrello;
-import web.domain.User2;
+import web.domain.*;
 import web.persistance.models.*;
 import web.persistance.repositories.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -24,6 +23,8 @@ public class PersistenceController {
     private EndpointRepository endpointRepository;
     @Autowired (required = true)
     private UserRepository userRepository;
+    @Autowired (required = true)
+    private LogRepository logRepository;
 
 
     public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists, User2 user2){
@@ -134,5 +135,50 @@ public class PersistenceController {
             }
         }
         return boards;
+    }
+
+    public Log saveFinishedEarlierLog(String boardId, String cardId, String cardName, String memberUsername){
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String createdAt = dateFormat.format(date);
+        String type = "finished_earlier";
+        String description = cardName+" marked as finished by "+memberUsername+" earlier than expected";
+        Log log = new Log(createdAt, boardId, cardId, cardName, type, description);
+        BoardPersist boardPersist = boardRepository.findOne(boardId);
+        LogPersist logPersist = new LogPersist(createdAt,false,boardPersist,cardId,cardName,memberUsername,type);
+        boardPersist.addLog(logPersist);
+        boardRepository.save(boardPersist);
+        log.setId(logPersist.getId());
+        return log;
+    }
+
+    public List<Log> getLogs(String username){
+        //mirar si es pot fer de forma més eficient
+        UserPersist userPersist = userRepository.findByUsername(username);
+        List<Log> logs = new ArrayList<>();
+        if(userPersist != null){
+            Log log;
+            for (BoardPersist b: userPersist.getBoards()) {
+                for(LogPersist lp: b.getLogs()){
+                    log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),lp.getCardId(),lp.getCardName(),lp.getRead(),lp.getType(),lp.getDescription());
+                    logs.add(log);
+                }
+
+            }
+        }
+        return logs;
+    }
+
+    public List<Log> getBoardLogs(String boardId){
+        BoardPersist boardPersist = boardRepository.findOne(boardId);
+        List<Log> logs = new ArrayList<>();
+        if(boardPersist != null){
+            Log log;
+            for(LogPersist lp: boardPersist.getLogs()){
+                log = new Log(lp.getId(),lp.getCreatedAt(),boardPersist.getId(),boardPersist.getName(),lp.getCardId(),lp.getCardName(),lp.getRead(),lp.getType(),lp.getDescription());
+                logs.add(log);
+            }
+        }
+        return logs;
     }
 }

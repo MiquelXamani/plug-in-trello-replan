@@ -39,6 +39,12 @@ public class TrelloCallbacksController {
         return found;
     }
 
+    public void createLog(String boardId, String cardId, String cardName, String memberUsername){
+        System.out.println("Create log function params:");
+        System.out.println("boardId: " + boardId + " cardId: " + cardId + " cardName: " + cardName + " member: " + memberUsername);
+        persistenceController.saveFinishedEarlierLog(boardId,cardId,cardName,memberUsername);
+    }
+
     @RequestMapping(value = "/cards", method= RequestMethod.POST)
     public ResponseEntity<String> cardModified(@RequestBody WebhookCardTrelloResponse response) throws ParseException {
         System.out.println("Trello notified me!!");
@@ -94,6 +100,8 @@ public class TrelloCallbacksController {
                     }
                 }
 
+                //create log
+                createLog(boardId,cardId,card.getName(),action.getMemberCreator().getUsername());
 
             }
             else {

@@ -25,6 +25,8 @@ public class BoardPersist {
     @ManyToOne
     @JoinColumn(name = "userId")
     private UserPersist user;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<LogPersist> logs;
 
     public BoardPersist(){
     }
@@ -81,5 +83,17 @@ public class BoardPersist {
 
     public void setUser(UserPersist user) {
         this.user = user;
+    }
+
+    public List<LogPersist> getLogs() {
+        return logs;
+    }
+
+    public void setLogs(List<LogPersist> logs) {
+        this.logs = logs;
+    }
+
+    public void addLog(LogPersist log){
+        this.logs.add(log);
     }
 }
