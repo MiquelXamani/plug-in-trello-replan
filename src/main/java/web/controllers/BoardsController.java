@@ -132,7 +132,7 @@ public class BoardsController {
 
                 //ONLY TEST second and third cards depends on first card
                 if(countTest == 0){
-                    testname = name;
+                    testname = feature.getName();
                     testEffort = feature.getEffort();
                 }
                 else if(countTest < 3 && countTest > 0){
