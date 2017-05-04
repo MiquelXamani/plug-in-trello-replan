@@ -52,12 +52,18 @@
                 <td>{{ log.boardName }}</td>
                 <td>{{ log.description }}</td>
                 <td>
-                    <button type="button" class="btn btn-default btn-sm" title="Mark as Read">
-                        <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="vm.markAsRead($index)"></span>
-                    </button>
-                    <button type="button" class="btn btn-default btn-sm" title="Reject">
-                        <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="vm.reject($index)"></span>
-                    </button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-default btn-md" title="Mark as Read">
+                                <span class="glyphicon glyphicon-check green" aria-hidden="true" ng-click="vm.markAsRead($index)"></span>
+                            </button>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button type="button" class="btn btn-default btn-md" title="Reject">
+                                <span class="glyphicon glyphicon-remove red" aria-hidden="true" ng-click="vm.reject($index)"></span>
+                            </button>
+                        </div>
+                    </div>
                 </td>
             </tr>
             </tbody>

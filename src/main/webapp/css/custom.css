@@ -113,3 +113,11 @@ th {
 .date_column{
     width: 150px;
 }
+
+.green{
+  color:green;
+}
+
+.red{
+    color:red
+}
