@@ -29,7 +29,14 @@
         </select>
     </div>
     <div class="form-group top-buffer">
-        <label for="logsTable">Logs</label>
+        <div class="row">
+            <div class="col-md-6">
+                <label for="logsTable">New logs</label>
+            </div>
+            <div class="col-md-6 text-right">
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true" ng-click="vm.getLogs()"></span>
+            </div>
+        </div>
         <table class="table table-responsive table-hover" id="logsTable">
             <thead>
             <tr>
