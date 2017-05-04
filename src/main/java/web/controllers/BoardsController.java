@@ -93,6 +93,7 @@ public class BoardsController {
         //Only test
         int countTest = 0;
         String testname = "";
+        double testEffort = 0;
 
         for (Job j: jobs) {
             resourceId = j.getResource().getId();
@@ -132,10 +133,12 @@ public class BoardsController {
                 //ONLY TEST second and third cards depends on first card
                 if(countTest == 0){
                     testname = name;
+                    testEffort = feature.getEffort();
                 }
                 else if(countTest < 3 && countTest > 0){
                     Feature featureTest = new Feature();
                     featureTest.setName(testname);
+                    featureTest.setEffort(testEffort);
                     Job jobTest = new Job();
                     jobTest.setFeature(featureTest);
                     j.getDepends_on().add(jobTest);
