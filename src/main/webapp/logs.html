@@ -34,7 +34,7 @@
                 <label for="logsTable">New logs</label>
             </div>
             <div class="col-md-6 text-right">
-                <span class="glyphicon glyphicon-refresh" aria-hidden="true" ng-click="vm.getLogs()"></span>
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true" ng-click="vm.getLogs()" title="Refresh"></span>
             </div>
         </div>
         <table class="table table-responsive table-hover" id="logsTable">
@@ -52,8 +52,12 @@
                 <td>{{ log.boardName }}</td>
                 <td>{{ log.description }}</td>
                 <td>
-                    <button type="button" class="btn btn-primary btn-xs" ng-click="vm.markAsRead($index)">Mark as Read</button>
-                    <button type="button" class="btn btn-danger btn-xs" ng-click="vm.reject($index)">Reject</button>
+                    <button type="button" class="btn btn-default btn-sm" title="Mark as Read">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="vm.markAsRead($index)"></span>
+                    </button>
+                    <button type="button" class="btn btn-default btn-sm" title="Reject">
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-click="vm.reject($index)"></span>
+                    </button>
                 </td>
             </tr>
             </tbody>
