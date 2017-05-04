@@ -90,6 +90,10 @@ public class BoardsController {
         Card card;
         Feature feature;
         Date startDate;
+        //Only test
+        int countTest = 0;
+        String testname = "";
+
         for (Job j: jobs) {
             resourceId = j.getResource().getId();
             String trelloUserId = "";
@@ -124,6 +128,22 @@ public class BoardsController {
             else{
                 card = new Card();
                 String name = "("+ Math.round(feature.getEffort()) +") " + feature.getName();
+
+                //ONLY TEST second and third cards depends on first card
+                if(countTest == 0){
+                    testname = name;
+                }
+                else if(countTest < 3 && countTest > 0){
+                    Feature featureTest = new Feature();
+                    featureTest.setName(testname);
+                    Job jobTest = new Job();
+                    jobTest.setFeature(featureTest);
+                    j.getDepends_on().add(jobTest);
+                }
+                ++countTest;
+
+                //finish test code
+
                 card.setName(name);
                 card.setDue(feature.getDeadline());
                 //si el recurs està associat a un usuari s'assigna a la card
