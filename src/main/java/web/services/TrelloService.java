@@ -221,7 +221,7 @@ public class TrelloService {
         vars.put("token",userToken);
         input = new HashMap<>();
         input.put("idList",listId);
-        vars.put("labelId",labelId);
+        input.put("idLabels",labelId);
         for (Card card : cards) {
             System.out.println("Card Moved to Ready: " + card.getName());
             vars.put("cardId",card.getId());

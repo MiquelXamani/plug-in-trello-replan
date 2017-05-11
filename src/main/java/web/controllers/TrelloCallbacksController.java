@@ -115,8 +115,8 @@ public class TrelloCallbacksController {
 
                     if(dependsOnList.size() < 1){
                         //remove yellow label
-                        trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
                         System.out.println("Yellow label removed! (Only 1 dependency)");
+                        trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
                     }
                     else{
                         count = 0;
@@ -129,6 +129,7 @@ public class TrelloCallbacksController {
                                 }
                             }
                         }
+                        System.out.println("Count: " + count + " dependsOnList size: "+dependsOnList.size());
                         if(count == dependsOnList.size()){
                             //remove yellow label
                             trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
