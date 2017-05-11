@@ -145,14 +145,15 @@ public class TrelloCallbacksController {
                 String readyListId =  persistenceController.getListId(boardId,"Ready");
                 List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,userToken);
                 System.out.println("cards moved from On-Hold to ready: ");
+                //loop only for testing purposes
                 for (int i = 0; i < nextCards.size(); i++) {
                     System.out.println(nextCards.get(i).getName());
                     if(!cardHasLabel(greenLabelId,nextCards.get(i).getIdLabels())) {
-                        nextCards.get(i).addLabel(greenLabelId);
                         //trelloService.addLabel(nextCard.getId(), greenLabelId, userToken);
                     }
                 }
-                trelloService.moveCards(nextCards,readyListId,userToken);
+
+                trelloService.moveCardsAndAddLabel(nextCards,readyListId,greenLabelId,userToken);
 
                 //create log
                 createLog(boardId,cardId,card.getName(),action.getMemberCreator().getUsername());

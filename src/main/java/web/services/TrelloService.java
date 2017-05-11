@@ -214,13 +214,14 @@ public class TrelloService {
         return cardsFound;
     }
 
-    public void moveCards(List<Card> cards, String listId, String userToken){
+    public void moveCardsAndAddLabel(List<Card> cards, String listId, String labelId, String userToken){
         url = "https://api.trello.com/1/cards/{cardId}?key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
         input = new HashMap<>();
         input.put("idList",listId);
+        vars.put("labelId",labelId);
         for (Card card : cards) {
             System.out.println("Card Moved to Ready: " + card.getName());
             vars.put("cardId",card.getId());
