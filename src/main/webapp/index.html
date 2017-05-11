@@ -33,7 +33,7 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-controller="HeaderController">
                 <ul class="nav navbar-nav">
-                    <li ng-class="{ active: isActive('/logs') || isActive('/')}"><a href="/logs">Logs</a></li>
+                    <li ng-class="{ active: isActive('/board-pending-actions') || isActive('/')}"><a href="/board-pending-actions">Board Pending Actions</a></li>
                     <li ng-class="{ active: isActive('/load-to-trello')}"><a href="/load-to-trello/select-plan">Load to Trello</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -66,7 +66,7 @@
     <script src="js/plan_service.js"></script>
     <script src="js/matching_service.js"></script>
     <script src="js/board_service.js"></script>
-    <script src="js/log_service.js"></script>
+    <script src="js/board_pending_actions_service.js"></script>
 
     <script src="js/login_controller.js"></script>
     <script src="js/register_controller.js"></script>
@@ -75,7 +75,7 @@
     <script src="js/match_controller.js"></script>
     <script src="js/create_board_controller.js"></script>
     <script src="js/load_completed_controller.js"></script>
-    <script src="js/logs_controller.js"></script>
+    <script src="js/board_pending_actions_controller.js"></script>
 
 </body>
 </html>

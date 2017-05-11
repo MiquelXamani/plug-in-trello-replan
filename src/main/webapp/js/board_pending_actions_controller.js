@@ -3,10 +3,10 @@
 
     angular
         .module('app')
-        .controller('LogsController', LogsController);
+        .controller('BoardPendingActionsController', BoardPendingActionsController);
 
-    LogsController.$inject = ['$location','$rootScope','LogService'];
-    function LogsController($location,$rootScope,LogService) {
+    BoardPendingActionsController.$inject = ['$location','$rootScope','BoardPendingActionsService'];
+    function BoardPendingActionsController($location,$rootScope,BoardPendingActionsService) {
         var vm = this;
         vm.boards = [];
         vm.logs = [];
@@ -20,13 +20,13 @@
         vm.submitComment = submitComment;
 
         function getAllLogs(){
-            LogService.GetAllLogs($rootScope.globals.currentUser.username).then(function(logs){
+            BoardPendingActionsService.GetAllLogs($rootScope.globals.currentUser.username).then(function(logs){
                 vm.logs = logs;
             });
         }
 
         function getBoards(){
-            LogService.GetBoards($rootScope.globals.currentUser.username).then(function(boards){
+            BoardPendingActionsService.GetBoards($rootScope.globals.currentUser.username).then(function(boards){
                if(boards.length > 0){
                    vm.boards = boards;
                    var allBoards = {name:"All"};
@@ -48,7 +48,7 @@
                 getAllLogs();
             }
             else{
-                LogService.GetBoardLogs($rootScope.globals.currentUser.username,vm.selectedBoard.id).then(function(logs){
+                BoardPendingActionsService.GetBoardLogs($rootScope.globals.currentUser.username,vm.selectedBoard.id).then(function(logs){
                    vm.logs = logs;
                 });
             }
@@ -56,7 +56,7 @@
 
         function markAsRead(index){
             vm.logs[index].read = true;
-            LogService.LogRead(index.id).then(function(response){
+            BoardPendingActionsService.LogRead(index.id).then(function(response){
                 if(response.success){
                     console.log("MARK AS READ SUCCESSFUL");
                 }
@@ -74,7 +74,7 @@
         function submitComment(){
             vm.dataLoading = true;
             markAsRead(vm.logToRefuseIndex);
-            LogService.RejectCardDone($rootScope.globals.currentUser.username,vm.logs[logToRefuseIndex].cardId,vm.comment)
+            BoardPendingActionsService.RejectCardDone($rootScope.globals.currentUser.username,vm.logs[logToRefuseIndex].cardId,vm.comment)
                 .then(function(response){
                     vm.dataLoading = false;
                     if(response.success){

@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/logs")
+@RequestMapping("/logs")
 public class LogsController {
     private PersistenceController persistenceController;
 

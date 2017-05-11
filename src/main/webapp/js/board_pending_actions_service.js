@@ -3,10 +3,10 @@
 
     angular
         .module('app')
-        .factory('LogService', LogService);
+        .factory('BoardPendingActionsService', BoardPendingActionsService);
 
-    LogService.$inject = ['$http'];
-    function LogService($http) {
+    BoardPendingActionsService.$inject = ['$http'];
+    function BoardPendingActionsService($http) {
         var service = {};
 
         service.GetBoards = GetBoards;
@@ -24,17 +24,17 @@
 
         //get all board logs of the current user
         function GetAllLogs(username){
-            return $http.get('/api/logs/?username='+username).then(handleSuccess,handleError);
+            return $http.get('/logs/?username='+username).then(handleSuccess,handleError);
         }
 
         //get logs of the specified board
         function GetBoardLogs(username,boardId){
-            return $http.get('/api/logs/?username='+username+'&boardId='+boardId).then(handleSuccess,handleError);
+            return $http.get('/logs/?username='+username+'&boardId='+boardId).then(handleSuccess,handleError);
         }
 
         //mark log as read
         function LogRead(logId){
-            return $http.put('/api/logs/'+logId,'read').then(handleSuccess,handleError);
+            return $http.put('/logs/'+logId,'read').then(handleSuccess,handleError);
         }
 
         //refuse card posting a comment with the reasons why this card is rejected

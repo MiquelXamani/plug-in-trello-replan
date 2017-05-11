@@ -24,8 +24,8 @@
     function config($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
-                controller: 'LogsController',
-                templateUrl: 'logs.html',
+                controller: 'BoardPendingActionsController',
+                templateUrl: 'board-pending-actions.html',
                 controllerAs: 'vm'
             })
 
@@ -71,9 +71,9 @@
                 controllerAs: 'vm'
             })
 
-            .when('/logs',{
-                controller: 'LogsController',
-                templateUrl: 'logs.html',
+            .when('/board-pending-actions',{
+                controller: 'BoardPendingActionsController',
+                templateUrl: 'board-pending-actions.html',
                 controllerAs: 'vm'
             })
 
