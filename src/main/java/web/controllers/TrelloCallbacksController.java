@@ -99,7 +99,19 @@ public class TrelloCallbacksController {
                     startIndex = description.indexOf(dependsOnText) + textSize;
                     endIndex = description.length() - 1;
                     dependsOnCards = description.substring(startIndex,endIndex);
+                    System.out.println("substring: " + dependsOnCards);
                     dependsOnList = Arrays.asList(dependsOnCards.split(",[ ]*"));
+
+                    System.out.println("depends list size: " + dependsOnList.size());
+                    for(int i = 0; i < dependsOnList.size(); i++){
+                        System.out.println(dependsOnList.get(i));
+                    }
+
+                    System.out.println("cards in done list size: " + cardsDone.length);
+                    for(int j = 0; j < cardsDone.length; j++){
+                        System.out.println(cardsDone[j].getName());
+                    }
+
                     if(dependsOnList.size() < 1){
                         //remove yellow label
                         trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
@@ -124,16 +136,16 @@ public class TrelloCallbacksController {
                     }
                 }
 
-                //String readyListId =  persistenceController.getListId(boardId,"Ready");
-                //trelloService.moveCards(dependingCards,readyListId,userToken);
 
                 System.out.println("next card part, move to ready and add green label");
                 //posar green label a les següents card i moure-les a Ready, l'actual de cada membre
                 System.out.println(card.getIdMembers().size());
                 String onHoldListId = persistenceController.getOnHoldListId(boardId);
+                String readyListId =  persistenceController.getListId(boardId,"Ready");
                 List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,userToken);
                 System.out.println("green labels added to: ");
                 for (Card nextCard:nextCards) {
+                    trelloService.moveCards(dependingCards,readyListId,userToken);
                     System.out.println(nextCard.getName());
                     if(!cardHasLabel(greenLabelId,nextCard.getIdLabels())) {
                         trelloService.addLabel(nextCard.getId(), greenLabelId, userToken);
