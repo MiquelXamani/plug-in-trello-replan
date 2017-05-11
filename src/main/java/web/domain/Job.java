@@ -11,6 +11,7 @@ public class Job {
     private Resource resource;
     private Feature feature;
     private List<Job> depends_on;
+    private String ends;
 
     public Job(){
         this.depends_on = new ArrayList<>();
@@ -46,5 +47,13 @@ public class Job {
 
     public void setStarts(String starts) {
         this.starts = starts;
+    }
+
+    public String getEnds() {
+        return ends;
+    }
+
+    public void setEnds(String ends) {
+        this.ends = ends;
     }
 }

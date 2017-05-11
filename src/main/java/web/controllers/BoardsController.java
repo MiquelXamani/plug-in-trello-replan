@@ -148,7 +148,7 @@ public class BoardsController {
                 //finish test code
 
                 card.setName(name);
-                card.setDue(feature.getDeadline());
+                card.setDue(j.getEnds());
                 //si el recurs està associat a un usuari s'assigna a la card
                 if(!trelloUserId.equals("")) {
                     card.addMember(trelloUserId);
