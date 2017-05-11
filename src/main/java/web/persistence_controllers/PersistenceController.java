@@ -83,6 +83,10 @@ public class PersistenceController {
         return listTrelloRepository.findByNameAndBoardId("Done",boardId).getId();
     }
 
+    public String getOnHoldListId(String boardId){
+        return listTrelloRepository.findByNameAndBoardId("On-hold",boardId).getId();
+    }
+
     public List<Endpoint> getEndpoints(){
         return endpointRepository.findAll();
     }
@@ -102,6 +106,11 @@ public class PersistenceController {
 
     public String getPurpleLabelId(String boardId){
         LabelPersist labelPersist = labelRepository.findByColorAndBoardId("purple",boardId);
+        return labelPersist.getId();
+    }
+
+    public String getYellowLabelId(String boardId){
+        LabelPersist labelPersist = labelRepository.findByColorAndBoardId("yellow",boardId);
         return labelPersist.getId();
     }
 

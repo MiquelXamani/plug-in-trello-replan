@@ -16,6 +16,7 @@ import web.persistence_controllers.PersistenceController;
 import web.services.TrelloService;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -84,14 +85,53 @@ public class TrelloCallbacksController {
                     System.out.println(c.getName());
                 }
 
-                String readyListId =  persistenceController.getListId(boardId,"Ready");
-                trelloService.moveCards(dependingCards,readyListId,userToken);
-
-                System.out.println("add green label part");
-                //posar green label a les següents card, l'actual de cada membre
+                String description, dependsOnText, dependsOnCards;
+                dependsOnText = "**Depends on:** ";
+                int startIndex, textSize, endIndex, count;
+                textSize = dependsOnText.length();
+                List<String> dependsOnList;
                 String doneListId = persistenceController.getDoneListId(boardId);
+                Card[] cardsDone = trelloService.getListCards(doneListId,userToken);
+                boolean found;
+                String yellowLabelId = persistenceController.getYellowLabelId(boardId);
+                for (Card c: dependingCards) {
+                    description = c.getDesc();
+                    startIndex = description.indexOf(dependsOnText) + textSize;
+                    endIndex = description.length() - 1;
+                    dependsOnCards = description.substring(startIndex,endIndex);
+                    dependsOnList = Arrays.asList(dependsOnCards.split(",[ ]*"));
+                    if(dependsOnList.size() < 1){
+                        //remove yellow label
+                        trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
+                        System.out.println("Yellow label removed! (Only 1 dependency)");
+                    }
+                    else{
+                        count = 0;
+                        found = false;
+                        for(int i = 0; i < dependsOnList.size(); i++){
+                            for(int j = 0; !found && j < cardsDone.length; j++){
+                                if(cardsDone[j].getName().equals(dependsOnList.get(i))){
+                                    found = true;
+                                    count++;
+                                }
+                            }
+                        }
+                        if(count == dependsOnList.size()){
+                            //remove yellow label
+                            trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
+                            System.out.println("Yellow label removed! (More than 1 dependency)");
+                        }
+                    }
+                }
+
+                //String readyListId =  persistenceController.getListId(boardId,"Ready");
+                //trelloService.moveCards(dependingCards,readyListId,userToken);
+
+                System.out.println("next card part, move to ready and add green label");
+                //posar green label a les següents card i moure-les a Ready, l'actual de cada membre
                 System.out.println(card.getIdMembers().size());
-                List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),doneListId,userToken);
+                String onHoldListId = persistenceController.getOnHoldListId(boardId);
+                List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,userToken);
                 System.out.println("green labels added to: ");
                 for (Card nextCard:nextCards) {
                     System.out.println(nextCard.getName());
