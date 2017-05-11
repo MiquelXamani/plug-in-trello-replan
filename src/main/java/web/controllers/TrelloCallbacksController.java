@@ -113,7 +113,7 @@ public class TrelloCallbacksController {
                         System.out.println(cardsDone[j].getName());
                     }
 
-                    if(dependsOnList.size() < 1){
+                    if(dependsOnList.size() == 1){
                         //remove yellow label
                         System.out.println("Yellow label removed! (Only 1 dependency)");
                         trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
