@@ -97,7 +97,7 @@ public class TrelloCallbacksController {
                 for (Card c: dependingCards) {
                     description = c.getDesc();
                     startIndex = description.indexOf(dependsOnText) + textSize;
-                    endIndex = description.length() - 1;
+                    endIndex = description.length();
                     dependsOnCards = description.substring(startIndex,endIndex);
                     System.out.println("substring: " + dependsOnCards);
                     dependsOnList = Arrays.asList(dependsOnCards.split(",[ ]*"));
@@ -143,14 +143,15 @@ public class TrelloCallbacksController {
                 String onHoldListId = persistenceController.getOnHoldListId(boardId);
                 String readyListId =  persistenceController.getListId(boardId,"Ready");
                 List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,userToken);
-                System.out.println("green labels added to: ");
+                System.out.println("cards moved from On-Hold to ready: ");
                 for (Card nextCard:nextCards) {
-                    trelloService.moveCards(dependingCards,readyListId,userToken);
                     System.out.println(nextCard.getName());
                     if(!cardHasLabel(greenLabelId,nextCard.getIdLabels())) {
-                        trelloService.addLabel(nextCard.getId(), greenLabelId, userToken);
+                        nextCard.addLabel(greenLabelId);
+                        //trelloService.addLabel(nextCard.getId(), greenLabelId, userToken);
                     }
                 }
+                trelloService.moveCards(nextCards,readyListId,userToken);
 
                 //create log
                 createLog(boardId,cardId,card.getName(),action.getMemberCreator().getUsername());
