@@ -153,14 +153,6 @@ public class BoardsController {
                 if(!trelloUserId.equals("")) {
                     card.addMember(trelloUserId);
                 }
-                if(j.getDepends_on().isEmpty()){
-                    //Ready
-                    card.setIdList(lists.get(2).getId());
-                }
-                else{
-                    //On-hold
-                    card.setIdList(lists.get(1).getId());
-                }
 
                 startDate = dateFormat.parse(j.getStarts());
                 String description = feature.getDescription() + "\n\n";
@@ -180,19 +172,37 @@ public class BoardsController {
                     }
                 }
                 card.setDesc(description);
-                featuresConverted.put(featureId,card);
+
+                //if j depends of another job, the card corresponding to its feature is in On-hold list
+                //if there aren't any trello user associated with the resource assigned to this job, the card will be also in On-hol list
+                if(!j.getDepends_on().isEmpty() || trelloUserId.equals("")) {
+                    card.setIdList(lists.get(1).getId());
+                }
+                else {
+                    //Ready by default
+                    card.setIdList(lists.get(2).getId());
+                }
+
+                featuresConverted.put(featureId, card);
             }
 
-            //IMPORTANT: firstjobs are related to trello users, no green labels will be added to those cards that are "first job" only of nonassociated resources
-            if(!trelloUserId.equals("")) {
+            //IMPORTANT: firstjobs are related to trello users, no green labels will be added to those cards that
+            // are "first job" only of nonassociated resources
+            if(!trelloUserId.equals("") && j.getDepends_on().isEmpty()) {
                 if (firstsJobs.containsKey(trelloUserId)) {
                     Job j3 = firstsJobs.get(trelloUserId);
                     String dateAnt = j3.getStarts();
                     Date d1 = dateFormat.parse(dateAnt);
                     Date d2 = dateFormat.parse(j.getStarts());
-                    //if d2 is earlier than d1, replace
+                    //if d2 is earlier than d1, replace and put the card corresponding to the feature in On-hold list
+                    //current card will continue in Ready list because it's first job
                     if (d2.compareTo(d1) <= 0) {
                         firstsJobs.put(trelloUserId, j);
+                        featuresConverted.get(j3.getFeature().getId()).setIdList(lists.get(1).getId());
+                    }
+                    else{
+                        card.setIdList(lists.get(1).getId());
+                        featuresConverted.put(featureId,card);
                     }
                 }
                 else {
@@ -213,20 +223,17 @@ public class BoardsController {
             greenLabelFound = false;
             i = 0;
             c = featuresConverted.get(featureId);
-            //only cards of Ready list can have green label
-            if(c.getIdList().equals(lists.get(2).getId())) {
-                labels2 = c.getIdLabels();
-                while (!greenLabelFound && i < labels2.size()) {
-                    if (labels2.get(i).equals(greenLabelId)) {
-                        greenLabelFound = true;
-                    }
-                    i++;
+            labels2 = c.getIdLabels();
+            while (!greenLabelFound && i < labels2.size()) {
+                if (labels2.get(i).equals(greenLabelId)) {
+                    greenLabelFound = true;
                 }
+                i++;
+            }
 
-                if (!greenLabelFound) {
-                    featuresConverted.get(featureId).addLabel(greenLabel.getId());
-                    featuresConverted.get(featureId).setPos("top");
-                }
+            if (!greenLabelFound) {
+                featuresConverted.get(featureId).addLabel(greenLabel.getId());
+                //featuresConverted.get(featureId).setPos("top");
             }
         }
 
