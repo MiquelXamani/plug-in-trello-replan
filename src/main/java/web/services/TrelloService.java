@@ -293,7 +293,7 @@ public class TrelloService {
         vars = new HashMap<>();
         vars.put("key",key);
         vars.put("token",userToken);
-        vars.put("boardId",listId);
+        vars.put("listId",listId);
         return restTemplate.getForObject(url,Card[].class,vars);
     }
 
