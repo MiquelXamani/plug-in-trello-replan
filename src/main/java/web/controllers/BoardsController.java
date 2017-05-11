@@ -53,6 +53,8 @@ public class BoardsController {
         Label blueLabel = new Label();
         //For cards done
         Label purpleLabel;
+        //For cards depending on other cards to be started
+        Label yellowLabel = new Label();
         String labelColor;
         List<Label> labelList = new ArrayList<>();
         for(Label l: labels){
@@ -68,6 +70,10 @@ public class BoardsController {
             else if(labelColor.equals("purple")){
                 purpleLabel = l;
                 labelList.add(purpleLabel);
+            }
+            else if(labelColor.equals("yellow")){
+                yellowLabel = l;
+                labelList.add(yellowLabel);
             }
         }
 
@@ -175,7 +181,11 @@ public class BoardsController {
 
                 //if j depends of another job, the card corresponding to its feature is in On-hold list
                 //if there aren't any trello user associated with the resource assigned to this job, the card will be also in On-hol list
-                if(!j.getDepends_on().isEmpty() || trelloUserId.equals("")) {
+                if(!j.getDepends_on().isEmpty()) {
+                    card.setIdList(lists.get(1).getId());
+                    card.addLabel(yellowLabel.getId());
+                }
+                else if(trelloUserId.equals("")){
                     card.setIdList(lists.get(1).getId());
                 }
                 else {
