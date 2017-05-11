@@ -79,6 +79,7 @@ public class TrelloCallbacksController {
                 }
 
                 //moure les cards que depenien de la card moguda d'on-hold a ready
+                System.out.println("+++++++depending cards part+++++++++");
                 List<Card> dependingCards = trelloService.getDependingCards(boardId,cardId,card.getName(),userToken);
 
                 for (Card c: dependingCards) {
@@ -137,17 +138,17 @@ public class TrelloCallbacksController {
                 }
 
 
-                System.out.println("next card part, move to ready and add green label");
+                System.out.println("---------next card part, move to ready and add green label-------");
                 //posar green label a les següents card i moure-les a Ready, l'actual de cada membre
                 System.out.println(card.getIdMembers().size());
                 String onHoldListId = persistenceController.getOnHoldListId(boardId);
                 String readyListId =  persistenceController.getListId(boardId,"Ready");
                 List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,userToken);
                 System.out.println("cards moved from On-Hold to ready: ");
-                for (Card nextCard:nextCards) {
-                    System.out.println(nextCard.getName());
-                    if(!cardHasLabel(greenLabelId,nextCard.getIdLabels())) {
-                        nextCard.addLabel(greenLabelId);
+                for (int i = 0; i < nextCards.size(); i++) {
+                    System.out.println(nextCards.get(i).getName());
+                    if(!cardHasLabel(greenLabelId,nextCards.get(i).getIdLabels())) {
+                        nextCards.get(i).addLabel(greenLabelId);
                         //trelloService.addLabel(nextCard.getId(), greenLabelId, userToken);
                     }
                 }
