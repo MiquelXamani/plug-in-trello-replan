@@ -40,10 +40,10 @@ public class TrelloCallbacksController {
         return found;
     }
 
-    public void createLog(String boardId, String cardId, String cardName, String memberUsername, LogType logType){
+    public void createLog(String boardId, String boardName, String cardId, String cardName, String memberUsername, LogType logType){
         System.out.println("Create log function params:");
-        System.out.println("boardId: " + boardId + " cardId: " + cardId + " cardName: " + cardName + " member: " + memberUsername);
-        persistenceController.saveLog(boardId,cardId,cardName,memberUsername,logType);
+        System.out.println("boardId: " + boardId + " boardName: " + boardName + " cardId: " + cardId + " cardName: " + cardName + " member: " + memberUsername);
+        persistenceController.saveLog(boardId,boardName,cardId,cardName,memberUsername,logType);
     }
 
     @RequestMapping(value = "/cards", method= RequestMethod.POST)
@@ -51,6 +51,7 @@ public class TrelloCallbacksController {
         System.out.println("Trello notified me!!");
         Action action = response.getAction();
         String boardId = action.getData().getBoard().getId();
+        String boardName = action.getData().getBoard().getName();
         IdNameObject listAfter = action.getData().getListAfter();
         if (action.getType().equals("updateCard") &&  listAfter != null){
             System.out.println(listAfter.getId() + " " + listAfter.getName());
@@ -171,7 +172,7 @@ public class TrelloCallbacksController {
                     logType = LogType.FINISHED_EARLIER;
                     System.out.println("EARLIER");
                 }
-                createLog(boardId,cardId,card.getName(),action.getMemberCreator().getUsername(),logType);
+                createLog(boardId,boardName,cardId,card.getName(),action.getMemberCreator().getUsername(),logType);
 
             }
             else {

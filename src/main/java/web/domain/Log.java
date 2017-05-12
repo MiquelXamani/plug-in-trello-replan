@@ -28,9 +28,10 @@ public class Log implements Comparable<Log>{
         this.description = description;
     }
 
-    public Log(String createdAt, String boardId, String cardId, String cardName, LogType type, String description) {
+    public Log(String createdAt, String boardId, String boardName, String cardId, String cardName, LogType type, String description) {
         this.createdAt = createdAt;
         this.boardId = boardId;
+        this.boardName = boardName;
         this.cardId = cardId;
         this.cardName = cardName;
         this.type = type;

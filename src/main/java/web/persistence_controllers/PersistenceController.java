@@ -143,6 +143,7 @@ public class PersistenceController {
             case MOVED_TO_READY:
                 break;
             case REJECTED:
+                description = cardName+" rejected by "+memberUsername;
                 break;
             default:
                 break;
@@ -156,12 +157,12 @@ public class PersistenceController {
         return description;
     }
 
-    public Log saveLog(String boardId, String cardId, String cardName, String memberUsername, LogType type){
+    public Log saveLog(String boardId, String boardName, String cardId, String cardName, String memberUsername, LogType type){
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String createdAt = dateFormat.format(date);
         String description = createLogDescription(cardName,memberUsername,type);
-        Log log = new Log(createdAt, boardId, cardId, cardName, type, description);
+        Log log = new Log(createdAt, boardId, boardName, cardId, cardName, type, description);
         BoardPersist boardPersist = boardRepository.findOne(boardId);
         LogPersist logPersist = new LogPersist(createdAt,false,boardPersist,cardId,cardName,memberUsername,type.value,description);
         boardPersist.addLog(logPersist);
@@ -202,5 +203,10 @@ public class PersistenceController {
             }
         }
         return logs;
+    }
+
+    public Board getBoard(String boardId){
+        BoardPersist boardPersist = boardRepository.findOne(boardId);
+        return new Board (boardPersist.getId(),boardPersist.getName(),boardPersist.getUrl());
     }
 }

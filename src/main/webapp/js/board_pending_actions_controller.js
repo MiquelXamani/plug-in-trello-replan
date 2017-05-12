@@ -83,6 +83,8 @@
                 .then(function(response){
                     vm.dataLoading = false;
                     console.log(response);
+                    vm.logToRefuseIndex = "";
+                    $('#commentModalModal').modal('toggle');
                     if(response.success){
                         console.log("CARD REJECTION SUCCESSFUL");
                     }
@@ -90,8 +92,6 @@
                         console.log("CARD REJECTION FAILURE");
                     }
                 });
-            vm.logToRefuseIndex = "";
-            $('#commentModalModal').modal('toggle');
         }
 
         getBoards();

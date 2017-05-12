@@ -62,7 +62,8 @@ public class LogsController {
         trelloService.postComment(cardId,rejection.getComment(),userToken);
 
         //create log
-        return persistenceController.saveLog(boardId,cardId,rejection.getCardName(),user.getTrelloUsername(),LogType.REJECTED);
+        String boardName = persistenceController.getBoard(boardId).getName();
+        return persistenceController.saveLog(boardId,boardName,cardId,rejection.getCardName(),user.getTrelloUsername(),LogType.REJECTED);
 
     }
 }
