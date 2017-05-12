@@ -62,7 +62,7 @@ public class TrelloCallbacksController {
                 TrelloService trelloService = new TrelloService();
                 String userToken = persistenceController.getBoardUser(boardId).getTrelloToken();
 
-                //borrar label de la card
+                //borrar label verda de la card (si en té)
                 System.out.println("Board id: " + boardId);
                 String greenLabelId = persistenceController.getLabelId(boardId,"green");
                 Card card = response.getModel();
@@ -72,6 +72,11 @@ public class TrelloCallbacksController {
                     trelloService.removeLabel(cardId,greenLabelId,userToken);
                 }
 
+                //borrar label vermella de la card (si en té)
+                String redLabelId = persistenceController.getLabelId(boardId,"red");
+                if(cardHasLabel(redLabelId,card.getIdLabels())){
+                    trelloService.removeLabel(cardId,redLabelId,userToken);
+                }
 
                 //afegir nova label a la card
                 String purpleLabelId = persistenceController.getLabelId(boardId,"purple");
