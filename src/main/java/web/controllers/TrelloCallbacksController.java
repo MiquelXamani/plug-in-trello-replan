@@ -91,7 +91,7 @@ public class TrelloCallbacksController {
                 int startIndex, textSize, endIndex, count;
                 textSize = dependsOnText.length();
                 List<String> dependsOnList;
-                String doneListId = persistenceController.getDoneListId(boardId);
+                String doneListId = persistenceController.getListId(boardId,"Done");
                 Card[] cardsDone = trelloService.getListCards(doneListId,userToken);
                 boolean found;
                 String yellowLabelId = persistenceController.getYellowLabelId(boardId);
@@ -142,9 +142,10 @@ public class TrelloCallbacksController {
                 System.out.println("---------next card part, move to ready and add green label-------");
                 //posar green label a les següents card i moure-les a Ready, l'actual de cada membre
                 System.out.println(card.getIdMembers().size());
-                String onHoldListId = persistenceController.getOnHoldListId(boardId);
+                String onHoldListId = persistenceController.getListId(boardId,"On-hold");
                 String readyListId =  persistenceController.getListId(boardId,"Ready");
-                List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,userToken);
+                String inProgressListId = persistenceController.getListId(boardId,"In Progress");
+                List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,inProgressListId,readyListId,userToken);
                 System.out.println("cards moved from On-Hold to ready: ");
                 //loop only for testing purposes
                 for (int i = 0; i < nextCards.size(); i++) {

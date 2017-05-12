@@ -230,7 +230,7 @@ public class TrelloService {
     }
 
     //return the card with the earliest start date
-    private Card getNextCard(List<Card> cards, String onHoldListId) throws ParseException{
+    private Card getNextCard(List<Card> cards, String onHoldListId, String inProgressListId, String readyListId) throws ParseException{
         String description, date, earliestDate = "";
         String startDateText = "**Start date:** ";
         int textLength = startDateText.length();
@@ -242,9 +242,11 @@ public class TrelloService {
         Date earliestD = new Date();
         Card nextCard = null;
         System.out.println("*** getnexcardid function ***");
+        String idList;
         for (Card card:cards) {
             System.out.println(card.getName());
-            if (onHoldListId.equals(card.getIdList())) {
+            idList = card.getIdList();
+            if (onHoldListId.equals(idList)) {
                 description = card.getDesc();
                 startDateTextIndex = description.indexOf(startDateText);
                 if (startDateTextIndex > -1) {
@@ -259,11 +261,16 @@ public class TrelloService {
                     }
                 }
             }
+            //Member can't have a next card if is already working in on one
+            else if(inProgressListId.equals(idList) || readyListId.equals(idList)){
+                System.out.println("No next card assigned because member is already working in one");
+                return null;
+            }
         }
         return nextCard;
     }
 
-    public List<Card> getNextCards(String boardId, List<String> idMembers, String onHoldListId, String userToken) throws ParseException {
+    public List<Card> getNextCards(String boardId, List<String> idMembers, String onHoldListId,String inProgressListId, String readyListId, String userToken) throws ParseException {
         //url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={token}";
         //vars = new HashMap<>();
         //vars.put("key",key);
@@ -280,7 +287,7 @@ public class TrelloService {
             SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
             System.out.println("cards found: " + searchCardResponse.getCards().size());
             System.out.println(searchCardResponse.printCardNames());
-            nextCard = getNextCard(searchCardResponse.getCards(),onHoldListId);
+            nextCard = getNextCard(searchCardResponse.getCards(),onHoldListId, inProgressListId, readyListId);
             if(nextCard != null){
                 System.out.println("next card id: " + nextCard.getName());
                 nextCards.add(nextCard);

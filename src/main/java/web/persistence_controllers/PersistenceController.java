@@ -79,14 +79,6 @@ public class PersistenceController {
         else return false;
     }
 
-    public String getDoneListId(String boardId){
-        return listTrelloRepository.findByNameAndBoardId("Done",boardId).getId();
-    }
-
-    public String getOnHoldListId(String boardId){
-        return listTrelloRepository.findByNameAndBoardId("On-hold",boardId).getId();
-    }
-
     public List<Endpoint> getEndpoints(){
         return endpointRepository.findAll();
     }
