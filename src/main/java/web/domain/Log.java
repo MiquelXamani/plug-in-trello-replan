@@ -1,6 +1,8 @@
 package web.domain;
 
 
+import web.LogType;
+
 public class Log implements Comparable<Log>{
     private int id;
     private String createdAt;
@@ -9,12 +11,12 @@ public class Log implements Comparable<Log>{
     private String cardId;
     private String cardName;
     private boolean read;
-    private String type;
+    private LogType type;
     private String description;
 
     public Log(){}
 
-    public Log(int id, String createdAt, String boardId, String boardName, String cardId, String cardName, boolean read, String type, String description) {
+    public Log(int id, String createdAt, String boardId, String boardName, String cardId, String cardName, boolean read, LogType type, String description) {
         this.id = id;
         this.createdAt = createdAt;
         this.boardId = boardId;
@@ -26,7 +28,7 @@ public class Log implements Comparable<Log>{
         this.description = description;
     }
 
-    public Log(String createdAt, String boardId, String cardId, String cardName, String type, String description) {
+    public Log(String createdAt, String boardId, String cardId, String cardName, LogType type, String description) {
         this.createdAt = createdAt;
         this.boardId = boardId;
         this.cardId = cardId;
@@ -83,11 +85,11 @@ public class Log implements Comparable<Log>{
         this.read = read;
     }
 
-    public String getType() {
+    public LogType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(LogType type) {
         this.type = type;
     }
 

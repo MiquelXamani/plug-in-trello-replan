@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import web.LogType;
 import web.domain.Action;
 import web.domain.Card;
 import web.domain.Label;
@@ -16,7 +17,9 @@ import web.persistence_controllers.PersistenceController;
 import web.services.TrelloService;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -40,10 +43,10 @@ public class TrelloCallbacksController {
         return found;
     }
 
-    public void createLog(String boardId, String cardId, String cardName, String memberUsername){
+    public void createLog(String boardId, String cardId, String cardName, String memberUsername, LogType logType){
         System.out.println("Create log function params:");
         System.out.println("boardId: " + boardId + " cardId: " + cardId + " cardName: " + cardName + " member: " + memberUsername);
-        persistenceController.saveFinishedEarlierLog(boardId,cardId,cardName,memberUsername);
+        persistenceController.saveLog(boardId,cardId,cardName,memberUsername,logType);
     }
 
     @RequestMapping(value = "/cards", method= RequestMethod.POST)
@@ -158,7 +161,17 @@ public class TrelloCallbacksController {
                 trelloService.moveCardsAndAddLabel(nextCards,readyListId,greenLabelId,userToken);
 
                 //create log
-                createLog(boardId,cardId,card.getName(),action.getMemberCreator().getUsername());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                Date date = dateFormat.parse(card.getDue());
+                Date currentDate = new Date();
+                LogType logType;
+                if(date.after(currentDate)){
+                    logType = LogType.FINISHED_LATE;
+                }
+                else{
+                    logType = LogType.FINISHED_EARLIER;
+                }
+                createLog(boardId,cardId,card.getName(),action.getMemberCreator().getUsername(),logType);
 
             }
             else {

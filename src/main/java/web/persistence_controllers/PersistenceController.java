@@ -2,6 +2,7 @@ package web.persistence_controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import web.LogType;
 import web.domain.*;
 import web.persistance.models.*;
 import web.persistance.repositories.*;
@@ -138,15 +139,41 @@ public class PersistenceController {
         return boards;
     }
 
-    public Log saveFinishedEarlierLog(String boardId, String cardId, String cardName, String memberUsername){
+    private String createLogDescription(String cardName, String memberUsername,LogType type){
+        String description = "";
+        switch (type){
+            case FINISHED_EARLIER:
+                description = cardName+" marked as finished by "+memberUsername+" earlier than expected";
+                break;
+            case FINISHED_LATE:
+                description = cardName+" marked as finished by "+memberUsername+" later than expected";
+                break;
+            case MOVED_TO_IN_PROGRESS:
+                break;
+            case MOVED_TO_READY:
+                break;
+            case REJECTED:
+                break;
+            default:
+                break;
+        }
+        if(type.equals("finished_earlier")){
+            description = cardName+" marked as finished by "+memberUsername+" earlier than expected";
+        }
+        else if(type.equals("finished_late")){
+            description = cardName+" marked as finished by "+memberUsername+" later than expected";
+        }
+        return description;
+    }
+
+    public Log saveLog(String boardId, String cardId, String cardName, String memberUsername, LogType type){
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String createdAt = dateFormat.format(date);
-        String type = "finished_earlier";
-        String description = cardName+" marked as finished by "+memberUsername+" earlier than expected";
+        String description = createLogDescription(cardName,memberUsername,type);
         Log log = new Log(createdAt, boardId, cardId, cardName, type, description);
         BoardPersist boardPersist = boardRepository.findOne(boardId);
-        LogPersist logPersist = new LogPersist(createdAt,false,boardPersist,cardId,cardName,memberUsername,type,description);
+        LogPersist logPersist = new LogPersist(createdAt,false,boardPersist,cardId,cardName,memberUsername,type.value,description);
         boardPersist.addLog(logPersist);
         boardRepository.save(boardPersist);
         log.setId(logPersist.getId());
@@ -159,9 +186,11 @@ public class PersistenceController {
         List<Log> logs = new ArrayList<>();
         if(userPersist != null){
             Log log;
+            LogType logType;
             for (BoardPersist b: userPersist.getBoards()) {
                 for(LogPersist lp: b.getLogs()){
-                    log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),lp.getCardId(),lp.getCardName(),lp.getRead(),lp.getType(),lp.getDescription());
+                    logType = LogType.getEnum(lp.getType());
+                    log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),lp.getCardId(),lp.getCardName(),lp.getRead(),logType,lp.getDescription());
                     logs.add(log);
                 }
 
@@ -175,8 +204,10 @@ public class PersistenceController {
         List<Log> logs = new ArrayList<>();
         if(boardPersist != null){
             Log log;
+            LogType logType;
             for(LogPersist lp: boardPersist.getLogs()){
-                log = new Log(lp.getId(),lp.getCreatedAt(),boardPersist.getId(),boardPersist.getName(),lp.getCardId(),lp.getCardName(),lp.getRead(),lp.getType(),lp.getDescription());
+                logType = LogType.getEnum(lp.getType());
+                log = new Log(lp.getId(),lp.getCreatedAt(),boardPersist.getId(),boardPersist.getName(),lp.getCardId(),lp.getCardName(),lp.getRead(),logType,lp.getDescription());
                 logs.add(log);
             }
         }
