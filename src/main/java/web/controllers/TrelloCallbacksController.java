@@ -165,11 +165,15 @@ public class TrelloCallbacksController {
                 Date date = dateFormat.parse(card.getDue());
                 Date currentDate = new Date();
                 LogType logType;
+                System.out.println(currentDate);
+                System.out.println(date);
                 if(date.after(currentDate)){
                     logType = LogType.FINISHED_LATE;
+                    System.out.println("LATER");
                 }
                 else{
                     logType = LogType.FINISHED_EARLIER;
+                    System.out.println("EARLIER");
                 }
                 createLog(boardId,cardId,card.getName(),action.getMemberCreator().getUsername(),logType);
 
