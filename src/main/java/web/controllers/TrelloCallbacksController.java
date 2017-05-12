@@ -162,12 +162,10 @@ public class TrelloCallbacksController {
 
                 //create log
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                Date date = dateFormat.parse(card.getDue());
+                Date dueDate = dateFormat.parse(card.getDue());
                 Date currentDate = new Date();
                 LogType logType;
-                System.out.println(currentDate);
-                System.out.println(date);
-                if(date.after(currentDate)){
+                if(currentDate.after(dueDate)){
                     logType = LogType.FINISHED_LATE;
                     System.out.println("LATER");
                 }
