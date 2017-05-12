@@ -92,18 +92,8 @@ public class PersistenceController {
         return endpointRepository.save(new Endpoint(url,name));
     }
 
-    public String getGreenLabelId(String boardId){
-        LabelPersist labelPersist = labelRepository.findByColorAndBoardId("green",boardId);
-        return labelPersist.getId();
-    }
-
-    public String getPurpleLabelId(String boardId){
-        LabelPersist labelPersist = labelRepository.findByColorAndBoardId("purple",boardId);
-        return labelPersist.getId();
-    }
-
-    public String getYellowLabelId(String boardId){
-        LabelPersist labelPersist = labelRepository.findByColorAndBoardId("yellow",boardId);
+    public String getLabelId(String boardId, String color){
+        LabelPersist labelPersist = labelRepository.findByColorAndBoardId(color,boardId);
         return labelPersist.getId();
     }
 

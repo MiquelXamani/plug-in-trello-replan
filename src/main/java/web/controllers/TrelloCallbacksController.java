@@ -18,10 +18,7 @@ import web.services.TrelloService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/trello-callbacks")
@@ -66,7 +63,7 @@ public class TrelloCallbacksController {
 
                 //borrar label de la card
                 System.out.println("Board id: " + boardId);
-                String greenLabelId = persistenceController.getGreenLabelId(boardId);
+                String greenLabelId = persistenceController.getLabelId(boardId,"green");
                 Card card = response.getModel();
                 String cardId = card.getId();
                 if(cardHasLabel(greenLabelId,card.getIdLabels())){
@@ -76,7 +73,7 @@ public class TrelloCallbacksController {
 
 
                 //afegir nova label a la card
-                String purpleLabelId = persistenceController.getPurpleLabelId(boardId);
+                String purpleLabelId = persistenceController.getLabelId(boardId,"purple");
                 if(!cardHasLabel(purpleLabelId,card.getIdLabels())) {
                     trelloService.addLabel(card.getId(), purpleLabelId, userToken);
                 }
@@ -97,7 +94,7 @@ public class TrelloCallbacksController {
                 String doneListId = persistenceController.getListId(boardId,"Done");
                 Card[] cardsDone = trelloService.getListCards(doneListId,userToken);
                 boolean found;
-                String yellowLabelId = persistenceController.getYellowLabelId(boardId);
+                String yellowLabelId = persistenceController.getLabelId(boardId,"yellow");
                 for (Card c: dependingCards) {
                     description = c.getDesc();
                     startIndex = description.indexOf(dependsOnText) + textSize;
@@ -150,15 +147,16 @@ public class TrelloCallbacksController {
                 String inProgressListId = persistenceController.getListId(boardId,"In Progress");
                 List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,inProgressListId,readyListId,userToken);
                 System.out.println("cards moved from On-Hold to ready: ");
-                //loop only for testing purposes
+
+                List<String> nextCardsIds = new ArrayList<>();
                 for (int i = 0; i < nextCards.size(); i++) {
                     System.out.println(nextCards.get(i).getName());
-                    if(!cardHasLabel(greenLabelId,nextCards.get(i).getIdLabels())) {
-                        //trelloService.addLabel(nextCard.getId(), greenLabelId, userToken);
-                    }
+                    nextCardsIds.add(nextCards.get(i).getId());
                 }
 
-                trelloService.moveCardsAndAddLabel(nextCards,readyListId,greenLabelId,userToken);
+
+
+                trelloService.moveCardsAndAddLabel(nextCardsIds,readyListId,greenLabelId,userToken);
 
                 //create log
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

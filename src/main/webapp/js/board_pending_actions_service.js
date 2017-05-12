@@ -38,13 +38,16 @@
         }
 
         //refuse card posting a comment with the reasons why this card is rejected
-        function RejectCardDone(username,cardId,comment){
+        function RejectCardDone(username,cardId,cardName,boardId,comment){
             //body: username and comment
             var body = {
                 username:username,
-                comment:comment
+                comment:comment,
+                cardId:cardId,
+                cardName:cardName,
+                boardId:boardId
             }
-            return $http.post('/cards/'+cardId+'/refuse',body).then(handleSuccess,handleError);
+            return $http.post('/logs/reject-card',body).then(handleSuccess,handleError);
         }
 
         // private functions

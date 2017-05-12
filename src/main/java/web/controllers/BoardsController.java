@@ -55,6 +55,8 @@ public class BoardsController {
         Label purpleLabel;
         //For cards depending on other cards to be started
         Label yellowLabel = new Label();
+        //For rejected cards
+        Label redLabel = new Label();
         String labelColor;
         List<Label> labelList = new ArrayList<>();
         for(Label l: labels){
@@ -74,6 +76,10 @@ public class BoardsController {
             else if(labelColor.equals("yellow")){
                 yellowLabel = l;
                 labelList.add(yellowLabel);
+            }
+            else if(labelColor.equals("red")){
+                redLabel = l;
+                labelList.add(redLabel);
             }
         }
 

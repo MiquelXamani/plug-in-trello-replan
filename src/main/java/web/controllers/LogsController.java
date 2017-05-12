@@ -1,13 +1,16 @@
 package web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import web.LogType;
+import web.domain.Card;
+import web.domain.CardRejection;
 import web.domain.Log;
+import web.domain.User2;
 import web.persistence_controllers.PersistenceController;
+import web.services.TrelloService;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,5 +36,33 @@ public class LogsController {
         }
         Collections.sort(logs);
         return logs;
+    }
+
+    @RequestMapping(value = "/reject-card",method = RequestMethod.POST)
+    public Log rejectCard(@RequestBody CardRejection rejection){
+        System.out.println("Reject process");
+        User2 user = persistenceController.getUser(rejection.getUsername());
+        String userToken = user.getTrelloToken();
+        String cardId = rejection.getCardId();
+        String boardId = rejection.getBoardId();
+        TrelloService trelloService = new TrelloService();
+
+        //remove green label
+        String greenLabelId = persistenceController.getLabelId(boardId,"green");
+        trelloService.removeLabel(cardId,greenLabelId,userToken);
+
+        //move card to In Progress list and add red label
+        String inProgressListId = persistenceController.getListId(boardId,"In Progress");
+        String redLabelId = persistenceController.getLabelId(boardId,"red");
+        List<String> cardsIdList = new ArrayList<>();
+        cardsIdList.add(cardId);
+        trelloService.moveCardsAndAddLabel(cardsIdList,inProgressListId,redLabelId,userToken);
+
+        //add comment
+        trelloService.postComment(cardId,rejection.getComment(),userToken);
+
+        //create log
+        return persistenceController.saveLog(boardId,cardId,rejection.getCardName(),user.getTrelloUsername(),LogType.REJECTED);
+
     }
 }

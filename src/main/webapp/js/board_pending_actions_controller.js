@@ -72,16 +72,19 @@
         }
 
         function submitComment(){
+            console.log("Submit clicked!");
             vm.dataLoading = true;
-            markAsRead(vm.logToRefuseIndex);
-            BoardPendingActionsService.RejectCardDone($rootScope.globals.currentUser.username,vm.logs[logToRefuseIndex].cardId,vm.comment)
+            //markAsRead(vm.logToRefuseIndex);
+            BoardPendingActionsService.RejectCardDone($rootScope.globals.currentUser.username,
+                vm.logs[logToRefuseIndex].cardId,vm.logs[logToRefuseIndex].cardName,vm.logs[logToRefuseIndex].boardId,vm.comment)
                 .then(function(response){
                     vm.dataLoading = false;
+                    console.log(response);
                     if(response.success){
-                        console.log("MARK AS READ SUCCESSFUL");
+                        console.log("CARD REJECTION SUCCESSFUL");
                     }
                     else{
-                        console.log("MARK AS READ FAILURE");
+                        console.log("CARD REJECTION FAILURE");
                     }
                 });
             vm.logToRefuseIndex = "";

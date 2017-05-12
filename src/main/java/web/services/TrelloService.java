@@ -214,7 +214,7 @@ public class TrelloService {
         return cardsFound;
     }
 
-    public void moveCardsAndAddLabel(List<Card> cards, String listId, String labelId, String userToken){
+    public void moveCardsAndAddLabel(List<String> cardsIds, String listId, String labelId, String userToken){
         url = "https://api.trello.com/1/cards/{cardId}?key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
@@ -222,9 +222,8 @@ public class TrelloService {
         input = new HashMap<>();
         input.put("idList",listId);
         input.put("idLabels",labelId);
-        for (Card card : cards) {
-            System.out.println("Card Moved to Ready: " + card.getName());
-            vars.put("cardId",card.getId());
+        for (String cardId : cardsIds) {
+            vars.put("cardId",cardId);
             restTemplate.put(url,input,vars);
         }
     }
@@ -303,6 +302,17 @@ public class TrelloService {
         vars.put("token",userToken);
         vars.put("listId",listId);
         return restTemplate.getForObject(url,Card[].class,vars);
+    }
+
+    public void postComment(String cardId, String comment, String userToken){
+        url = "https://api.trello.com/1/cards/{cardId}/actions/comments?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        vars.put("cardId",cardId);
+        input = new HashMap<>();
+        input.put("text",comment);
+        restTemplate.postForObject(url,input,Action.class,vars);
     }
 
 }
