@@ -68,6 +68,7 @@
 
         function reject(index){
             vm.logToRefuseIndex = index;
+            console.log("REJECT BUTTON CLICKED AND INDEX = " + index);
             $('#commentModal').modal('toggle');
         }
 
@@ -75,8 +76,10 @@
             console.log("Submit clicked!");
             vm.dataLoading = true;
             //markAsRead(vm.logToRefuseIndex);
-            BoardPendingActionsService.RejectCardDone($rootScope.globals.currentUser.username,
-                vm.logs[logToRefuseIndex].cardId,vm.logs[logToRefuseIndex].cardName,vm.logs[logToRefuseIndex].boardId,vm.comment)
+            var logToRefuse = vm.logs[vm.logToRefuseIndex];
+            console.log(logToRefuse);
+            console.log(vm.comment);
+            BoardPendingActionsService.RejectCardDone($rootScope.globals.currentUser.username,logToRefuse.cardId,logToRefuse.cardName,logToRefuse.boardId,vm.comment)
                 .then(function(response){
                     vm.dataLoading = false;
                     console.log(response);
