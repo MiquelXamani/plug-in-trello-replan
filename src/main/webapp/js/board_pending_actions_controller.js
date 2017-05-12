@@ -84,9 +84,10 @@
                     vm.dataLoading = false;
                     console.log(response);
                     vm.logToRefuseIndex = "";
-                    $('#commentModalModal').modal('toggle');
+                    getLogs();
                     if(response.success){
                         console.log("CARD REJECTION SUCCESSFUL");
+                        $('#commentModal').modal('toggle');
                     }
                     else{
                         console.log("CARD REJECTION FAILURE");
