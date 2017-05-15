@@ -71,15 +71,6 @@ public class PersistenceController {
         return user;
     }
 
-    public boolean isDoneList(String boardId, String idList){
-        //TODO: ha d'obtenir un sol objecte, no una llista
-        List<ListTrelloPersist> listTrelloPersist = listTrelloRepository.findByIdAndNameAndBoardId(idList,"Done",boardId);
-        if(listTrelloPersist.size() > 0){
-            return true;
-        }
-        else return false;
-    }
-
     public List<Endpoint> getEndpoints(){
         return endpointRepository.findAll();
     }
@@ -139,8 +130,10 @@ public class PersistenceController {
                 description = cardName+" marked as finished by "+memberUsername+" later than expected";
                 break;
             case MOVED_TO_IN_PROGRESS:
+                description = cardName+" moved to in progress by "+memberUsername;
                 break;
             case MOVED_TO_READY:
+                description = cardName+" moved to ready by "+memberUsername;
                 break;
             case REJECTED:
                 description = cardName+" rejected by "+memberUsername;

@@ -1,6 +1,8 @@
 package web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import web.LogType;
 import web.domain.Card;
@@ -39,7 +41,7 @@ public class LogsController {
     }
 
     @RequestMapping(value = "/reject-card",method = RequestMethod.POST)
-    public Log rejectCard(@RequestBody CardRejection rejection){
+    public HttpEntity rejectCard(@RequestBody CardRejection rejection){
         System.out.println("Reject process");
         User2 user = persistenceController.getUser(rejection.getUsername());
         String userToken = user.getTrelloToken();
@@ -61,9 +63,10 @@ public class LogsController {
         //add comment
         trelloService.postComment(cardId,rejection.getComment(),userToken);
 
+        return new HttpEntity(HttpStatus.OK);
         //create log
-        String boardName = persistenceController.getBoard(boardId).getName();
-        return persistenceController.saveLog(boardId,boardName,cardId,rejection.getCardName(),user.getTrelloUsername(),LogType.REJECTED);
+        //String boardName = persistenceController.getBoard(boardId).getName();
+        //return persistenceController.saveLog(boardId,boardName,cardId,rejection.getCardName(),"Project Leader",LogType.REJECTED);
 
     }
 }

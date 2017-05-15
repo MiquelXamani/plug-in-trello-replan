@@ -3,10 +3,7 @@ package web.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import web.LogType;
 import web.domain.Action;
 import web.domain.Card;
@@ -47,15 +44,29 @@ public class TrelloCallbacksController {
     }
 
     @RequestMapping(value = "/cards", method= RequestMethod.POST)
-    public ResponseEntity<String> cardModified(@RequestBody WebhookCardTrelloResponse response) throws ParseException {
+    public ResponseEntity<String> cardModified(@RequestParam(value = "username") String webUserTrelloUsername, @RequestBody WebhookCardTrelloResponse response) throws ParseException {
         System.out.println("Trello notified me!!");
         Action action = response.getAction();
         String boardId = action.getData().getBoard().getId();
         String boardName = action.getData().getBoard().getName();
         IdNameObject listAfter = action.getData().getListAfter();
+        IdNameObject listBefore = action.getData().getListBefore();
         if (action.getType().equals("updateCard") &&  listAfter != null){
-            System.out.println(listAfter.getId() + " " + listAfter.getName());
-            if(persistenceController.isDoneList(boardId,listAfter.getId())){
+            String newListId = listAfter.getId();
+            String oldListId = listBefore.getId();
+            System.out.println(newListId + " " + listAfter.getName());
+
+            //Get id lists
+            String doneListId = persistenceController.getListId(boardId,"Done");
+            String onHoldListId = persistenceController.getListId(boardId,"On-hold");
+            String readyListId =  persistenceController.getListId(boardId,"Ready");
+            String inProgressListId = persistenceController.getListId(boardId,"In Progress");
+
+            Card card = response.getModel();
+            String cardId = card.getId();
+            String cardName = card.getName();
+
+            if(newListId.equals(doneListId)){
                 System.out.println("CARD MOVED TO DONE LIST");
 
                 //get usertoken
@@ -65,8 +76,6 @@ public class TrelloCallbacksController {
                 //borrar label verda de la card (si en té)
                 System.out.println("Board id: " + boardId);
                 String greenLabelId = persistenceController.getLabelId(boardId,"green");
-                Card card = response.getModel();
-                String cardId = card.getId();
                 if(cardHasLabel(greenLabelId,card.getIdLabels())){
                     System.out.println("Card id: "+ cardId);
                     trelloService.removeLabel(cardId,greenLabelId,userToken);
@@ -86,7 +95,7 @@ public class TrelloCallbacksController {
 
                 //moure les cards que depenien de la card moguda d'on-hold a ready
                 System.out.println("+++++++depending cards part+++++++++");
-                List<Card> dependingCards = trelloService.getDependingCards(boardId,cardId,card.getName(),userToken);
+                List<Card> dependingCards = trelloService.getDependingCards(boardId,cardId,cardName,userToken);
 
                 for (Card c: dependingCards) {
                     System.out.println(c.getName());
@@ -97,7 +106,7 @@ public class TrelloCallbacksController {
                 int startIndex, textSize, endIndex, count;
                 textSize = dependsOnText.length();
                 List<String> dependsOnList;
-                String doneListId = persistenceController.getListId(boardId,"Done");
+
                 Card[] cardsDone = trelloService.getListCards(doneListId,userToken);
                 boolean found;
                 String yellowLabelId = persistenceController.getLabelId(boardId,"yellow");
@@ -148,9 +157,6 @@ public class TrelloCallbacksController {
                 System.out.println("---------next card part, move to ready and add green label-------");
                 //posar green label a les següents card i moure-les a Ready, l'actual de cada membre
                 System.out.println(card.getIdMembers().size());
-                String onHoldListId = persistenceController.getListId(boardId,"On-hold");
-                String readyListId =  persistenceController.getListId(boardId,"Ready");
-                String inProgressListId = persistenceController.getListId(boardId,"In Progress");
                 List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,inProgressListId,readyListId,userToken);
                 System.out.println("cards moved from On-Hold to ready: ");
 
@@ -177,11 +183,19 @@ public class TrelloCallbacksController {
                     logType = LogType.FINISHED_EARLIER;
                     System.out.println("EARLIER");
                 }
-                createLog(boardId,boardName,cardId,card.getName(),action.getMemberCreator().getUsername(),logType);
+                createLog(boardId,boardName,cardId,cardName,action.getMemberCreator().getUsername(),logType);
 
             }
-            else {
-                System.out.println("CARD MOVED TO ANOTHER LIST");
+            else if (newListId.equals(readyListId)){
+                System.out.println("CARD MOVED TO READY LIST");
+                createLog(boardId,boardName,cardId,cardName,action.getMemberCreator().getUsername(),LogType.MOVED_TO_READY);
+            }
+            else if (newListId.equals(inProgressListId)){
+                System.out.println("CARD MOVED TO IN PROGRESS LIST");
+                persistenceController.saveLog(boardId,boardName,cardId,cardName,action.getMemberCreator().getUsername(),LogType.REJECTED);
+            }
+            else{
+                System.out.println("ANOTHER CARD MOVEMENT");
             }
         }
         else{
@@ -191,8 +205,8 @@ public class TrelloCallbacksController {
     }
 
     @RequestMapping(value = "/cards", method= RequestMethod.GET)
-    public ResponseEntity<String> checkG(){
-        System.out.println("Trello checked!!");
+    public ResponseEntity<String> checkG(@RequestParam(value = "username") String username){
+        System.out.println("Trello checked and username is " + username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
