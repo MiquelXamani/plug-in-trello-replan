@@ -141,12 +141,6 @@ public class PersistenceController {
             default:
                 break;
         }
-        if(type.equals("finished_earlier")){
-            description = cardName+" marked as finished by "+memberUsername+" earlier than expected";
-        }
-        else if(type.equals("finished_late")){
-            description = cardName+" marked as finished by "+memberUsername+" later than expected";
-        }
         return description;
     }
 
@@ -174,7 +168,7 @@ public class PersistenceController {
             for (BoardPersist b: userPersist.getBoards()) {
                 for(LogPersist lp: b.getLogs()){
                     logType = LogType.getEnum(lp.getType());
-                    log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),lp.getCardId(),lp.getCardName(),lp.getRead(),logType,lp.getDescription());
+                    log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),lp.getCardId(),lp.getCardName(),lp.getAccepted(),logType,lp.getDescription());
                     logs.add(log);
                 }
 
@@ -191,7 +185,7 @@ public class PersistenceController {
             LogType logType;
             for(LogPersist lp: boardPersist.getLogs()){
                 logType = LogType.getEnum(lp.getType());
-                log = new Log(lp.getId(),lp.getCreatedAt(),boardPersist.getId(),boardPersist.getName(),lp.getCardId(),lp.getCardName(),lp.getRead(),logType,lp.getDescription());
+                log = new Log(lp.getId(),lp.getCreatedAt(),boardPersist.getId(),boardPersist.getName(),lp.getCardId(),lp.getCardName(),lp.getAccepted(),logType,lp.getDescription());
                 logs.add(log);
             }
         }

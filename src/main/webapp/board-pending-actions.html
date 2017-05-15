@@ -54,14 +54,21 @@
                 <td>
                     <div class="row">
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-default btn-md" title="Mark as Read">
-                                <span class="glyphicon glyphicon-check green" aria-hidden="true" ng-click="vm.markAsRead($index)"></span>
+                            <button type="button" class="btn btn-default btn-md" title="More info">
+                                <span class="glyphicon glyphicon-info-sign" aria-hidden="true" ng-click="vm.displayCardTracking($index)"></span>
                             </button>
                         </div>
-                        <div class="col-md-6 text-right">
-                            <button type="button" class="btn btn-default btn-md" title="Reject">
-                                <span class="glyphicon glyphicon-remove red" aria-hidden="true" ng-click="vm.reject($index)"></span>
-                            </button>
+                        <div ng-if="log.type === 'FINISHED_LATE' || log.type === 'FINISHED_EARLIER'">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-default btn-md" title="Accept">
+                                    <span class="glyphicon glyphicon-check green" aria-hidden="true" ng-click="vm.markAsCompleted($index)"></span>
+                                </button>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button type="button" class="btn btn-default btn-md" title="Reject">
+                                    <span class="glyphicon glyphicon-remove red" aria-hidden="true" ng-click="vm.reject($index)"></span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </td>

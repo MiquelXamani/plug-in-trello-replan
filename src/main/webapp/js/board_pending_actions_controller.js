@@ -15,7 +15,8 @@
         vm.dataLoading = false;
 
         vm.getLogs = getLogs;
-        vm.markAsRead = markAsRead;
+        vm.displayCardTracking = displayCardTracking;
+        vm.markAsCompleted = markAsCompleted;
         vm.reject = reject;
         vm.submitComment = submitComment;
 
@@ -54,7 +55,11 @@
             }
         }
 
-        function markAsRead(index){
+        function displayCardTracking(index){
+            $('#cardTrackingModal').modal('toggle');
+        }
+
+        function markAsCompleted(index){
             vm.logs[index].read = true;
             BoardPendingActionsService.LogRead(index.id).then(function(response){
                 if(response.success){
@@ -75,7 +80,7 @@
         function submitComment(){
             console.log("Submit clicked!");
             vm.dataLoading = true;
-            //markAsRead(vm.logToRefuseIndex);
+            //markAsCompleted(vm.logToRefuseIndex);
             var logToRefuse = vm.logs[vm.logToRefuseIndex];
             console.log(logToRefuse);
             console.log(vm.comment);

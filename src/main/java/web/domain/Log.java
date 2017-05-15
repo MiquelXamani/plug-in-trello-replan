@@ -10,20 +10,20 @@ public class Log implements Comparable<Log>{
     private String boardName;
     private String cardId;
     private String cardName;
-    private boolean read;
+    private boolean accepted;
     private LogType type;
     private String description;
 
     public Log(){}
 
-    public Log(int id, String createdAt, String boardId, String boardName, String cardId, String cardName, boolean read, LogType type, String description) {
+    public Log(int id, String createdAt, String boardId, String boardName, String cardId, String cardName, boolean accepted, LogType type, String description) {
         this.id = id;
         this.createdAt = createdAt;
         this.boardId = boardId;
         this.boardName = boardName;
         this.cardId = cardId;
         this.cardName = cardName;
-        this.read = read;
+        this.accepted = accepted;
         this.type = type;
         this.description = description;
     }
@@ -78,12 +78,12 @@ public class Log implements Comparable<Log>{
         this.cardId = cardId;
     }
 
-    public boolean isRead() {
-        return read;
+    public boolean isAccepted() {
+        return accepted;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setAccepted(boolean read) {
+        this.accepted = read;
     }
 
     public LogType getType() {

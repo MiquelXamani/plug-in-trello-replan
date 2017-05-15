@@ -11,7 +11,7 @@ public class LogPersist {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
     private String createdAt;
-    private boolean read;
+    private boolean accepted;
     @ManyToOne
     @JoinColumn(name = "boardId")
     private BoardPersist board;
@@ -23,9 +23,9 @@ public class LogPersist {
 
     public LogPersist(){}
 
-    public LogPersist(String createdAt,boolean read, BoardPersist boardPersist,String cardId,String cardName,String memberUsername,String type, String description){
+    public LogPersist(String createdAt,boolean accepted, BoardPersist boardPersist,String cardId,String cardName,String memberUsername,String type, String description){
         this.createdAt = createdAt;
-        this.read = read;
+        this.accepted = accepted;
         this.board = boardPersist;
         this.cardId = cardId;
         this.cardName = cardName;
@@ -50,16 +50,16 @@ public class LogPersist {
         this.createdAt = createdAt;
     }
 
-    public boolean getRead(){
-        return read;
+    public boolean getAccepted(){
+        return accepted;
     }
 
-    public boolean isRead() {
-        return read;
+    public boolean isAccepted() {
+        return accepted;
     }
 
-    public void setRead(boolean read) {
-        this.read = read;
+    public void setAccepted(boolean read) {
+        this.accepted = read;
     }
 
     public BoardPersist getBoard() {
