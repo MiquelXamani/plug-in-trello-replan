@@ -56,6 +56,11 @@ public class TrelloCallbacksController {
             String oldListId = listBefore.getId();
             System.out.println(newListId + " " + listAfter.getName());
 
+            String actionCreator = action.getMemberCreator().getUsername();
+            if(actionCreator.equals(webUserTrelloUsername)){
+                actionCreator = "";
+            }
+
             //Get id lists
             String doneListId = persistenceController.getListId(boardId,"Done");
             String onHoldListId = persistenceController.getListId(boardId,"On-hold");
@@ -188,11 +193,16 @@ public class TrelloCallbacksController {
             }
             else if (newListId.equals(readyListId)){
                 System.out.println("CARD MOVED TO READY LIST");
-                createLog(boardId,boardName,cardId,cardName,action.getMemberCreator().getUsername(),LogType.MOVED_TO_READY);
+                if(actionCreator.equals("")){
+                    actionCreator = "Plugin";
+                }
+                createLog(boardId,boardName,cardId,cardName,actionCreator,LogType.MOVED_TO_READY);
             }
             else if (newListId.equals(inProgressListId)){
                 System.out.println("CARD MOVED TO IN PROGRESS LIST");
-                persistenceController.saveLog(boardId,boardName,cardId,cardName,action.getMemberCreator().getUsername(),LogType.REJECTED);
+                if(!actionCreator.equals("")) {
+                    persistenceController.saveLog(boardId, boardName, cardId, cardName, actionCreator, LogType.MOVED_TO_IN_PROGRESS);
+                }
             }
             else{
                 System.out.println("ANOTHER CARD MOVEMENT");
