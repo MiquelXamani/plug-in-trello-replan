@@ -21,7 +21,7 @@
     </div>
 </div>
 <h2>Board Pending Actions</h2>
-<form name="form" role="form">
+<form name="form" role="form" ng-submit="vm.replan()">
     <div class="form-group top-buffer">
         <label for="boardSelector">Select a board</label>
         <select class="form-control" id="boardSelector" ng-model="vm.selectedBoard"
@@ -47,7 +47,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="log in vm.logs"}>
+            <tr ng-repeat="log in vm.logs"} ng-class="{'log_accepted': log.accepted}">
                 <td>{{ log.createdAt }}</td>
                 <td>{{ log.boardName }}</td>
                 <td>{{ log.description }}</td>
@@ -75,5 +75,11 @@
             </tr>
             </tbody>
         </table>
+        <div class="form-actions top-buffer">
+            <div class="col-xs-12 col-sm-3 col-md-offset-5">
+                <button type="submit" class="btn btn-success btn-md" ng-disabled="vm.dataLoading || vm.selectedBoard.name === 'All'">Replan</button>
+                <img ng-if="vm.dataLoading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </div>
+        </div>
     </div>
 </form>

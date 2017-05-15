@@ -19,6 +19,7 @@
         vm.markAsCompleted = markAsCompleted;
         vm.reject = reject;
         vm.submitComment = submitComment;
+        vm.replan = replan;
 
         function getAllLogs(){
             BoardPendingActionsService.GetAllLogs($rootScope.globals.currentUser.username).then(function(logs){
@@ -109,6 +110,26 @@
                         console.log("CARD REJECTION FAILURE");
                     }
                 });
+        }
+
+        function replan(){
+            console.log("Replan clicked!");
+            var acceptedLogs = [];
+            var l;
+            for (var i = 0, len = vm.logs.length; i < len; i++) {
+                l = vm.logs[i];
+                if(l.accepted){
+                    acceptedLogs.push(l);
+                }
+            }
+            console.log(acceptedLogs);
+            var c = confirm("Are you sure that you want to continue?");
+            if(c){
+                console.log("CONFIRMED");
+            }
+            else{
+                vm.dataLoading = false;
+            }
         }
 
         getBoards();
