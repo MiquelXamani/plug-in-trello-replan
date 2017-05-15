@@ -139,5 +139,9 @@ th {
 }
 
 .action_column{
-    width: 95px;
+    width: 100px;
+}
+
+.inline_block{
+    display:inline-block;
 }
