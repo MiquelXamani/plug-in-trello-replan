@@ -123,5 +123,21 @@ th {
 }
 
 .table-hover tbody tr.log_accepted, .table-hover tbody tr.log_accepted:hover{
-    background-color: #779aaf;
+    background-color: #80dc5a;
+}
+
+.action_button_container{
+    display:inline-block;
+    margin-right:5px;
+}
+
+.action_button{
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+}
+
+.action_column{
+    width: 95px;
 }

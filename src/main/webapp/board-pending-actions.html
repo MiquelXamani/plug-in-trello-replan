@@ -43,7 +43,7 @@
                 <th class="date_column">Date</th>
                 <th>Board</th>
                 <th>Event</th>
-                <th>Actions</th>
+                <th class="action_column">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -52,20 +52,20 @@
                 <td>{{ log.boardName }}</td>
                 <td>{{ log.description }}</td>
                 <td>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-default btn-md" title="More info">
+                    <div>
+                        <div class="action_button_container">
+                            <button type="button" class="btn btn-default btn-md action_button" title="More info">
                                 <span class="glyphicon glyphicon-info-sign" aria-hidden="true" ng-click="vm.displayCardTracking($index)"></span>
                             </button>
                         </div>
                         <div ng-if="log.type === 'FINISHED_LATE' || log.type === 'FINISHED_EARLIER'">
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-default btn-md" title="Mark as completed">
+                            <div class="action_button_container">
+                                <button type="button" class="btn btn-default btn-md action_button" title="Mark as completed">
                                     <span class="glyphicon glyphicon-check green" aria-hidden="true" ng-click="vm.markAsCompleted($index)"></span>
                                 </button>
                             </div>
-                            <div class="col-md-6 text-right">
-                                <button type="button" class="btn btn-default btn-md" title="Reject">
+                            <div class="action_button_container">
+                                <button type="button" class="btn btn-default btn-md action_button" title="Reject">
                                     <span class="glyphicon glyphicon-remove red" aria-hidden="true" ng-click="vm.reject($index)"></span>
                                 </button>
                             </div>

@@ -44,7 +44,7 @@
     </nav>
     <div class="jumbotron">
         <div class="container">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-sm-12">
                 <div ng-class="{ 'alert': alert, 'alert-success': alert.type === 'success', 'alert-danger': alert.type === 'error' }" ng-if="alert" ng-bind="alert.message"></div>
                 <div ng-view class="container"></div>
             </div>
