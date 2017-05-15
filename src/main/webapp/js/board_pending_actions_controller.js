@@ -118,7 +118,9 @@
             var l;
             for (var i = 0, len = vm.logs.length; i < len; i++) {
                 l = vm.logs[i];
+                console.log(l);
                 if(l.accepted){
+                    console.log("PUSH");
                     acceptedLogs.push(l);
                 }
             }
