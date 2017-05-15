@@ -138,6 +138,9 @@ th {
     font-size: 20px;
 }
 
+.action_button:hover, .action_button:focus {
+    background-color: transparent;
+}
 .action_column{
     width: 100px;
 }
