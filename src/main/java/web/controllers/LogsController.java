@@ -7,6 +7,7 @@ import web.domain.Card;
 import web.domain.CardRejection;
 import web.domain.Log;
 import web.domain.User2;
+import web.domain.aux_classes.CompleteLogOp;
 import web.persistence_controllers.PersistenceController;
 import web.services.TrelloService;
 
@@ -68,9 +69,9 @@ public class LogsController {
     }
 
     @RequestMapping(value = "/{logId}",method = RequestMethod.PATCH)
-    public Log updateLog(@PathVariable("logId") int logId, @RequestBody boolean accepted){
+    public Log updateLog(@PathVariable("logId") int logId, @RequestBody CompleteLogOp completeLogOp){
         System.out.println("Mark as completed");
-        return persistenceController.setAcceptedLog(logId,accepted);
+        return persistenceController.setAcceptedLog(logId,completeLogOp.isAccepted());
     }
 
 
