@@ -60,13 +60,24 @@
         }
 
         function markAsCompleted(index){
-            vm.logs[index].read = true;
-            BoardPendingActionsService.LogRead(index.id).then(function(response){
+            console.log("Mark as completed clicked!");
+            var accepted;
+            if(vm.logs[index].accepted){
+                vm.logs[index].accepted = false;
+                accepted = false;
+            }
+            else{
+                vm.logs[index].accepted = true;
+                accepted = true;
+            }
+
+            BoardPendingActionsService.SetAccepted(vm.logs[index].id,accepted).then(function(response){
+                console.log(response);
                 if(response.success){
-                    console.log("MARK AS READ SUCCESSFUL");
+                    console.log("MARK AS COMPLETED SUCCESSFUL");
                 }
                 else{
-                    console.log("MARK AS READ FAILURE");
+                    console.log("MARK AS COMPLETED FAILURE");
                 }
             });
         }

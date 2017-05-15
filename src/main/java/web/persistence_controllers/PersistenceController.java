@@ -196,4 +196,12 @@ public class PersistenceController {
         BoardPersist boardPersist = boardRepository.findOne(boardId);
         return new Board (boardPersist.getId(),boardPersist.getName(),boardPersist.getUrl());
     }
+
+    public Log setAcceptedLog(int logId, boolean accepted){
+        LogPersist lp = logRepository.findOne(logId);
+        lp.setAccepted(accepted);
+        logRepository.save(lp);
+        LogType logType = LogType.getEnum(lp.getType());
+        return new Log(lp.getId(),lp.getCreatedAt(),lp.getBoard().getId(),lp.getBoard().getName(),lp.getCardId(),lp.getCardName(),lp.getAccepted(),logType,lp.getDescription());
+    }
 }

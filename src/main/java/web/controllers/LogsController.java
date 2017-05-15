@@ -66,4 +66,12 @@ public class LogsController {
         return persistenceController.saveLog(boardId,boardName,cardId,rejection.getCardName(),"Project Leader",LogType.REJECTED);
 
     }
+
+    @RequestMapping(value = "/{logId}",method = RequestMethod.PATCH)
+    public Log updateLog(@PathVariable("logId") int logId, @RequestBody boolean accepted){
+        System.out.println("Mark as completed");
+        return persistenceController.setAcceptedLog(logId,accepted);
+    }
+
+
 }

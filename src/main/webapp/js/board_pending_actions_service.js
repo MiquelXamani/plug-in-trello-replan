@@ -12,7 +12,7 @@
         service.GetBoards = GetBoards;
         service.GetAllLogs = GetAllLogs;
         service.GetBoardLogs = GetBoardLogs;
-        service.LogRead = LogRead;
+        service.SetAccepted = SetAccepted;
         service.RejectCardDone = RejectCardDone;
 
         return service;
@@ -32,9 +32,10 @@
             return $http.get('/logs/?username='+username+'&boardId='+boardId).then(handleSuccess,handleError);
         }
 
-        //mark log as read
-        function LogRead(logId){
-            return $http.put('/logs/'+logId,'read').then(handleSuccess,handleError);
+        //mark or unmark log as completed
+        function SetAccepted(logId,accepted){
+            var body ={accepted:accepted};
+            return $http.patch('/logs/'+logId,body).then(handleSuccess,handleError);
         }
 
         //refuse card posting a comment with the reasons why this card is rejected
