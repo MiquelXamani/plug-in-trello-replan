@@ -15,20 +15,20 @@ public class LogPersist {
     @ManyToOne
     @JoinColumn(name = "boardId")
     private BoardPersist board;
-    private String cardId;
-    private String cardName;
+    @ManyToOne
+    @JoinColumn(name = "cardId")
+    private CardPersist card;
     private String memberUsername;
     private String type;
     private String description;
 
     public LogPersist(){}
 
-    public LogPersist(String createdAt,boolean accepted, BoardPersist boardPersist,String cardId,String cardName,String memberUsername,String type, String description){
+    public LogPersist(String createdAt,boolean accepted, BoardPersist boardPersist,CardPersist cardPersist,String memberUsername,String type, String description){
         this.createdAt = createdAt;
         this.accepted = accepted;
         this.board = boardPersist;
-        this.cardId = cardId;
-        this.cardName = cardName;
+        this.card = cardPersist;
         this.memberUsername = memberUsername;
         this.type = type;
         this.description = description;
@@ -70,20 +70,12 @@ public class LogPersist {
         this.board = board;
     }
 
-    public String getCardId() {
-        return cardId;
+    public CardPersist getCard() {
+        return card;
     }
 
-    public void setCardId(String cardId) {
-        this.cardId = cardId;
-    }
-
-    public String getCardName() {
-        return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
+    public void setCard(CardPersist card) {
+        this.card = card;
     }
 
     public String getMemberUsername() {

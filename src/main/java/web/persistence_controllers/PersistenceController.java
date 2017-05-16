@@ -26,7 +26,10 @@ public class PersistenceController {
     private UserRepository userRepository;
     @Autowired (required = true)
     private LogRepository logRepository;
-
+    @Autowired (required = true)
+    private CardRepository cardRepository;
+    @Autowired (required = true)
+    private JobRepository jobRepository;
 
     public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists, User2 user2){
         //create board
@@ -151,7 +154,8 @@ public class PersistenceController {
         String description = createLogDescription(cardName,memberUsername,type);
         Log log = new Log(createdAt, boardId, boardName, cardId, cardName, type, description);
         BoardPersist boardPersist = boardRepository.findOne(boardId);
-        LogPersist logPersist = new LogPersist(createdAt,false,boardPersist,cardId,cardName,memberUsername,type.value,description);
+        CardPersist cardPersist = cardRepository.findOne(cardId);
+        LogPersist logPersist = new LogPersist(createdAt,false,boardPersist,cardPersist,memberUsername,type.value,description);
         boardPersist.addLog(logPersist);
         boardRepository.save(boardPersist);
         log.setId(logPersist.getId());
@@ -168,7 +172,8 @@ public class PersistenceController {
             for (BoardPersist b: userPersist.getBoards()) {
                 for(LogPersist lp: b.getLogs()){
                     logType = LogType.getEnum(lp.getType());
-                    log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),lp.getCardId(),lp.getCardName(),lp.getAccepted(),logType,lp.getDescription());
+                    CardPersist cp = lp.getCard();
+                    log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),cp.getId(),cp.getName(),lp.getAccepted(),logType,lp.getDescription());
                     logs.add(log);
                 }
 
@@ -185,7 +190,8 @@ public class PersistenceController {
             LogType logType;
             for(LogPersist lp: boardPersist.getLogs()){
                 logType = LogType.getEnum(lp.getType());
-                log = new Log(lp.getId(),lp.getCreatedAt(),boardPersist.getId(),boardPersist.getName(),lp.getCardId(),lp.getCardName(),lp.getAccepted(),logType,lp.getDescription());
+                CardPersist cp = lp.getCard();
+                log = new Log(lp.getId(),lp.getCreatedAt(),boardPersist.getId(),boardPersist.getName(),cp.getId(),cp.getName(),lp.getAccepted(),logType,lp.getDescription());
                 logs.add(log);
             }
         }
@@ -202,6 +208,19 @@ public class PersistenceController {
         lp.setAccepted(accepted);
         logRepository.save(lp);
         LogType logType = LogType.getEnum(lp.getType());
-        return new Log(lp.getId(),lp.getCreatedAt(),lp.getBoard().getId(),lp.getBoard().getName(),lp.getCardId(),lp.getCardName(),lp.getAccepted(),logType,lp.getDescription());
+        CardPersist cp = lp.getCard();
+        return new Log(lp.getId(),lp.getCreatedAt(),lp.getBoard().getId(),lp.getBoard().getName(),cp.getId(),cp.getName(),lp.getAccepted(),logType,lp.getDescription());
+    }
+
+    public void saveCardAndJobs(Card card, List<Job> jobs){
+        CardPersist cardPersist = new CardPersist(card.getId(),card.getName());
+        List<JobPersist> jobPersists = new ArrayList<>();
+        for(Job j : jobs){
+            jobPersists.add(new JobPersist(j.getId(),cardPersist));
+        }
+        cardPersist.setJobs(jobPersists);
+
+        cardRepository.save(cardPersist);
+
     }
 }

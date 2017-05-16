@@ -89,8 +89,14 @@ public class BoardsController {
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId
         Map<Integer,String> resourcesAddedBoard = new HashMap<>();
+
         //Map of featureId and card corresponding to the feature
-        Map<Integer,Card> featuresConverted = new HashMap<>();
+        //Ordered map because we want to keep the relation between cards and features after cards are created on Trello and a id
+        //are assigned to them.
+        Map<Integer,Card> featuresConverted = new TreeMap<>();
+
+        //To keep the relation between features and jobs in order to store in persistence
+        Map<Integer,List<Job>> featureJobsMap = new HashMap();
 
         //Map to store the first job to start of each member
         Map<String,Job> firstsJobs = new HashMap<>();
@@ -128,6 +134,15 @@ public class BoardsController {
 
             feature = j.getFeature();
             featureId = feature.getId();
+
+            if(featureJobsMap.containsKey(featureId)){
+                featureJobsMap.get(featureId).add(j);
+            }
+            else{
+                List<Job> jobListAux = new ArrayList<>();
+                jobListAux.add(j);
+                featureJobsMap.put(featureId,jobListAux);
+            }
 
             //Add member to a card if already exists a card for the feature
             if(featuresConverted.containsKey(featureId)){
@@ -266,6 +281,13 @@ public class BoardsController {
         List<Card> cards = new ArrayList<>(featuresConverted.values());
         cards.add(notification);
         List<Card> createdCards = trelloService.createCards(cards,trelloToken);
+        List<Integer> featuresIds = new ArrayList<>(featuresConverted.keySet());
+        System.out.println("Values size: "+createdCards.size()+" Keys size: "+featuresIds.size());
+        int fid;
+        for(int k = 0; k < featuresIds.size(); k++){
+            fid = featuresIds.get(k);
+            persistenceController.saveCardAndJobs(createdCards.get(k),featureJobsMap.get(fid));
+        }
 
         //Create webhooks for each card to track
         trelloService.createWebhooks(createdCards,u.getTrelloUsername(),trelloToken);

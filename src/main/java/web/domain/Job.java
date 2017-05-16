@@ -7,6 +7,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Job {
+    private int id;
     private String starts;
     private Resource resource;
     private Feature feature;
@@ -55,5 +56,13 @@ public class Job {
 
     public void setEnds(String ends) {
         this.ends = ends;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
