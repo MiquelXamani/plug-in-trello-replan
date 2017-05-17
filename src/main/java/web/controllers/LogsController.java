@@ -3,6 +3,7 @@ package web.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.LogType;
 import web.domain.*;
@@ -79,7 +80,8 @@ public class LogsController {
     }
 
     @RequestMapping(value = "/replan", method = RequestMethod.POST)
-    public void  doReplan(@RequestBody List<Log> logs){
+    public ResponseEntity<String>  doReplan(@RequestBody List<Log> logs){
+        System.out.println("DO REPLAN");
         List<CompletedJob> completedJobs = new ArrayList<>();
         List<Integer> jobsIds;
         for (Log log:logs) {
@@ -91,6 +93,7 @@ public class LogsController {
         Map<String,String> info = persistenceController.getBoardReplanInfoFromLogId(logs.get(0).getId());
         ReplanService replanService = new ReplanService();
         replanService.doReplan(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),completedJobs);
+        return new ResponseEntity<>("success",HttpStatus.OK);
     }
 
 

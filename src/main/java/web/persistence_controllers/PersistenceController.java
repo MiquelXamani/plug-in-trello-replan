@@ -222,6 +222,7 @@ public class PersistenceController {
         types.add(LogType.FINISHED_LATE.value);
         LogPersist lp = logRepository.findFirstByCardIdAndTypeInOrderByIdDesc(cardId,types);
         lp.setRejected(true);
+        lp.setAccepted(false);
         logRepository.save(lp);
         LogType logType = LogType.getEnum(lp.getType());
         CardPersist cp = lp.getCard();
