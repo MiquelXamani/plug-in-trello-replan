@@ -80,7 +80,7 @@ public class LogsController {
     }
 
     @RequestMapping(value = "/replan", method = RequestMethod.POST)
-    public ResponseEntity<String>  doReplan(@RequestBody List<Log> logs){
+    public String doReplan(@RequestBody List<Log> logs){
         System.out.println("DO REPLAN");
         List<CompletedJob> completedJobs = new ArrayList<>();
         List<Integer> jobsIds;
@@ -92,8 +92,7 @@ public class LogsController {
         }
         Map<String,String> info = persistenceController.getBoardReplanInfoFromLogId(logs.get(0).getId());
         ReplanService replanService = new ReplanService();
-        replanService.doReplan(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),completedJobs);
-        return new ResponseEntity<>("success",HttpStatus.OK);
+        return replanService.doReplan(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),completedJobs);
     }
 
 

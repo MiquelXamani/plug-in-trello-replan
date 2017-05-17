@@ -1,5 +1,9 @@
 package web.services;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import web.domain.*;
 
@@ -37,8 +41,13 @@ public class ReplanService {
         return restTemplate.getForObject(url,Release[].class);
     }
 
-    public void doReplan(String url, int projectId, int releaseId, List<CompletedJob> completedJobs){
+    public String doReplan(String url, int projectId, int releaseId, List<CompletedJob> completedJobs){
         url += "/projects/"+projectId+"/releases/"+releaseId+"/plan";
-        restTemplate.put(url,completedJobs);
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<List<CompletedJob>> requestUpdate = new HttpEntity<>(completedJobs, headers);
+        //restTemplate.put(url,completedJobs);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, requestUpdate, String.class);
+        String responseBody = response.getBody();
+        return responseBody;
     }
 }
