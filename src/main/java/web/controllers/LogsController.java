@@ -1,19 +1,20 @@
 package web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import web.LogType;
-import web.domain.Card;
-import web.domain.CardRejection;
-import web.domain.Log;
-import web.domain.User2;
+import web.domain.*;
 import web.domain.aux_classes.CompleteLogOp;
 import web.persistence_controllers.PersistenceController;
+import web.services.ReplanService;
 import web.services.TrelloService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/logs")
@@ -76,5 +77,21 @@ public class LogsController {
         System.out.println("Mark as completed");
         return persistenceController.setAcceptedFinishedLog(logId,completeLogOp.isAccepted());
     }
+
+    @RequestMapping(value = "/replan", method = RequestMethod.POST)
+    public void  doReplan(@RequestBody List<Log> logs){
+        List<CompletedJob> completedJobs = new ArrayList<>();
+        List<Integer> jobsIds;
+        for (Log log:logs) {
+            jobsIds = persistenceController.getJobsIdsLog(log.getId());
+            for(int jobId:jobsIds){
+                completedJobs.add(new CompletedJob(jobId,log.getCreatedAt()));
+            }
+        }
+        Map<String,String> info = persistenceController.getBoardReplanInfoFromLogId(logs.get(0).getId());
+        ReplanService replanService = new ReplanService();
+        replanService.doReplan(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),completedJobs);
+    }
+
 
 }

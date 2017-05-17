@@ -128,6 +128,17 @@
             var c = confirm("Are you sure that you want to continue?");
             if(c){
                 console.log("CONFIRMED");
+                vm.dataLoading = true;
+                BoardPendingActionsService.Replan(acceptedLogs).then(function(response){
+                    vm.dataLoading = false;
+                    if(response.success){
+                        console.log("REPLAN PETITION SUCCESSFUL");
+                    }
+                    else{
+                        console.log("REPLAN PETITION FAILURE");
+                    }
+                })
+
             }
             else{
                 vm.dataLoading = false;

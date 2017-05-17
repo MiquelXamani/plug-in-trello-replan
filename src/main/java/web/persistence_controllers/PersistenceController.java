@@ -8,9 +8,7 @@ import web.persistance.models.*;
 import web.persistance.repositories.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class PersistenceController {
@@ -31,9 +29,11 @@ public class PersistenceController {
     @Autowired (required = true)
     private JobRepository jobRepository;
 
-    public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists, User2 user2){
+    public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists, User2 user2, int endpointId, int projectId, int releaseId){
+        System.out.println(endpointId+" "+projectId+" "+releaseId);
+
         //create board
-        BoardPersist boardPersist = new BoardPersist(board.getId(),board.getName(),board.getUrl());
+        BoardPersist boardPersist = new BoardPersist(board.getId(),board.getName(),board.getUrl(), projectId,releaseId);
 
         //create labels
         List<LabelPersist> labelPersists = new ArrayList<>();
@@ -56,6 +56,10 @@ public class PersistenceController {
         UserPersist user = userRepository.findByUsername(user2.getUsername());
         user.addBoard(boardPersist);
         boardPersist.setUser(user);
+
+        Endpoint endpoint = endpointRepository.findOne(endpointId);
+        endpoint.addBoard(boardPersist);
+        boardPersist.setEndpoint(endpoint);
 
         //save db
         boardRepository.save(boardPersist);
@@ -235,4 +239,23 @@ public class PersistenceController {
         cardRepository.save(cardPersist);
 
     }
+
+    public List<Integer> getJobsIdsLog(int logId){
+       List<JobPersist> jobsPersists = logRepository.findOne(logId).getCard().getJobs();
+       List<Integer> jobsIds = new ArrayList<>();
+       for(JobPersist jp:jobsPersists){
+           jobsIds.add(jp.getId());
+       }
+       return jobsIds;
+    }
+
+    public Map<String,String> getBoardReplanInfoFromLogId(int logId){
+        BoardPersist bp = logRepository.findOne(logId).getBoard();
+        Map<String,String> boardInfo = new HashMap<>();
+        boardInfo.put("project",String.valueOf(bp.getProjectId()));
+        boardInfo.put("release",String.valueOf(bp.getReleaseId()));
+        boardInfo.put("endpoint",bp.getEndpoint().getUrl());
+        return boardInfo;
+    }
+
 }

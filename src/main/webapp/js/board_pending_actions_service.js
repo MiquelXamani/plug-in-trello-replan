@@ -14,6 +14,7 @@
         service.GetBoardLogs = GetBoardLogs;
         service.SetAccepted = SetAccepted;
         service.RejectCardDone = RejectCardDone;
+        service.Replan = Replan;
 
         return service;
 
@@ -49,6 +50,10 @@
                 boardId:boardId
             }
             return $http.post('/logs/reject-card',body).then(handleSuccess,handleError);
+        }
+
+        function Replan(logs){
+            return $http.post('/logs/replan',logs).then(handleSuccess,handleError);
         }
 
         // private functions

@@ -83,8 +83,6 @@ public class BoardsController {
             }
         }
 
-        //persistence
-        persistenceController.saveBoard(board,labelList,lists,u);
 
         List<Job> jobs = planBoardDTO.getJobs();
         //Map of resourceId and trelloUserId
@@ -281,6 +279,9 @@ public class BoardsController {
         result.setBoard(board);
         result.setLists(lists);
         result.setCards(cards);
+
+        //persistence
+        persistenceController.saveBoard(board,labelList,lists,u,planBoardDTO.getEndpointId(),planBoardDTO.getProjectId(),planBoardDTO.getReleaseId());
 
         return new ResponseEntity<>(result,HttpStatus.OK);
     }

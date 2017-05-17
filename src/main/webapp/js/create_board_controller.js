@@ -20,6 +20,9 @@
             plan.username = $rootScope.globals.currentUser.username;
             plan.boardName = vm.boardName;
             plan.teamId = $rootScope.team.id;
+            plan.endpointId = $rootScope.endpoint.id;
+            plan.projectId = $rootScope.project.id;
+            plan.releaseId = $rootScope.release.id;
             BoardService.LoadPlanOnTrello(plan).then(function(response){
                 if(response.success) {
                     $rootScope.board = response.board;

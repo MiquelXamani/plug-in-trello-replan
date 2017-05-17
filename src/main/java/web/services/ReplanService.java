@@ -1,11 +1,11 @@
 package web.services;
 
 import org.springframework.web.client.RestTemplate;
-import web.domain.Plan;
-import web.domain.Project;
-import web.domain.Release;
+import web.domain.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ReplanService {
@@ -35,5 +35,10 @@ public class ReplanService {
         //url = "https://lit-savannah-17077.herokuapp.com/api/ui/v1/projects/" + projectId + "/releases";
         url += "/projects/" + projectId + "/releases";
         return restTemplate.getForObject(url,Release[].class);
+    }
+
+    public void doReplan(String url, int projectId, int releaseId, List<CompletedJob> completedJobs){
+        url += "/projects/"+projectId+"/releases/"+releaseId+"/plan";
+        restTemplate.put(url,completedJobs);
     }
 }

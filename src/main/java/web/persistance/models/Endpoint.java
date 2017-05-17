@@ -1,11 +1,10 @@
 package web.persistance.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import web.persistance.repositories.BoardRepository;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
@@ -15,6 +14,8 @@ public class Endpoint {
     private int id;
     private String url;
     private String name;
+    @OneToMany(mappedBy = "endpoint", cascade = CascadeType.ALL)
+    private List<BoardPersist> boards;
 
     public Endpoint(){}
 
@@ -45,5 +46,17 @@ public class Endpoint {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<BoardPersist> getBoard() {
+        return boards;
+    }
+
+    public void setBoard(List<BoardPersist> boards) {
+        this.boards = boards;
+    }
+
+    public void addBoard(BoardPersist board){
+        this.boards.add(board);
     }
 }

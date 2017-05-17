@@ -27,14 +27,21 @@ public class BoardPersist {
     private UserPersist user;
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<LogPersist> logs;
+    @ManyToOne
+    @JoinColumn(name = "endpointId")
+    private Endpoint endpoint;
+    private int projectId;
+    private int releaseId;
 
     public BoardPersist(){
     }
 
-    public BoardPersist(String id, String name, String url){
+    public BoardPersist(String id, String name, String url, int projectId, int releaseId){
         this.id = id;
         this.name = name;
         this.url = url;
+        this.projectId = projectId;
+        this.releaseId = releaseId;
     }
 
     public String getName(){
@@ -95,5 +102,29 @@ public class BoardPersist {
 
     public void addLog(LogPersist log){
         this.logs.add(log);
+    }
+
+    public Endpoint getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(Endpoint endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    public int getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
+    }
+
+    public int getReleaseId() {
+        return releaseId;
+    }
+
+    public void setReleaseId(int releaseId) {
+        this.releaseId = releaseId;
     }
 }
