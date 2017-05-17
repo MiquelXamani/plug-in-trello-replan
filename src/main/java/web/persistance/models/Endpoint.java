@@ -14,7 +14,7 @@ public class Endpoint {
     private int id;
     private String url;
     private String name;
-    @OneToMany(mappedBy = "endpoint", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "endpoint")
     private List<BoardPersist> boards;
 
     public Endpoint(){}
