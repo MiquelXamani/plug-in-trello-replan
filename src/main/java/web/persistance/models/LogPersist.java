@@ -12,6 +12,7 @@ public class LogPersist {
     private int id;
     private String createdAt;
     private boolean accepted;
+    private boolean rejected;
     @ManyToOne
     @JoinColumn(name = "boardId")
     private BoardPersist board;
@@ -24,9 +25,10 @@ public class LogPersist {
 
     public LogPersist(){}
 
-    public LogPersist(String createdAt,boolean accepted, BoardPersist boardPersist,CardPersist cardPersist,String memberUsername,String type, String description){
+    public LogPersist(String createdAt,boolean accepted, boolean rejected, BoardPersist boardPersist,CardPersist cardPersist,String memberUsername,String type, String description){
         this.createdAt = createdAt;
         this.accepted = accepted;
+        this.rejected = rejected;
         this.board = boardPersist;
         this.card = cardPersist;
         this.memberUsername = memberUsername;
@@ -100,5 +102,13 @@ public class LogPersist {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isRejected() {
+        return rejected;
+    }
+
+    public void setRejected(boolean rejected) {
+        this.rejected = rejected;
     }
 }

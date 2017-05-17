@@ -155,7 +155,7 @@ public class PersistenceController {
         Log log = new Log(createdAt, boardId, boardName, cardId, cardName, type, description);
         BoardPersist boardPersist = boardRepository.findOne(boardId);
         CardPersist cardPersist = cardRepository.findOne(cardId);
-        LogPersist logPersist = new LogPersist(createdAt,false,boardPersist,cardPersist,memberUsername,type.value,description);
+        LogPersist logPersist = new LogPersist(createdAt,false,false,boardPersist,cardPersist,memberUsername,type.value,description);
         boardPersist.addLog(logPersist);
         boardRepository.save(boardPersist);
         log.setId(logPersist.getId());
@@ -173,7 +173,7 @@ public class PersistenceController {
                 for(LogPersist lp: b.getLogs()){
                     logType = LogType.getEnum(lp.getType());
                     CardPersist cp = lp.getCard();
-                    log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),cp.getId(),cp.getName(),lp.getAccepted(),logType,lp.getDescription());
+                    log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),cp.getId(),cp.getName(),lp.getAccepted(),lp.isRejected(),logType,lp.getDescription());
                     logs.add(log);
                 }
 
@@ -191,7 +191,7 @@ public class PersistenceController {
             for(LogPersist lp: boardPersist.getLogs()){
                 logType = LogType.getEnum(lp.getType());
                 CardPersist cp = lp.getCard();
-                log = new Log(lp.getId(),lp.getCreatedAt(),boardPersist.getId(),boardPersist.getName(),cp.getId(),cp.getName(),lp.getAccepted(),logType,lp.getDescription());
+                log = new Log(lp.getId(),lp.getCreatedAt(),boardPersist.getId(),boardPersist.getName(),cp.getId(),cp.getName(),lp.getAccepted(),lp.isRejected(),logType,lp.getDescription());
                 logs.add(log);
             }
         }
@@ -203,13 +203,25 @@ public class PersistenceController {
         return new Board (boardPersist.getId(),boardPersist.getName(),boardPersist.getUrl());
     }
 
-    public Log setAcceptedLog(int logId, boolean accepted){
+    public Log setAcceptedFinishedLog(int logId, boolean accepted){
         LogPersist lp = logRepository.findOne(logId);
         lp.setAccepted(accepted);
         logRepository.save(lp);
         LogType logType = LogType.getEnum(lp.getType());
         CardPersist cp = lp.getCard();
-        return new Log(lp.getId(),lp.getCreatedAt(),lp.getBoard().getId(),lp.getBoard().getName(),cp.getId(),cp.getName(),lp.getAccepted(),logType,lp.getDescription());
+        return new Log(lp.getId(),lp.getCreatedAt(),lp.getBoard().getId(),lp.getBoard().getName(),cp.getId(),cp.getName(),lp.getAccepted(),lp.isRejected(),logType,lp.getDescription());
+    }
+
+    public Log setRejectedPreviousFinishedLog(String cardId){
+        List<String> types = new ArrayList<>();
+        types.add(LogType.FINISHED_EARLIER.value);
+        types.add(LogType.FINISHED_LATE.value);
+        LogPersist lp = logRepository.findFirstByCardIdAndTypeInOrderByIdDesc(cardId,types);
+        lp.setRejected(true);
+        logRepository.save(lp);
+        LogType logType = LogType.getEnum(lp.getType());
+        CardPersist cp = lp.getCard();
+        return new Log(lp.getId(),lp.getCreatedAt(),lp.getBoard().getId(),lp.getBoard().getName(),cp.getId(),cp.getName(),lp.getAccepted(),lp.isRejected(),logType,lp.getDescription());
     }
 
     public void saveCardAndJobs(Card card, List<Job> jobs){

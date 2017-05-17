@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface LogRepository extends CrudRepository<LogPersist, Integer> {
     List<LogPersist> findAll();
+    LogPersist findFirstByCardIdAndTypeInOrderByIdDesc(String cardId, List<String> types);
 }

@@ -62,17 +62,19 @@ public class LogsController {
         //add comment
         trelloService.postComment(cardId,rejection.getComment(),userToken);
 
+        //set previous finished log as rejected
+        persistenceController.setRejectedPreviousFinishedLog(cardId);
+
         //create log
         String boardName = persistenceController.getBoard(boardId).getName();
         return persistenceController.saveLog(boardId,boardName,cardId,rejection.getCardName(),"Project Leader",LogType.REJECTED);
 
     }
 
-    @RequestMapping(value = "/{logId}",method = RequestMethod.PATCH)
-    public Log updateLog(@PathVariable("logId") int logId, @RequestBody CompleteLogOp completeLogOp){
+    @RequestMapping(value = "/{logId}/completed",method = RequestMethod.POST)
+    public Log changeAcceptedLog(@PathVariable("logId") int logId, @RequestBody CompleteLogOp completeLogOp){
         System.out.println("Mark as completed");
-        return persistenceController.setAcceptedLog(logId,completeLogOp.isAccepted());
+        return persistenceController.setAcceptedFinishedLog(logId,completeLogOp.isAccepted());
     }
-
 
 }

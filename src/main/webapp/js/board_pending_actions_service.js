@@ -35,7 +35,7 @@
         //mark or unmark log as completed
         function SetAccepted(logId,accepted){
             var body ={accepted:accepted};
-            return $http.patch('/logs/'+logId,body).then(handleSuccess,handleError);
+            return $http.post('/logs/'+logId+'/completed',body).then(handleSuccess,handleError);
         }
 
         //refuse card posting a comment with the reasons why this card is rejected

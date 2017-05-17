@@ -58,7 +58,7 @@
                                 <span class="glyphicon glyphicon-info-sign" aria-hidden="true" ng-click="vm.displayCardTracking($index)"></span>
                             </button>
                         </div>
-                        <div class="inline_block" ng-if="log.type === 'FINISHED_LATE' || log.type === 'FINISHED_EARLIER'">
+                        <div class="inline_block" ng-if="(log.type === 'FINISHED_LATE' || log.type === 'FINISHED_EARLIER') && !log.rejected">
                             <div class="action_button_container">
                                 <button type="button" class="btn btn-default btn-md action_button" title="Mark as completed">
                                     <span class="glyphicon glyphicon-check green" aria-hidden="true" ng-click="vm.markAsCompleted($index)"></span>
