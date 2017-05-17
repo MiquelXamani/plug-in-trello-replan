@@ -11,7 +11,7 @@ public class Job {
     private String starts;
     private Resource resource;
     private Feature feature;
-    private List<Job> depends_on;
+    private List<JobReduced> depends_on;
     private String ends;
 
     public Job(){
@@ -34,11 +34,11 @@ public class Job {
         this.feature = feature;
     }
 
-    public List<Job> getDepends_on() {
+    public List<JobReduced> getDepends_on() {
         return depends_on;
     }
 
-    public void setDepends_on(List<Job> depends_on) {
+    public void setDepends_on(List<JobReduced> depends_on) {
         this.depends_on = depends_on;
     }
 

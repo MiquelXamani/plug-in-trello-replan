@@ -101,6 +101,9 @@ public class BoardsController {
         //Map to store the first job to start of each member
         Map<String,Job> firstsJobs = new HashMap<>();
 
+        //Map to store features in order to get their names and effort because depends_on object doesn't cointain these information
+        Map<Integer,Feature> featureMap = new HashMap<>();
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
@@ -108,10 +111,6 @@ public class BoardsController {
         Card card;
         Feature feature;
         Date startDate;
-        //Only test
-        int countTest = 0;
-        String testname = "";
-        double testEffort = 0;
 
         for (Job j: jobs) {
             resourceId = j.getResource().getId();
@@ -134,6 +133,7 @@ public class BoardsController {
 
             feature = j.getFeature();
             featureId = feature.getId();
+            featureMap.put(featureId,feature);
 
             if(featureJobsMap.containsKey(featureId)){
                 featureJobsMap.get(featureId).add(j);
@@ -157,23 +157,6 @@ public class BoardsController {
                 card = new Card();
                 String name = "("+ Math.round(feature.getEffort()) +") " + feature.getName();
 
-                //ONLY TEST second and third cards depends on first card
-                if(countTest == 0){
-                    testname = feature.getName();
-                    testEffort = feature.getEffort();
-                }
-                else if(countTest < 3 && countTest > 0){
-                    Feature featureTest = new Feature();
-                    featureTest.setName(testname);
-                    featureTest.setEffort(testEffort);
-                    Job jobTest = new Job();
-                    jobTest.setFeature(featureTest);
-                    j.getDepends_on().add(jobTest);
-                }
-                ++countTest;
-
-                //finish test code
-
                 card.setName(name);
                 card.setDue(j.getEnds());
                 //si el recurs està associat a un usuari s'assigna a la card
@@ -190,8 +173,10 @@ public class BoardsController {
                 }
                 else {
                     int count = 0;
-                    for (Job j2 : j.getDepends_on()) {
-                        description += " ("+ Math.round(j2.getFeature().getEffort()) +") " + j2.getFeature().getName();
+                    Feature featureDepending;
+                    for (JobReduced jr : j.getDepends_on()) {
+                        featureDepending = featureMap.get(jr.getFeature_id());
+                        description += " ("+ Math.round(featureDepending.getEffort()) +") " + featureDepending.getName();
                         if(count < dependsOnSize - 1) {
                             description += " ,";
                         }
