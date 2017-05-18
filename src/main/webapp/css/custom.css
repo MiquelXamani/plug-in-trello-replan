@@ -122,6 +122,10 @@ th {
     color:red
 }
 
+.blue{
+    color:mediumblue;
+}
+
 .table-hover tbody tr.log_accepted, .table-hover tbody tr.log_accepted:hover{
     background-color: #80dc5a;
 }
