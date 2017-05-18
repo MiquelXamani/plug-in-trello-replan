@@ -14,6 +14,7 @@
         vm.logToRefuseIndex = "";
         vm.dataLoading = false;
         vm.cardNameTracking = "";
+        vm.acceptedLogs = [];
 
         vm.getLogs = getLogs;
         vm.displayCardTracking = displayCardTracking;
@@ -55,6 +56,17 @@
                    vm.logs = logs;
                 });
             }
+            vm.acceptedLogs = [];
+            var l;
+            for (var i = 0, len = vm.logs.length; i < len; i++) {
+                l = vm.logs[i];
+                console.log(l);
+                if(l.accepted){
+                    console.log("PUSH");
+                    vm.acceptedLogs.push(l);
+                }
+            }
+            console.log(vm.acceptedLogs);
         }
 
         function displayCardTracking(index){
@@ -74,15 +86,21 @@
 
         function markAsCompleted(index){
             console.log("Mark as completed clicked!");
+            console.log(vm.acceptedLogs);
             var accepted;
             if(vm.logs[index].accepted){
                 vm.logs[index].accepted = false;
                 accepted = false;
+                for (var i = 0, len = vm.acceptedLogs.length; i < len; i++) {
+                    vm.acceptedLogs.splice(i,1);
+                }
             }
             else{
                 vm.logs[index].accepted = true;
                 accepted = true;
+                vm.acceptedLogs.push(vm.logs[index]);
             }
+            console.log(vm.acceptedLogs);
 
             BoardPendingActionsService.SetAccepted(vm.logs[index].id,accepted).then(function(response){
                 console.log(response);
@@ -126,34 +144,23 @@
 
         function replan(){
             console.log("Replan clicked!");
-            var acceptedLogs = [];
-            var l;
-            for (var i = 0, len = vm.logs.length; i < len; i++) {
-                l = vm.logs[i];
-                console.log(l);
-                if(l.accepted){
-                    console.log("PUSH");
-                    acceptedLogs.push(l);
-                }
-            }
-            console.log(acceptedLogs);
+            console.log(vm.acceptedLogs);
             var c = confirm("Are you sure that you want to continue?");
-            if(c){
+            if (c) {
                 console.log("CONFIRMED");
                 vm.dataLoading = true;
-                BoardPendingActionsService.Replan(acceptedLogs).then(function(response){
+                BoardPendingActionsService.Replan(vm.acceptedLogs).then(function (response) {
                     console.log(response);
                     vm.dataLoading = false;
-                    if(response.success){
+                    if (response.success) {
                         console.log("REPLAN PETITION SUCCESSFUL");
                     }
-                    else{
+                    else {
                         console.log("REPLAN PETITION FAILURE");
                     }
                 })
-
             }
-            else{
+            else {
                 vm.dataLoading = false;
             }
         }
