@@ -15,6 +15,7 @@
         vm.dataLoading = false;
         vm.cardNameTracking = "";
         vm.acceptedLogs = [];
+        vm.cardMovements = [];
 
         vm.getLogs = getLogs;
         vm.displayCardTracking = displayCardTracking;
@@ -77,6 +78,7 @@
                 console.log(response);
                 if(response.success){
                     console.log("GET CARD TRACKING SUCCESSFUL");
+                    vm.cardMovements = response.trackingInfo;
                 }
                 else{
                     console.log("GET CARD TRACKING COMPLETED FAILURE");
