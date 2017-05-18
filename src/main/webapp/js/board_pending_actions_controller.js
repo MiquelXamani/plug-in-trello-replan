@@ -13,6 +13,7 @@
         vm.comment = "";
         vm.logToRefuseIndex = "";
         vm.dataLoading = false;
+        vm.cardNameTracking = "";
 
         vm.getLogs = getLogs;
         vm.displayCardTracking = displayCardTracking;
@@ -57,7 +58,18 @@
         }
 
         function displayCardTracking(index){
+            var log = vm.logs[index];
+            vm.cardNameTracking = log.cardName;
             $('#cardTrackingModal').modal('toggle');
+            BoardPendingActionsService.GetCardTracking(log.cardId).then(function(response){
+                console.log(response);
+                if(response.success){
+                    console.log("GET CARD TRACKING SUCCESSFUL");
+                }
+                else{
+                    console.log("GET CARD TRACKING COMPLETED FAILURE");
+                }
+            });
         }
 
         function markAsCompleted(index){
@@ -130,6 +142,7 @@
                 console.log("CONFIRMED");
                 vm.dataLoading = true;
                 BoardPendingActionsService.Replan(acceptedLogs).then(function(response){
+                    console.log(response);
                     vm.dataLoading = false;
                     if(response.success){
                         console.log("REPLAN PETITION SUCCESSFUL");

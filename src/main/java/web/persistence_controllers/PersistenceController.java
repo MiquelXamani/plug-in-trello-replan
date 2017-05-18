@@ -259,4 +259,40 @@ public class PersistenceController {
         return boardInfo;
     }
 
+    private String getListNameFromLogType(String logTypeString){
+        LogType logType = LogType.valueOf(logTypeString);
+        String listName = "";
+        switch (logType){
+            case REJECTED:
+                listName = "In Progress";
+                break;
+            case FINISHED_LATE:
+                listName = "Done";
+                break;
+            case FINISHED_EARLIER:
+                listName = "Done";
+                break;
+            case MOVED_TO_READY:
+                listName = "Ready";
+                break;
+            case MOVED_TO_IN_PROGRESS:
+                listName = "In Progress";
+                break;
+            default:
+                break;
+        }
+        return listName;
+    }
+
+    public List<CardTrackingInfo> getCardTrackingInfo(String cardId){
+        List<LogPersist> logPersists = cardRepository.findOne(cardId).getLogs();
+        List<CardTrackingInfo> cardTrackingInfos = new ArrayList<>();
+        String listName;
+        for(LogPersist lp:logPersists){
+            listName = getListNameFromLogType(lp.getType());
+            cardTrackingInfos.add(new CardTrackingInfo(lp.getId(),lp.getMemberUsername(),lp.getCreatedAt(),listName));
+        }
+        return cardTrackingInfos;
+    }
+
 }

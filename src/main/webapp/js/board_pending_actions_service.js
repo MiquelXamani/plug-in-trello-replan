@@ -12,6 +12,7 @@
         service.GetBoards = GetBoards;
         service.GetAllLogs = GetAllLogs;
         service.GetBoardLogs = GetBoardLogs;
+        service.GetCardTracking = GetCardTracking;
         service.SetAccepted = SetAccepted;
         service.RejectCardDone = RejectCardDone;
         service.Replan = Replan;
@@ -31,6 +32,10 @@
         //get logs of the specified board
         function GetBoardLogs(username,boardId){
             return $http.get('/logs/?username='+username+'&boardId='+boardId).then(handleSuccess,handleError);
+        }
+
+        function GetCardTracking(cardId){
+            return $http.get('/card/tracking/'+cardId).then(handleSuccess,handleError);
         }
 
         //mark or unmark log as completed

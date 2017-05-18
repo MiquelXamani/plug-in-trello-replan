@@ -20,6 +20,34 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="cardTrackingModal" tabindex="-1" role="dialog" aria-labelledby="cardTrackingModal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="cardTrackingModalLabel">Card {{vm.cardNameTracking}} info</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-responsive table-hover" id="cardTrackingTable">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>User</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="cardMovement in vm.cardMovements">
+                        <td>{{ cardMovement.createdAt }}</td>
+                        <td>{{ cardMovement.listName }}</td>
+                        <td>{{ cardMovement.memberUsername }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 <h2>Board Pending Actions</h2>
 <form name="form" role="form" ng-submit="vm.replan()">
     <div class="form-group top-buffer">
@@ -47,7 +75,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="log in vm.logs"} ng-class="{'log_accepted': log.accepted}">
+            <tr ng-repeat="log in vm.logs" ng-class="{'log_accepted': log.accepted}">
                 <td>{{ log.createdAt }}</td>
                 <td>{{ log.boardName }}</td>
                 <td>{{ log.description }}</td>
