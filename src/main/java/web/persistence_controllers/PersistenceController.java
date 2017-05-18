@@ -260,7 +260,7 @@ public class PersistenceController {
     }
 
     private String getListNameFromLogType(String logTypeString){
-        LogType logType = LogType.valueOf(logTypeString);
+        LogType logType = LogType.getEnum(logTypeString);
         String listName = "";
         switch (logType){
             case REJECTED:
