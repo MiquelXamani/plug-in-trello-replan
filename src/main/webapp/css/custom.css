@@ -153,22 +153,22 @@ th {
     display:inline-block;
 }
 
-.moved_inprogress{
-    color:orange;
+.table-hover tbody tr.moved_inprogress, .table-hover tbody tr.moved_inprogress:hover{
+    background-color:orange;
 }
 
-.moved_ready{
-    color:rebeccapurple;
+.table-hover tbody tr.moved_ready, .table-hover tbody tr.moved_ready:hover{
+    background-color:rebeccapurple;
 }
 
-.rejected{
-    color:#d9534f;
+.table-hover tbody tr.rejected, .table-hover tbody tr.rejected:hover{
+    background-color:#d9534f;
 }
 
-.finished_earlier{
-    color:limegreen;
+.table-hover tbody tr.finished_earlier, .table-hover tbody tr.finished_earlier:hover{
+    background-color:limegreen;
 }
 
-finished_late{
-    color:darkolivegreen;
+.table-hover tbody tr.finished_late, .table-hover tbody tr.finished_late:hover{
+    background-color:darkolivegreen;
 }
