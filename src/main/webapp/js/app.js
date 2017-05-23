@@ -77,7 +77,7 @@
                 controllerAs: 'vm'
             })
 
-            .otherwise({ redirectTo: '/login' });
+            //.otherwise({ redirectTo: '/login' });
 
         $locationProvider.html5Mode(true);
         $locationProvider.hashPrefix('');
