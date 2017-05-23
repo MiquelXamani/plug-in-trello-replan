@@ -180,7 +180,6 @@ public class PersistenceController {
                     log = new Log(lp.getId(),lp.getCreatedAt(),b.getId(),b.getName(),cp.getId(),cp.getName(),lp.getAccepted(),lp.isRejected(),logType,lp.getDescription());
                     logs.add(log);
                 }
-
             }
         }
         return logs;
@@ -285,7 +284,8 @@ public class PersistenceController {
     }
 
     public List<CardTrackingInfo> getCardTrackingInfo(String cardId){
-        List<LogPersist> logPersists = cardRepository.findOne(cardId).getLogs();
+        //List<LogPersist> logPersists = cardRepository.findOne(cardId).getLogs();
+        List<LogPersist> logPersists = logRepository.findByCardIdOrderById(cardId);
         List<CardTrackingInfo> cardTrackingInfos = new ArrayList<>();
         String listName;
         for(LogPersist lp:logPersists){

@@ -38,7 +38,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="cardMovement in vm.cardMovements">
-                        <td>{{ cardMovement.createdAt }}</td>
+                        <td>{{ vm.formatDate(cardMovement.createdAt) }}</td>
                         <td>{{ cardMovement.listName }}</td>
                         <td>{{ cardMovement.memberUsername }}</td>
                     </tr>
@@ -71,13 +71,15 @@
                 <th class="date_column">Date</th>
                 <th>Board</th>
                 <th>Event</th>
+                <th>Description</th>
                 <th class="action_column">Actions</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="log in vm.logs" ng-class="{'log_accepted': log.accepted}">
-                <td>{{ log.createdAt }}</td>
+                <td>{{ vm.formatDate(log.createdAt) }}</td>
                 <td>{{ log.boardName }}</td>
+                <td>{{ vm.getType(log.type) }}</td>
                 <td>{{ log.description }}</td>
                 <td>
                     <div>

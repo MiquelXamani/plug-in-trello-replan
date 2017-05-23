@@ -120,7 +120,12 @@ public class Log implements Comparable<Log>{
         this.rejected = rejected;
     }
 
-    public int compareTo(Log other) {
+    //DESC ORDER
+    /*public int compareTo(Log other) {
         return Integer.compare(other.getId(),this.id);
+    }*/
+
+    public int compareTo(Log other) {
+        return Integer.compare(this.id,other.getId());
     }
 }

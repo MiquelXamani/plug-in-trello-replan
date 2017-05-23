@@ -194,7 +194,7 @@ public class TrelloCallbacksController {
             else if (newListId.equals(readyListId)){
                 System.out.println("CARD MOVED TO READY LIST");
                 if(actionCreator.equals("")){
-                    actionCreator = "Plugin";
+                    actionCreator = "Project Leader";
                 }
                 createLog(boardId,boardName,cardId,cardName,actionCreator,LogType.MOVED_TO_READY);
             }

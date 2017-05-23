@@ -23,6 +23,8 @@
         vm.reject = reject;
         vm.submitComment = submitComment;
         vm.replan = replan;
+        vm.getType = getType;
+        vm.formatDate = formatDate;
 
         function getAllLogs(){
             BoardPendingActionsService.GetAllLogs($rootScope.globals.currentUser.username).then(function(logs){
@@ -165,6 +167,33 @@
             else {
                 vm.dataLoading = false;
             }
+        }
+
+        function getType(type){
+            var result = "";
+            if(type === "FINISHED_EARLIER"){
+                result = "FINISHED EARLIER";
+            }
+            else if(type === "FINISHED_LATE"){
+                result = "FINISHED LATE";
+            }
+            else if(type === "MOVED_TO_IN_PROGRESS" || "MOVED_TO_READY"){
+                result = "MOVEMENT";
+            }
+            else if(type === "REJECTED"){
+                result = "REJECTION";
+            }
+            return result;
+        }
+
+        function formatDate(date){
+            var result;
+            var split = date.split(" ");
+            //split[0] contains date and split[1] contains time
+            var d = split[0].split("/");
+            var t = split[1];
+            result = d[2]+"/"+d[1]+"/"+d[0]+" "+t;
+            return result;
         }
 
         getBoards();
