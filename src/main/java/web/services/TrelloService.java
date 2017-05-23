@@ -246,6 +246,9 @@ public class TrelloService {
             System.out.println(card.getName());
             idList = card.getIdList();
             if (onHoldListId.equals(idList)) {
+                //if the card depends of another that isn't finsihed yet, this card can't be next card and yellow label will be removed
+                //else, continue
+
                 description = card.getDesc();
                 startDateTextIndex = description.indexOf(startDateText);
                 if (startDateTextIndex > -1) {
@@ -269,7 +272,7 @@ public class TrelloService {
         return nextCard;
     }
 
-    public List<Card> getNextCards(String boardId, List<String> idMembers, String onHoldListId,String inProgressListId, String readyListId, String userToken) throws ParseException {
+    public List<Card> getNextCards(String boardId, List<String> idMembers, String onHoldListId,String inProgressListId, String readyListId,String userToken) throws ParseException {
         //url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={token}";
         //vars = new HashMap<>();
         //vars.put("key",key);

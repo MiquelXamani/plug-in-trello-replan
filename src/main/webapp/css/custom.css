@@ -154,11 +154,11 @@ th {
 }
 
 .table-hover tbody tr.moved_inprogress, .table-hover tbody tr.moved_inprogress:hover{
-    background-color:orange;
+    background-color:#ffb836;
 }
 
 .table-hover tbody tr.moved_ready, .table-hover tbody tr.moved_ready:hover{
-    background-color:rebeccapurple;
+    background-color:#a851ff;
 }
 
 .table-hover tbody tr.rejected, .table-hover tbody tr.rejected:hover{
@@ -166,9 +166,9 @@ th {
 }
 
 .table-hover tbody tr.finished_earlier, .table-hover tbody tr.finished_earlier:hover{
-    background-color:limegreen;
+    background-color:#56ff56;
 }
 
 .table-hover tbody tr.finished_late, .table-hover tbody tr.finished_late:hover{
-    background-color:darkolivegreen;
+    background-color:#c9ff59;
 }

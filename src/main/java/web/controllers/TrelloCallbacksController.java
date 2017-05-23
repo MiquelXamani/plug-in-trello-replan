@@ -106,6 +106,7 @@ public class TrelloCallbacksController {
                     System.out.println(c.getName());
                 }
 
+                //fer funció per utilitzar la part d'extreure les dependències de la descripció i borrar les labels grogues
                 String description, dependsOnText, dependsOnCards;
                 dependsOnText = "**Depends on:** ";
                 int startIndex, textSize, endIndex, count;
@@ -162,6 +163,8 @@ public class TrelloCallbacksController {
                 System.out.println("---------next card part, move to ready and add green label-------");
                 //posar green label a les següents card i moure-les a Ready, l'actual de cada membre
                 System.out.println(card.getIdMembers().size());
+                //a part dels membres assignats a la card moguda, també s'han d'afegir els membres assignats a les cards que se'ls hi ha
+                //eliminat la label groga.
                 List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,inProgressListId,readyListId,userToken);
                 System.out.println("cards moved from On-Hold to ready: ");
 
