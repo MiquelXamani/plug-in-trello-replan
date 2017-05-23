@@ -290,7 +290,7 @@ public class PersistenceController {
         String listName;
         for(LogPersist lp:logPersists){
             listName = getListNameFromLogType(lp.getType());
-            cardTrackingInfos.add(new CardTrackingInfo(lp.getId(),lp.getMemberUsername(),lp.getCreatedAt(),listName));
+            cardTrackingInfos.add(new CardTrackingInfo(lp.getId(),lp.getMemberUsername(),lp.getCreatedAt(),listName,LogType.getEnum(lp.getType())));
         }
         return cardTrackingInfos;
     }

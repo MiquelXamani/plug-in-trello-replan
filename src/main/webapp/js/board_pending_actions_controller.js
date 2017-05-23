@@ -25,6 +25,7 @@
         vm.replan = replan;
         vm.getType = getType;
         vm.formatDate = formatDate;
+        vm.cardTrackingColorClass = cardTrackingColorClass;
 
         function getAllLogs(){
             BoardPendingActionsService.GetAllLogs($rootScope.globals.currentUser.username).then(function(logs){
@@ -177,7 +178,7 @@
             else if(type === "FINISHED_LATE"){
                 result = "FINISHED LATE";
             }
-            else if(type === "MOVED_TO_IN_PROGRESS" || "MOVED_TO_READY"){
+            else if(type === "MOVED_TO_IN_PROGRESS" || type === "MOVED_TO_READY"){
                 result = "MOVEMENT";
             }
             else if(type === "REJECTED"){
@@ -194,6 +195,27 @@
             var t = split[1];
             result = d[2]+"/"+d[1]+"/"+d[0]+" "+t;
             return result;
+        }
+
+        function cardTrackingColorClass(type){
+            var result = '';
+            if(type === "FINISHED_EARLIER"){
+                result = 'finished_earlier';
+            }
+            else if(type === "FINISHED_LATE"){
+                result = 'finished_late';
+            }
+            else if(type === "MOVED_TO_IN_PROGRESS"){
+                result = 'moved_inprogress';
+            }
+            else if(type === "MOVED_TO_READY"){
+                result = 'moved_ready';
+            }
+            else if(type === "REJECTED"){
+                result = 'rejected';
+            }
+            return result;
+
         }
 
         getBoards();

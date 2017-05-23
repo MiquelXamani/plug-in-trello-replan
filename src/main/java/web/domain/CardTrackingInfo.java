@@ -1,19 +1,23 @@
 package web.domain;
 
 
+import web.LogType;
+
 public class CardTrackingInfo {
     private int logId;
     private String memberUsername;
     private String createdAt;
     private String listName;
+    private LogType type;
 
     public CardTrackingInfo(){}
 
-    public CardTrackingInfo(int logId, String memberUsername, String createdAt, String listName) {
+    public CardTrackingInfo(int logId, String memberUsername, String createdAt, String listName, LogType type) {
         this.logId = logId;
         this.memberUsername = memberUsername;
         this.createdAt = createdAt;
         this.listName = listName;
+        this.type = type;
     }
 
     public int getLogId() {
@@ -46,5 +50,13 @@ public class CardTrackingInfo {
 
     public void setListName(String listName) {
         this.listName = listName;
+    }
+
+    public LogType getType() {
+        return type;
+    }
+
+    public void setType(LogType type) {
+        this.type = type;
     }
 }
