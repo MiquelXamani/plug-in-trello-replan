@@ -69,8 +69,8 @@ public class TrelloCallbacksController {
         }
 
         boolean depends = true;
-        if(dependsOnList.size() == 1){
-            System.out.println("Yellow label removed! (Only 1 dependency)");
+        if(dependsOnList.size() == 1 && dependsOnList.get(0).equals("-")){
+            System.out.println("No dependencies");
             depends = false;
         }
         else{
@@ -87,7 +87,7 @@ public class TrelloCallbacksController {
             System.out.println("Count: " + count + " dependsOnList size: "+dependsOnList.size());
             if(count == dependsOnList.size()){
                 depends = false;
-                System.out.println("Yellow label removed! (More than 1 dependency)");
+                System.out.println("Yellow label removed!");
             }
         }
         return depends;
@@ -209,6 +209,7 @@ public class TrelloCallbacksController {
                 //Exemple d'aquest cas: M1 assignat a T1, M2 assignat a T2, T2 depèn de T1
                 System.out.println("+++++++depending cards part+++++++++");
                 List<Card> dependingCards = trelloService.getDependingCards(boardId,cardId,cardName,userToken);
+                System.out.println("Depending cards size: " + dependingCards.size());
 
                 //Only for testing purposes
                 for (Card c: dependingCards) {
@@ -255,10 +256,14 @@ public class TrelloCallbacksController {
                     cardsAssignedNotDepending = new ArrayList<>();
                     cardsAssigned = trelloService.getMemberCards(idM,boardId,userToken);
                     for(int i = 0; i < cardsAssigned.size(); i++){
+                        //Millora per fer: si la card està a done, no fa falta continuar
+                        System.out.println("Card assigned: "+cardsAssigned.get(i).getName());
                         depends2 = stillDependsOnAnotherCard(cardsAssigned.get(i),cardsDone);
                         if(!depends2){
+                            System.out.println("Depends is FALSE");
                             cardsAssignedNotDepending.add(cardsAssigned.get(i));
                         }
+                        System.out.println("Depends is TRUE");
                     }
                     //Només les que no depenen d'una card sense finalitzar poden ser next card
                     nextCard = getNextCard(cardsAssignedNotDepending,readyListId,inProgressListId,onHoldListId);
