@@ -43,6 +43,105 @@ public class TrelloCallbacksController {
         persistenceController.saveLog(boardId,boardName,cardId,cardName,memberUsername,logType);
     }
 
+    private boolean stillDependsOnAnotherCard(Card card, Card[] cardsDone){
+        String description, dependsOnText, dependsOnCards;
+        dependsOnText = "**Depends on:** ";
+        int startIndex, textSize, endIndex, count;
+        textSize = dependsOnText.length();
+        List<String> dependsOnList;
+
+        boolean found;
+        description = card.getDesc();
+        startIndex = description.indexOf(dependsOnText) + textSize;
+        endIndex = description.length();
+        dependsOnCards = description.substring(startIndex,endIndex);
+        System.out.println("substring: " + dependsOnCards);
+        dependsOnList = Arrays.asList(dependsOnCards.split(",[ ]*"));
+
+        System.out.println("depends list size: " + dependsOnList.size());
+        for(int i = 0; i < dependsOnList.size(); i++){
+            System.out.println(dependsOnList.get(i));
+        }
+
+        System.out.println("cards in done list size: " + cardsDone.length);
+        for(int j = 0; j < cardsDone.length; j++){
+            System.out.println(cardsDone[j].getName());
+        }
+
+        boolean depends = true;
+        if(dependsOnList.size() == 1){
+            System.out.println("Yellow label removed! (Only 1 dependency)");
+            depends = false;
+        }
+        else{
+            count = 0;
+            found = false;
+            for(int i = 0; i < dependsOnList.size(); i++){
+                for(int j = 0; !found && j < cardsDone.length; j++){
+                    if(cardsDone[j].getName().equals(dependsOnList.get(i))){
+                        found = true;
+                        count++;
+                    }
+                }
+            }
+            System.out.println("Count: " + count + " dependsOnList size: "+dependsOnList.size());
+            if(count == dependsOnList.size()){
+                depends = false;
+                System.out.println("Yellow label removed! (More than 1 dependency)");
+            }
+        }
+        return depends;
+    }
+
+    private Card getNextCard(List<Card>cardsAssigned, String readyListId, String inProgressListId,String onHoldListId) throws ParseException {
+        boolean workingInOtherCard = false;
+        String idList;
+        Card cardAssigned;
+        Card nextCard = null;
+        //Es separa per no fer crides innecessàries a l'API de Trello que farien anar més lent
+        for (int j = 0; !workingInOtherCard && j < cardsAssigned.size(); j++) {
+            cardAssigned = cardsAssigned.get(j);
+            idList = cardAssigned.getIdList();
+            if(idList.equals(inProgressListId) || idList.equals(readyListId)){
+                workingInOtherCard = true;
+                System.out.println("Working in another card: " + cardAssigned.getName());
+            }
+        }
+        if(!workingInOtherCard){
+            String description, date, earliestDate = "";
+            String startDateText = "**Start date:** ";
+            int textLength = startDateText.length();
+            String datePattern = "yyyy/MM/dd HH:mm:ss";
+            int dateLength = datePattern.length();
+            int startDateTextIndex, startDateValueIndex, startDateValueIndexFinal;
+            SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+            Date d;
+            Date earliestD = new Date();
+            System.out.println("*** getnexcardid function ***");
+            for(int k = 0; k < cardsAssigned.size(); k++){
+                cardAssigned = cardsAssigned.get(k);
+                idList = cardAssigned.getIdList();
+                if(idList.equals(onHoldListId)){
+                    description = cardAssigned.getDesc();
+                    startDateTextIndex = description.indexOf(startDateText);
+                    if (startDateTextIndex > -1) {
+                        startDateValueIndex = startDateTextIndex + textLength;
+                        startDateValueIndexFinal = startDateValueIndex + dateLength;
+                        date = description.substring(startDateValueIndex, startDateValueIndexFinal);
+                        d = dateFormat.parse(date);
+                        if (earliestDate.equals("") || earliestD.after(d)) {
+                            earliestDate = date;
+                            earliestD = d;
+                            nextCard = cardAssigned;
+                        }
+                    }
+                }
+            }
+            System.out.println("Next card:" + nextCard.getName());
+        }
+        return nextCard;
+    }
+
     @RequestMapping(value = "/cards", method= RequestMethod.POST)
     public ResponseEntity<String> cardModified(@RequestParam(value = "username") String webUserTrelloUsername, @RequestBody WebhookCardTrelloResponse response) throws ParseException {
         System.out.println("Trello notified me!!");
@@ -98,64 +197,91 @@ public class TrelloCallbacksController {
                     trelloService.addLabel(card.getId(), purpleLabelId, userToken);
                 }
 
-                //moure les cards que depenien de la card moguda d'on-hold a ready
+                //Part de les cards dependents on s'elimina la label groga a aquelles cards que ja no depenen de cap altra
+                //i es troba la next card per aquells membres que estaven assignats a una de les cards dependents de la card moguda
+                //a Done però que no estan assignats a aquesta carta
+                //Exemple d'aquest cas: M1 assignat a T1, M2 assignat a T2, T2 depèn de T1
                 System.out.println("+++++++depending cards part+++++++++");
                 List<Card> dependingCards = trelloService.getDependingCards(boardId,cardId,cardName,userToken);
 
+                //Only for testing purposes
                 for (Card c: dependingCards) {
                     System.out.println(c.getName());
                 }
 
-                //fer funció per utilitzar la part d'extreure les dependències de la descripció i borrar les labels grogues
-                String description, dependsOnText, dependsOnCards;
-                dependsOnText = "**Depends on:** ";
-                int startIndex, textSize, endIndex, count;
-                textSize = dependsOnText.length();
-                List<String> dependsOnList;
-
                 Card[] cardsDone = trelloService.getListCards(doneListId,userToken);
-                boolean found;
+
+                //fer funció per utilitzar la part d'extreure les dependències de la descripció i borrar les labels grogues
                 String yellowLabelId = persistenceController.getLabelId(boardId,"yellow");
+                Map<String,Card> nextCardsMap = new HashMap<>();
+                Card nextCard;
+                List<Card> cardsAssigned;
                 for (Card c: dependingCards) {
-                    description = c.getDesc();
-                    startIndex = description.indexOf(dependsOnText) + textSize;
-                    endIndex = description.length();
-                    dependsOnCards = description.substring(startIndex,endIndex);
-                    System.out.println("substring: " + dependsOnCards);
-                    dependsOnList = Arrays.asList(dependsOnCards.split(",[ ]*"));
-
-                    System.out.println("depends list size: " + dependsOnList.size());
-                    for(int i = 0; i < dependsOnList.size(); i++){
-                        System.out.println(dependsOnList.get(i));
-                    }
-
-                    System.out.println("cards in done list size: " + cardsDone.length);
-                    for(int j = 0; j < cardsDone.length; j++){
-                        System.out.println(cardsDone[j].getName());
-                    }
-
-                    if(dependsOnList.size() == 1){
+                    //Aquesta card dependent encara depèn d'alguna card més que no estigui finalitzada?
+                    boolean depends = stillDependsOnAnotherCard(c,cardsDone);
+                    if(!depends){
                         //remove yellow label
-                        System.out.println("Yellow label removed! (Only 1 dependency)");
                         trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
-                    }
-                    else{
-                        count = 0;
-                        found = false;
-                        for(int i = 0; i < dependsOnList.size(); i++){
-                            for(int j = 0; !found && j < cardsDone.length; j++){
-                                if(cardsDone[j].getName().equals(dependsOnList.get(i))){
-                                    found = true;
-                                    count++;
+
+                        List<String> idMembersDependingCards = c.getIdMembers();
+                        String idMember;
+                        for(int i = 0; i < idMembersDependingCards.size(); i++){
+                            idMember = idMembersDependingCards.get(i);
+                            if(!c.isAssigned(idMember)){
+                                cardsAssigned = trelloService.getMemberCards(idMember,boardId,userToken);
+                                nextCard = getNextCard(cardsAssigned,readyListId,inProgressListId,onHoldListId);
+                                nextCardsMap.put(nextCard.getId(),nextCard);
+
+
+                                /*boolean workingInOtherCard = false;
+                                String idList;
+                                Card cardAssigned;
+                                //Es separa per no fer crides innecessàries a l'API de Trello que farien anar més lent
+                                for (int j = 0; !workingInOtherCard && j < cardsAssigned.size(); j++) {
+                                    cardAssigned = cardsAssigned.get(j);
+                                    idList = cardAssigned.getIdList();
+                                    if(idList.equals(inProgressListId) || idList.equals(readyListId)){
+                                        workingInOtherCard = true;
+                                        System.out.println("Working in another card: " + cardAssigned.getName());
+                                    }
                                 }
+                                if(!workingInOtherCard){
+                                    String description, date, earliestDate = "";
+                                    String startDateText = "**Start date:** ";
+                                    int textLength = startDateText.length();
+                                    String datePattern = "yyyy/MM/dd HH:mm:ss";
+                                    int dateLength = datePattern.length();
+                                    int startDateTextIndex, startDateValueIndex, startDateValueIndexFinal;
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+                                    Date d;
+                                    Date earliestD = new Date();
+                                    Card nextCard = null;
+                                    System.out.println("*** getnexcardid function ***");
+                                    for(int k = 0; k < cardsAssigned.size(); k++){
+                                        cardAssigned = cardsAssigned.get(k);
+                                        idList = cardAssigned.getIdList();
+                                        if(idList.equals(onHoldListId)){
+                                            description = cardAssigned.getDesc();
+                                            startDateTextIndex = description.indexOf(startDateText);
+                                            if (startDateTextIndex > -1) {
+                                                startDateValueIndex = startDateTextIndex + textLength;
+                                                startDateValueIndexFinal = startDateValueIndex + dateLength;
+                                                date = description.substring(startDateValueIndex, startDateValueIndexFinal);
+                                                d = dateFormat.parse(date);
+                                                if (earliestDate.equals("") || earliestD.after(d)) {
+                                                    earliestDate = date;
+                                                    earliestD = d;
+                                                    nextCard = cardAssigned;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    System.out.println("Next card:" + nextCard.getName());
+                                    nextCards.add(nextCard.getId());
+                                }*/
                             }
                         }
-                        System.out.println("Count: " + count + " dependsOnList size: "+dependsOnList.size());
-                        if(count == dependsOnList.size()){
-                            //remove yellow label
-                            trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
-                            System.out.println("Yellow label removed! (More than 1 dependency)");
-                        }
+
                     }
                 }
 
@@ -164,18 +290,30 @@ public class TrelloCallbacksController {
                 //posar green label a les següents card i moure-les a Ready, l'actual de cada membre
                 System.out.println(card.getIdMembers().size());
                 //a part dels membres assignats a la card moguda, també s'han d'afegir els membres assignats a les cards que se'ls hi ha
-                //eliminat la label groga.
-                List<Card> nextCards = trelloService.getNextCards(boardId,card.getIdMembers(),onHoldListId,inProgressListId,readyListId,userToken);
-                System.out.println("cards moved from On-Hold to ready: ");
-
-                List<String> nextCardsIds = new ArrayList<>();
-                for (int i = 0; i < nextCards.size(); i++) {
-                    System.out.println(nextCards.get(i).getName());
-                    nextCardsIds.add(nextCards.get(i).getId());
+                //eliminat la label groga les nextcard dels quals s'han trobat abans.
+                boolean depends2;
+                List<Card> cardsAssignedNotDepending;
+                for(String idM:card.getIdMembers()){
+                    cardsAssignedNotDepending = new ArrayList<>();
+                    cardsAssigned = trelloService.getMemberCards(idM,boardId,userToken);
+                    for(int i = 0; i < cardsAssigned.size(); i++){
+                        depends2 = stillDependsOnAnotherCard(cardsAssigned.get(i),cardsDone);
+                        if(!depends2){
+                            cardsAssignedNotDepending.add(cardsAssigned.get(i));
+                        }
+                    }
+                    //Només les que no depenen d'una card sense finalitzar poden ser next card
+                    nextCard = getNextCard(cardsAssignedNotDepending,readyListId,inProgressListId,onHoldListId);
+                    nextCardsMap.put(nextCard.getId(),nextCard);
                 }
 
+                System.out.println("cards moved from On-Hold to ready: ");
 
-
+                List<String> nextCardsIds = new ArrayList<>(nextCardsMap.keySet());
+                List<Card> nextCards = new ArrayList<>(nextCardsMap.values());
+                for (int i = 0; i < nextCards.size(); i++) {
+                    System.out.println(nextCards.get(i).getName());
+                }
                 trelloService.moveCardsAndAddLabel(nextCardsIds,readyListId,greenLabelId,userToken);
 
                 //create log

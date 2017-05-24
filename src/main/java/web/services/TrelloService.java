@@ -228,7 +228,7 @@ public class TrelloService {
         }
     }
 
-    //return the card with the earliest start date
+    /*//return the card with the earliest start date
     private Card getNextCard(List<Card> cards, String onHoldListId, String inProgressListId, String readyListId) throws ParseException{
         String description, date, earliestDate = "";
         String startDateText = "**Start date:** ";
@@ -270,9 +270,9 @@ public class TrelloService {
             }
         }
         return nextCard;
-    }
+    }*/
 
-    public List<Card> getNextCards(String boardId, List<String> idMembers, String onHoldListId,String inProgressListId, String readyListId,String userToken) throws ParseException {
+    /*public List<Card> getNextCards(String boardId, List<String> idMembers, String onHoldListId,String inProgressListId, String readyListId,String userToken) throws ParseException {
         //url = "https://api.trello.com/1/search?query=board:{boardId} member:{memberId}&cards_limit=1000&key={key}&token={token}";
         //vars = new HashMap<>();
         //vars.put("key",key);
@@ -296,6 +296,15 @@ public class TrelloService {
             }
         }
         return nextCards;
+    }*/
+
+    public List<Card> getMemberCards(String memberId,String boardId, String userToken){
+        url = "https://api.trello.com/1/search?query=board:"+boardId+" member:"+memberId+"&cards_limit=1000&key="+key+"&token="+userToken;
+        System.out.println("https://api.trello.com/1/search?query=board:"+boardId+" member:"+memberId+"&cards_limit=1000&key="+key+"&token="+userToken);
+        SearchCardResponse searchCardResponse = restTemplate.getForObject(url,SearchCardResponse.class);
+        System.out.println("cards found: " + searchCardResponse.getCards().size());
+        System.out.println(searchCardResponse.printCardNames());
+        return searchCardResponse.getCards();
     }
 
     public Card[] getListCards(String listId,String userToken){
