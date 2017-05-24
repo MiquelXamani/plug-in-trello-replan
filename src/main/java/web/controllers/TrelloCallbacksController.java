@@ -94,6 +94,7 @@ public class TrelloCallbacksController {
     }
 
     private Card getNextCard(List<Card>cardsAssigned, String readyListId, String inProgressListId,String onHoldListId) throws ParseException {
+        System.out.println("*** GetNextCard Function ***");
         boolean workingInOtherCard = false;
         String idList;
         Card cardAssigned;
@@ -108,6 +109,7 @@ public class TrelloCallbacksController {
             }
         }
         if(!workingInOtherCard){
+            System.out.println("NOT working in another card");
             String description, date, earliestDate = "";
             String startDateText = "**Start date:** ";
             int textLength = startDateText.length();
@@ -117,7 +119,6 @@ public class TrelloCallbacksController {
             SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
             Date d;
             Date earliestD = new Date();
-            System.out.println("*** getnexcardid function ***");
             for(int k = 0; k < cardsAssigned.size(); k++){
                 cardAssigned = cardsAssigned.get(k);
                 idList = cardAssigned.getIdList();
@@ -137,7 +138,12 @@ public class TrelloCallbacksController {
                     }
                 }
             }
+        }
+        if(nextCard != null){
             System.out.println("Next card:" + nextCard.getName());
+        }
+        else{
+            System.out.println("Next card null");
         }
         return nextCard;
     }
@@ -231,54 +237,6 @@ public class TrelloCallbacksController {
                                 cardsAssigned = trelloService.getMemberCards(idMember,boardId,userToken);
                                 nextCard = getNextCard(cardsAssigned,readyListId,inProgressListId,onHoldListId);
                                 nextCardsMap.put(nextCard.getId(),nextCard);
-
-
-                                /*boolean workingInOtherCard = false;
-                                String idList;
-                                Card cardAssigned;
-                                //Es separa per no fer crides innecessàries a l'API de Trello que farien anar més lent
-                                for (int j = 0; !workingInOtherCard && j < cardsAssigned.size(); j++) {
-                                    cardAssigned = cardsAssigned.get(j);
-                                    idList = cardAssigned.getIdList();
-                                    if(idList.equals(inProgressListId) || idList.equals(readyListId)){
-                                        workingInOtherCard = true;
-                                        System.out.println("Working in another card: " + cardAssigned.getName());
-                                    }
-                                }
-                                if(!workingInOtherCard){
-                                    String description, date, earliestDate = "";
-                                    String startDateText = "**Start date:** ";
-                                    int textLength = startDateText.length();
-                                    String datePattern = "yyyy/MM/dd HH:mm:ss";
-                                    int dateLength = datePattern.length();
-                                    int startDateTextIndex, startDateValueIndex, startDateValueIndexFinal;
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
-                                    Date d;
-                                    Date earliestD = new Date();
-                                    Card nextCard = null;
-                                    System.out.println("*** getnexcardid function ***");
-                                    for(int k = 0; k < cardsAssigned.size(); k++){
-                                        cardAssigned = cardsAssigned.get(k);
-                                        idList = cardAssigned.getIdList();
-                                        if(idList.equals(onHoldListId)){
-                                            description = cardAssigned.getDesc();
-                                            startDateTextIndex = description.indexOf(startDateText);
-                                            if (startDateTextIndex > -1) {
-                                                startDateValueIndex = startDateTextIndex + textLength;
-                                                startDateValueIndexFinal = startDateValueIndex + dateLength;
-                                                date = description.substring(startDateValueIndex, startDateValueIndexFinal);
-                                                d = dateFormat.parse(date);
-                                                if (earliestDate.equals("") || earliestD.after(d)) {
-                                                    earliestDate = date;
-                                                    earliestD = d;
-                                                    nextCard = cardAssigned;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    System.out.println("Next card:" + nextCard.getName());
-                                    nextCards.add(nextCard.getId());
-                                }*/
                             }
                         }
 
