@@ -252,18 +252,23 @@ public class TrelloCallbacksController {
                 //eliminat la label groga les nextcard dels quals s'han trobat abans.
                 boolean depends2;
                 List<Card> cardsAssignedNotDepending;
+                Card cardAssigned;
                 for(String idM:card.getIdMembers()){
                     cardsAssignedNotDepending = new ArrayList<>();
                     cardsAssigned = trelloService.getMemberCards(idM,boardId,userToken);
                     for(int i = 0; i < cardsAssigned.size(); i++){
-                        //Millora per fer: si la card està a done, no fa falta continuar
-                        System.out.println("Card assigned: "+cardsAssigned.get(i).getName());
-                        depends2 = stillDependsOnAnotherCard(cardsAssigned.get(i),cardsDone);
-                        if(!depends2){
-                            System.out.println("Depends is FALSE");
-                            cardsAssignedNotDepending.add(cardsAssigned.get(i));
+                        cardAssigned = cardsAssigned.get(i);
+                        //Si la card no està a On-hold, no fa falta continuar
+                        if(cardAssigned.getIdList().equals(onHoldListId)) {
+                            System.out.println("Card assigned: " + cardAssigned.getName());
+                            depends2 = stillDependsOnAnotherCard(cardAssigned, cardsDone);
+                            if (!depends2) {
+                                System.out.println("Depends is FALSE");
+                                cardsAssignedNotDepending.add(cardAssigned);
+                            } else {
+                                System.out.println("Depends is TRUE");
+                            }
                         }
-                        System.out.println("Depends is TRUE");
                     }
                     //Només les que no depenen d'una card sense finalitzar poden ser next card
                     nextCard = getNextCard(cardsAssignedNotDepending,readyListId,inProgressListId,onHoldListId);
