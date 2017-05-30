@@ -12,15 +12,17 @@ import javax.persistence.ManyToOne;
 public class JobPersist {
     @Id
     private int id;
+    private int featureId;
     @ManyToOne
     @JoinColumn(name = "idCard")
     private CardPersist card;
 
     public JobPersist(){}
 
-    public JobPersist(int id, CardPersist card) {
+    public JobPersist(int id, CardPersist card, int featureId) {
         this.id = id;
         this.card = card;
+        this.featureId = featureId;
     }
 
     public int getId() {
@@ -37,5 +39,13 @@ public class JobPersist {
 
     public void setCard(CardPersist card) {
         this.card = card;
+    }
+
+    public int getFeatureId() {
+        return featureId;
+    }
+
+    public void setFeatureId(int featureId) {
+        this.featureId = featureId;
     }
 }

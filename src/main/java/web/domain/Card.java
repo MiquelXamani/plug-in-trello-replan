@@ -2,7 +2,10 @@ package web.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,5 +108,27 @@ public class Card {
             }
         }
         return found;
+    }
+
+    public Date getStartDate() throws ParseException {
+        String date;
+        String startDateText = "**Start date:** ";
+        int textLength = startDateText.length();
+        String datePattern = "yyyy/MM/dd HH:mm:ss";
+        int dateLength = datePattern.length();
+        int startDateTextIndex, startDateValueIndex, startDateValueIndexFinal;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern);
+        startDateTextIndex = desc.indexOf(startDateText);
+        startDateValueIndex = startDateTextIndex + textLength;
+        startDateValueIndexFinal = startDateValueIndex + dateLength;
+        date = desc.substring(startDateValueIndex, startDateValueIndexFinal);
+        return dateFormat.parse(date);
+    }
+
+    public void setStartDate(String startDate) throws ParseException {
+        Date d = getStartDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String oldStartDate = dateFormat.format(d);
+        desc.replaceAll(oldStartDate,startDate);
     }
 }

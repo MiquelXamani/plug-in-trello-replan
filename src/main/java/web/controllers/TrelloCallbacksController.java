@@ -123,12 +123,14 @@ public class TrelloCallbacksController {
                 cardAssigned = cardsAssigned.get(k);
                 idList = cardAssigned.getIdList();
                 if(idList.equals(onHoldListId)){
+                    //Susbtituir per crida a cardAssigned.getStartDate()
                     description = cardAssigned.getDesc();
                     startDateTextIndex = description.indexOf(startDateText);
                     if (startDateTextIndex > -1) {
                         startDateValueIndex = startDateTextIndex + textLength;
                         startDateValueIndexFinal = startDateValueIndex + dateLength;
                         date = description.substring(startDateValueIndex, startDateValueIndexFinal);
+                    //Final. d = cardAssigned.getStartDate();
                         d = dateFormat.parse(date);
                         if (earliestDate.equals("") || earliestD.after(d)) {
                             earliestDate = date;

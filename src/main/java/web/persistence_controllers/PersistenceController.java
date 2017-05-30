@@ -232,7 +232,7 @@ public class PersistenceController {
         CardPersist cardPersist = new CardPersist(card.getId(),card.getName());
         List<JobPersist> jobPersists = new ArrayList<>();
         for(Job j : jobs){
-            jobPersists.add(new JobPersist(j.getId(),cardPersist));
+            jobPersists.add(new JobPersist(j.getId(),cardPersist,j.getFeature().getId()));
         }
         cardPersist.setJobs(jobPersists);
 
@@ -255,6 +255,7 @@ public class PersistenceController {
         boardInfo.put("project",String.valueOf(bp.getProjectId()));
         boardInfo.put("release",String.valueOf(bp.getReleaseId()));
         boardInfo.put("endpoint",bp.getEndpoint().getUrl());
+        boardInfo.put("userToken",bp.getUser().getTrelloToken());
         return boardInfo;
     }
 
@@ -293,6 +294,10 @@ public class PersistenceController {
             cardTrackingInfos.add(new CardTrackingInfo(lp.getId(),lp.getMemberUsername(),lp.getCreatedAt(),listName,LogType.getEnum(lp.getType())));
         }
         return cardTrackingInfos;
+    }
+
+    public String getCardId(int featureId){
+        return jobRepository.findFirstByFeatureId(featureId).getCard().getId();
     }
 
 }

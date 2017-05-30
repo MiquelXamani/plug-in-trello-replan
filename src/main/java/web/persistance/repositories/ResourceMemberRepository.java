@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ResourceMemberRepository extends CrudRepository<ResourceMember, Long> {
     List<ResourceMember> findByUserIdAndResourceIdInOrderByResourceId(Long userId, List<Integer> resourceIds);
+    ResourceMember findByUserIdAndAndTrelloUserId(Long userId, String trelloUserId);
     ResourceMember findByUserIdAndResourceId(Long userId, int resourceId);
     ResourceMember findByUserIdAndResourceIdAndTrelloUserId(Long userId, int resourceId, String memberId);
 

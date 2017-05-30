@@ -58,7 +58,8 @@
         }
 
         function Replan(logs){
-            return $http.post('/logs/replan',logs).then(handleSuccess,handleError);
+            //return $http.post('/logs/replan',logs).then(handleSuccess,handleError);
+            return $http.post('/logs/replan-fake',logs).then(handleSuccess,handleError);
         }
 
         // private functions

@@ -258,4 +258,38 @@ public class TrelloService {
         restTemplate.postForObject(url,input,Action.class,vars);
     }
 
+    public List<Card> getCards(List<String> cardsIds,String userToken){
+        String baseUrl = "https://api.trello.com/1/batch/?urls=";
+        //10 because a maximum of 10 routes is allowed by a single Trello batch operations
+        Card[] partialResult;
+        List<Card> result = new ArrayList<>();
+        if(cardsIds.size() > 0){
+            url = baseUrl + "/cards/"+cardsIds.get(0);
+            for(int i = 1; i < cardsIds.size(); i++){
+                if((i%10) == 0){
+                    url += "/cards/"+cardsIds.get(i)+"?key="+key+"&token="+userToken;
+                    partialResult = restTemplate.getForObject(url,Card[].class);
+                    result.addAll(new ArrayList<>(Arrays.asList(partialResult)));
+                    url = baseUrl;
+                }
+                else{
+                    url += ",/cards/"+cardsIds.get(i);
+                }
+            }
+            if((cardsIds.size()%10) != 0){
+                url += "?key="+key+"&token="+userToken;
+            }
+        }
+        return result;
+    }
+
+    public void removeCard(String cardId, String userToken){
+        url = "https://api.trello.com/1/cards/{cardId}?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        vars.put("cardId",cardId);
+        restTemplate.delete(url,vars);
+    }
+
 }
