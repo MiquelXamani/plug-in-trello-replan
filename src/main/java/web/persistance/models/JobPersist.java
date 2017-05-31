@@ -14,7 +14,7 @@ public class JobPersist {
     private int id;
     private int featureId;
     @ManyToOne
-    @JoinColumn(name = "idCard")
+    @JoinColumn(name = "cardId")
     private CardPersist card;
 
     public JobPersist(){}

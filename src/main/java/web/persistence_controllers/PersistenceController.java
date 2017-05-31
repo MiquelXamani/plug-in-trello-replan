@@ -300,4 +300,12 @@ public class PersistenceController {
         return jobRepository.findFirstByFeatureId(featureId).getCard().getId();
     }
 
+    public List<Integer> getInProgressJobs(List<String> inProgressCardsId){
+        List<JobPersist> jobPersistList = jobRepository.findByCardIdIn(inProgressCardsId);
+        List<Integer> inProgressJobsIds = new ArrayList<>();
+        for(JobPersist j:jobPersistList){
+            inProgressJobsIds.add(j.getId());
+        }
+        return inProgressJobsIds;
+    }
 }

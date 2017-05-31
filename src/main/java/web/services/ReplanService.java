@@ -51,12 +51,13 @@ public class ReplanService {
         return responseBody;
     }
 
-    public UpdatedPlan doReplanFake(String url, int projectId, int releaseId, List<CompletedJob> completedJobs){
-        url += "/projects/"+projectId+"/releases/"+releaseId+"/plan";
+    public UpdatedPlan doReplanFake(String url, int projectId, int releaseId, JobsToReplan jobsToReplan){
+        /*url += "/projects/"+projectId+"/releases/"+releaseId+"/plan";
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<List<CompletedJob>> requestUpdate = new HttpEntity<>(completedJobs, headers);
+        HttpEntity<List<JobsToReplan> requestUpdate = new HttpEntity<>(jobsToReplan, headers);
         ResponseEntity<UpdatedPlan> response = restTemplate.exchange(url, HttpMethod.PUT, requestUpdate, UpdatedPlan.class);
         UpdatedPlan responseBody = response.getBody();
-        return responseBody;
+        return responseBody;*/
+        return new UpdatedPlan();
     }
 }

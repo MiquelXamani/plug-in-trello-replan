@@ -149,25 +149,42 @@ public class LogsController {
                 completedJobs.add(new CompletedJob(jobId,log.getCreatedAt()));
             }
         }
+
+        String boardId = logs.get(0).getBoardId();
+        String readyListId = persistenceController.getListId(boardId,"Ready");
+        User2 user = persistenceController.getBoardUser(boardId);
+
+        String inProgressListId = persistenceController.getListId(boardId,"In Progress");
+        TrelloService trelloService = new TrelloService();
+        Card[] inProgressCards = trelloService.getListCards(inProgressListId,user.getTrelloToken());
+        List<String> cardsInProgressIds = new ArrayList<>();
+        for(int i = 0; i < inProgressCards.length; i++){
+            cardsInProgressIds.add(inProgressCards[i].getId());
+        }
+        List<Integer> inProgressJobsIds = persistenceController.getInProgressJobs(cardsInProgressIds);
+        List<InProgressJob> inProgressJobs = new ArrayList<>();
+        for(int jid:inProgressJobsIds){
+            inProgressJobs.add(new InProgressJob(jid));
+        }
+        JobsToReplan jobsToReplan = new JobsToReplan(completedJobs,inProgressJobs);
+
         Map<String,String> info = persistenceController.getBoardReplanInfoFromLogId(logs.get(0).getId());
         ReplanService replanService = new ReplanService();
-        UpdatedPlan updatedPlan = replanService.doReplanFake(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),completedJobs);
+        UpdatedPlan updatedPlan = replanService.doReplanFake(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),jobsToReplan);
 
         //<featureId,cardId>, to avoid redundant accesses to db
         Map<Integer,String> featureCardMaps = new HashMap<>();
         //<cardId,jobs of this card>
         Map<String,List<Job>> cardJobsMap = new HashMap<>();
-        //<resourceId,jobs of this resource>
-        Map<Integer,List<Job>> resourceJobsMap = new HashMap();
+
         List<Job> jobs = updatedPlan.getJobs();
         Feature feature;
         String cardId;
-        int featureId, resourceId;
+        int featureId;
         List<Job> jobList;
         for(Job job:jobs){
             feature = job.getFeature();
             featureId = feature.getId();
-            resourceId = job.getResource().getId();
             if(featureCardMaps.containsKey(featureId)){
                 cardId = featureCardMaps.get(featureId);
             }
@@ -184,23 +201,11 @@ public class LogsController {
                 jobList.add(job);
                 cardJobsMap.put(cardId,jobList);
             }
-
-            if(resourceJobsMap.containsKey(resourceId)){
-                resourceJobsMap.get(resourceId).add(job);
-            }
-            else{
-                jobList = new ArrayList<>();
-                jobList.add(job);
-                resourceJobsMap.put(resourceId,jobList);
-            }
         }
-        TrelloService trelloService = new TrelloService();
+
         List<Card> oldCards = trelloService.getCards(new ArrayList<>(cardJobsMap.keySet()),info.get("userToken"));
 
         //mirar què canvia
-        String boardId = logs.get(0).getBoardId();
-        User2 user = persistenceController.getBoardUser(boardId);
-        String readyListId = persistenceController.getListId(boardId,"Ready");
         String onHoldListId = persistenceController.getListId(boardId,"On-hold");
         List<Job> jobList1;
         List<String> oldMembersList;
@@ -239,6 +244,7 @@ public class LogsController {
             //Members assigned changed?
             //Remove members assigned that are no more assigned to this card
             boolean found;
+            int resourceId;
             for(int k = 0; k < oldMembersList.size(); k++){
                 found = false;
                 ResourceMember resourceMember = resourceMemberRepository.findByUserIdAndAndTrelloUserId(user.getUserId(),oldMembersList.get(k));
