@@ -28,6 +28,15 @@ public class PersistenceController {
     private CardRepository cardRepository;
     @Autowired (required = true)
     private JobRepository jobRepository;
+    //Fake repositories
+    /*@Autowired (required = true)
+    private PlanFakeRepository planFakeRepository;
+    @Autowired (required = true)
+    private JobFakeRepository jobFakeRepository;
+    @Autowired (required = true)
+    private FeatureFakeRepository featureFakeRepository;
+    @Autowired (required = true)
+    private ResourceFakeRepository resourceFakeRepository;*/
 
     public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists, User2 user2, int endpointId, int projectId, int releaseId){
         System.out.println(endpointId+" "+projectId+" "+releaseId);
