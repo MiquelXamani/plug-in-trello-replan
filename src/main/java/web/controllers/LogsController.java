@@ -11,6 +11,7 @@ import web.domain.aux_classes.CompleteLogOp;
 import web.persistance.models.ResourceMember;
 import web.persistance.repositories.ResourceMemberRepository;
 import web.persistence_controllers.PersistenceController;
+import web.services.ReplanFake;
 import web.services.ReplanService;
 import web.services.TrelloService;
 
@@ -169,8 +170,8 @@ public class LogsController {
         JobsToReplan jobsToReplan = new JobsToReplan(completedJobs,inProgressJobs);
 
         Map<String,String> info = persistenceController.getBoardReplanInfoFromLogId(logs.get(0).getId());
-        ReplanService replanService = new ReplanService();
-        UpdatedPlan updatedPlan = replanService.doReplanFake(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),jobsToReplan);
+        ReplanFake replanFake = new ReplanFake();
+        UpdatedPlan updatedPlan = replanFake.doReplanFake(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),jobsToReplan);
 
         //<featureId,cardId>, to avoid redundant accesses to db
         Map<Integer,String> featureCardMaps = new HashMap<>();
