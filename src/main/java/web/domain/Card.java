@@ -120,7 +120,7 @@ public class Card {
         return found;
     }
 
-    public Date getStartDate() throws ParseException {
+    public Date obtainStartDate() throws ParseException {
         String date;
         String startDateText = "**Start date:** ";
         int textLength = startDateText.length();
@@ -135,8 +135,8 @@ public class Card {
         return dateFormat.parse(date);
     }
 
-    public void setStartDate(String startDate) throws ParseException {
-        Date d = getStartDate();
+    public void modifyStartDate(String startDate) throws ParseException {
+        Date d = obtainStartDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String oldStartDate = dateFormat.format(d);
         desc.replaceAll(oldStartDate,startDate);

@@ -112,8 +112,8 @@ public class LogsController {
                 members = currentCard.getIdMembers();
                 for(String memberId:members) {
                     if (nextCards.containsKey(memberId)) {
-                        currentCardStartDate = currentCard.getStartDate();
-                        earliestCardStartDate = nextCards.get(memberId).getStartDate();
+                        currentCardStartDate = currentCard.obtainStartDate();
+                        earliestCardStartDate = nextCards.get(memberId).obtainStartDate();
                         if(earliestCardStartDate.after(currentCardStartDate)){
                             nextCards.put(memberId,currentCard);
                         }
@@ -238,8 +238,8 @@ public class LogsController {
             //New start date?
             jobStartDate = dateFormat.parse(j.getStarts());
             jobStartDateString = dateFormat2.format(jobStartDate);
-            if(!oldCard.getStartDate().equals(jobStartDateString)){
-                oldCard.setStartDate(jobStartDateString);
+            if(!oldCard.obtainStartDate().equals(jobStartDateString)){
+                oldCard.modifyStartDate(jobStartDateString);
             }
 
             //Members assigned changed?
