@@ -98,6 +98,45 @@ public class LogsController {
         return replanService.doReplan(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),completedJobs);
     }
 
+    private List<Card> getNextCards(List<Card> cardsUpdated, String boardId, String readyListId) throws ParseException {
+        //<memberId, nextcard of this member>
+        Map<String,Card> nextCards = new HashMap<>();
+        String yellowLabelId = persistenceController.getLabelId(boardId,"yellow");
+        Card currentCard;
+        List<String> members;
+        Date currentCardStartDate, earliestCardStartDate;
+        for(int i = 0; i < cardsUpdated.size(); i++){
+            currentCard = cardsUpdated.get(i);
+            if(!currentCard.hasLabel(yellowLabelId)){
+                members = currentCard.getIdMembers();
+                for(String memberId:members) {
+                    if (nextCards.containsKey(memberId)) {
+                        currentCardStartDate = currentCard.getStartDate();
+                        earliestCardStartDate = nextCards.get(memberId).getStartDate();
+                        if(earliestCardStartDate.after(currentCardStartDate)){
+                            nextCards.put(memberId,currentCard);
+                        }
+                    }
+                    else {
+                        nextCards.put(memberId,currentCard);
+                    }
+                }
+            }
+        }
+        Card card;
+        String greenLabelId = persistenceController.getLabelId(boardId,"green");
+        for (int j = 0; j < cardsUpdated.size(); j++) {
+            card = cardsUpdated.get(j);
+            if(nextCards.containsValue(card)){
+                System.out.println("Next card: " + card.getName());
+                card.addLabel(greenLabelId);
+                card.setIdList(readyListId);
+                cardsUpdated.set(j,card);
+            }
+        }
+        return cardsUpdated;
+    }
+
     //Will frozen logs passed also?
     @RequestMapping(value = "/replan-fake", method = RequestMethod.POST)
     public void doReplanFake(@RequestBody List<Log> logs) throws ParseException {
@@ -118,14 +157,17 @@ public class LogsController {
         Map<Integer,String> featureCardMaps = new HashMap<>();
         //<cardId,jobs of this card>
         Map<String,List<Job>> cardJobsMap = new HashMap<>();
+        //<resourceId,jobs of this resource>
+        Map<Integer,List<Job>> resourceJobsMap = new HashMap();
         List<Job> jobs = updatedPlan.getJobs();
         Feature feature;
         String cardId;
-        int featureId;
+        int featureId, resourceId;
         List<Job> jobList;
         for(Job job:jobs){
             feature = job.getFeature();
             featureId = feature.getId();
+            resourceId = job.getResource().getId();
             if(featureCardMaps.containsKey(featureId)){
                 cardId = featureCardMaps.get(featureId);
             }
@@ -142,6 +184,15 @@ public class LogsController {
                 jobList.add(job);
                 cardJobsMap.put(cardId,jobList);
             }
+
+            if(resourceJobsMap.containsKey(resourceId)){
+                resourceJobsMap.get(resourceId).add(job);
+            }
+            else{
+                jobList = new ArrayList<>();
+                jobList.add(job);
+                resourceJobsMap.put(resourceId,jobList);
+            }
         }
         TrelloService trelloService = new TrelloService();
         List<Card> oldCards = trelloService.getCards(new ArrayList<>(cardJobsMap.keySet()),info.get("userToken"));
@@ -150,33 +201,32 @@ public class LogsController {
         String boardId = logs.get(0).getBoardId();
         User2 user = persistenceController.getBoardUser(boardId);
         String readyListId = persistenceController.getListId(boardId,"Ready");
-        //<MemberId, old next CardId>
-        Map<String,String> oldNextCards = new HashMap<>();
+        String onHoldListId = persistenceController.getListId(boardId,"On-hold");
         List<Job> jobList1;
         List<String> oldMembersList;
         Job j;
         Card oldCard;
-        boolean modified;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date jobStartDate;
         String jobStartDateString;
         for(int i = 0; i < oldCards.size(); i++){
-            modified = false;
             oldCard = oldCards.get(i);
             oldMembersList = oldCard.getIdMembers();
+            //reset NextCard in order to recalculate it later
             if(oldCard.getIdList().equals(readyListId)){
-                for(String memberId:oldMembersList) {
-                    oldNextCards.put(memberId, oldCard.getId());
-                }
+                //Move provisionally to On-hold
+                oldCard.setIdList(onHoldListId);
+                //Remove labels
+                oldCard.setIdLabels(new ArrayList<>());
             }
+
             jobList1 = cardJobsMap.get(oldCard.getId());
             j = jobList1.get(0);
 
             //New due date?
             if(!oldCard.getDue().equals(j.getEnds())){
                 oldCard.setDue(j.getEnds());
-                modified = true;
             }
 
             //New start date?
@@ -184,7 +234,6 @@ public class LogsController {
             jobStartDateString = dateFormat2.format(jobStartDate);
             if(!oldCard.getStartDate().equals(jobStartDateString)){
                 oldCard.setStartDate(jobStartDateString);
-                modified = true;
             }
 
             //Members assigned changed?
@@ -194,7 +243,7 @@ public class LogsController {
                 found = false;
                 ResourceMember resourceMember = resourceMemberRepository.findByUserIdAndAndTrelloUserId(user.getUserId(),oldMembersList.get(k));
                 if(resourceMember != null){
-                    int resourceId = resourceMember.getResourceId();
+                    resourceId = resourceMember.getResourceId();
                     for(int l = 0; !found && l < jobList1.size(); l++){
                         if(resourceId == jobList1.get(l).getResource().getId()){
                             found = true;
@@ -203,7 +252,6 @@ public class LogsController {
                     if(!found){
                         oldMembersList.remove(k);
                         oldCard.setIdMembers(oldMembersList);
-                        modified = true;
                     }
                 }
             }
@@ -222,15 +270,16 @@ public class LogsController {
                     if (!found) {
                         oldMembersList.add(trelloId);
                         oldCard.setIdMembers(oldMembersList);
-                        modified = true;
                     }
                 }
             }
-
-            if(modified){
-                oldCards.set(i,oldCard);
-            }
+            oldCards.set(i,oldCard);
         }
+
+        //new nextcards
+        List<Card> updatedCards = getNextCards(oldCards,boardId,readyListId);
+        //update cards in Trello
+        trelloService.updateCards(updatedCards,user.getTrelloToken());
 
         //Remove cards
         List<Integer> featuresOut = updatedPlan.getFeatures_out();

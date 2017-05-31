@@ -100,6 +100,16 @@ public class Card {
         idLabels.add(idLabel);
     }
 
+    public boolean hasLabel(String idLabel){
+        boolean found = false;
+        for(int i = 0; !found && i < idLabels.size(); i++){
+            if(idLabels.get(i).equals(idLabel)){
+                found = true;
+            }
+        }
+        return found;
+    }
+
     public boolean isAssigned(String idMember){
         boolean found = false;
         for(int i = 0; !found && i < idMembers.size(); i++){

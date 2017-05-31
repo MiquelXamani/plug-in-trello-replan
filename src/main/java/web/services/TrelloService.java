@@ -1,6 +1,6 @@
 package web.services;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -290,6 +290,21 @@ public class TrelloService {
         vars.put("token",userToken);
         vars.put("cardId",cardId);
         restTemplate.delete(url,vars);
+    }
+
+    public void updateCards(List<Card> cards,String userToken){
+        url = "https://api.trello.com/1/cards/{cardId}?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        for(Card card:cards){
+            vars.put("cardId",card.getId());
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<Card> requestUpdate = new HttpEntity<>(card, headers);
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, requestUpdate, String.class);
+            String responseBody = response.getBody();
+            System.out.println(responseBody);
+        }
     }
 
 }
