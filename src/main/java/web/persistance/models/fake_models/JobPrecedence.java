@@ -1,17 +1,16 @@
 package web.persistance.models.fake_models;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Entity
 public class JobPrecedence {
     @Id
     private String id;
-    @OneToMany(mappedBy = "jobprecedence")
+    @ManyToOne
+    @JoinColumn(name = "previousJobId")
     private JobFake previousJob;
-    @OneToMany(mappedBy = "jobprecedence")
+    @ManyToOne
+    @JoinColumn(name = "nextJobId")
     private JobFake nextJob;
 
     public JobPrecedence(JobFake previousJob, JobFake nextJob) {
