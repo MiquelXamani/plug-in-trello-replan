@@ -10,6 +10,7 @@ import web.domain.Card;
 import web.domain.Label;
 import web.domain.aux_classes.IdNameObject;
 import web.domain.aux_classes.WebhookCardTrelloResponse;
+import web.domain.operation_classes.CardDependency;
 import web.persistence_controllers.PersistenceController;
 import web.services.TrelloService;
 
@@ -21,6 +22,7 @@ import java.util.*;
 @RequestMapping("/trello-callbacks")
 public class TrelloCallbacksController {
     private PersistenceController persistenceController;
+    private CardDependency cardDependency;
 
     @Autowired
     public TrelloCallbacksController(PersistenceController persistenceController){
@@ -43,55 +45,6 @@ public class TrelloCallbacksController {
         persistenceController.saveLog(boardId,boardName,cardId,cardName,memberUsername,logType);
     }
 
-    private boolean stillDependsOnAnotherCard(Card card, Card[] cardsDone){
-        String description, dependsOnText, dependsOnCards;
-        dependsOnText = "**Depends on:** ";
-        int startIndex, textSize, endIndex, count;
-        textSize = dependsOnText.length();
-        List<String> dependsOnList;
-
-        boolean found;
-        description = card.getDesc();
-        startIndex = description.indexOf(dependsOnText) + textSize;
-        endIndex = description.length();
-        dependsOnCards = description.substring(startIndex,endIndex);
-        System.out.println("substring: " + dependsOnCards);
-        dependsOnList = Arrays.asList(dependsOnCards.split(",[ ]*"));
-
-        System.out.println("depends list size: " + dependsOnList.size());
-        for(int i = 0; i < dependsOnList.size(); i++){
-            System.out.println(dependsOnList.get(i));
-        }
-
-        System.out.println("cards in done list size: " + cardsDone.length);
-        for(int j = 0; j < cardsDone.length; j++){
-            System.out.println(cardsDone[j].getName());
-        }
-
-        boolean depends = true;
-        if(dependsOnList.size() == 1 && dependsOnList.get(0).equals("-")){
-            System.out.println("No dependencies");
-            depends = false;
-        }
-        else{
-            count = 0;
-            found = false;
-            for(int i = 0; i < dependsOnList.size(); i++){
-                for(int j = 0; !found && j < cardsDone.length; j++){
-                    if(cardsDone[j].getName().equals(dependsOnList.get(i))){
-                        found = true;
-                        count++;
-                    }
-                }
-            }
-            System.out.println("Count: " + count + " dependsOnList size: "+dependsOnList.size());
-            if(count == dependsOnList.size()){
-                depends = false;
-                System.out.println("Yellow label removed!");
-            }
-        }
-        return depends;
-    }
 
     private Card getNextCard(List<Card>cardsAssigned, String readyListId, String inProgressListId,String onHoldListId) throws ParseException {
         System.out.println("*** GetNextCard Function ***");
@@ -225,9 +178,10 @@ public class TrelloCallbacksController {
                 Map<String,Card> nextCardsMap = new HashMap<>();
                 Card nextCard;
                 List<Card> cardsAssigned;
+                cardDependency = new CardDependency();
                 for (Card c: dependingCards) {
                     //Aquesta card dependent encara depèn d'alguna card més que no estigui finalitzada?
-                    boolean depends = stillDependsOnAnotherCard(c,cardsDone);
+                    boolean depends = cardDependency.stillDependsOnAnotherCard(c,cardsDone);
                     if(!depends){
                         //remove yellow label
                         trelloService.removeLabel(c.getId(),yellowLabelId,userToken);
@@ -263,7 +217,7 @@ public class TrelloCallbacksController {
                         //Si la card no està a On-hold, no fa falta continuar
                         if(cardAssigned.getIdList().equals(onHoldListId)) {
                             System.out.println("Card assigned: " + cardAssigned.getName());
-                            depends2 = stillDependsOnAnotherCard(cardAssigned, cardsDone);
+                            depends2 = cardDependency.stillDependsOnAnotherCard(cardAssigned, cardsDone);
                             if (!depends2) {
                                 System.out.println("Depends is FALSE");
                                 cardsAssignedNotDepending.add(cardAssigned);

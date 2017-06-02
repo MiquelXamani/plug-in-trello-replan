@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import web.LogType;
 import web.domain.*;
 import web.domain.aux_classes.CompleteLogOp;
+import web.domain.operation_classes.CardDependency;
 import web.persistance.models.ResourceMember;
 import web.persistance.repositories.ResourceMemberRepository;
 import web.persistence_controllers.PersistenceController;
@@ -25,6 +26,7 @@ public class LogsController {
     private PersistenceController persistenceController;
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
+    private CardDependency cardDependency;
 
     @Autowired
     public LogsController(PersistenceController persistenceController){
@@ -178,11 +180,20 @@ public class LogsController {
         //<cardId,jobs of this card>
         Map<String,List<Job>> cardJobsMap = new HashMap<>();
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        String onHoldListId = persistenceController.getListId(boardId,"On-hold");
+        String doneListId = persistenceController.getListId(boardId,"Done");
+
         List<Job> jobs = updatedPlan.getJobs();
+        List<Card> newCards = new ArrayList<>();
         Feature feature;
         String cardId;
         int featureId;
         List<Job> jobList;
+        cardDependency = new CardDependency();
+        Card[] cardsDone = trelloService.getListCards(doneListId,user.getTrelloToken());
+        String yellowLabelId = persistenceController.getLabelId(boardId,"yellow");
         for(Job job:jobs){
             feature = job.getFeature();
             featureId = feature.getId();
@@ -191,7 +202,45 @@ public class LogsController {
             }
             else{
                 cardId = persistenceController.getCardId(featureId);
-                featureCardMaps.put(featureId,cardId);
+                //New feature added to release plan, new card will be created
+                if(cardId == null){
+                    Card newCard = new Card();
+                    String name = "("+ Math.round(feature.getEffort()) +") " + feature.getName();
+                    newCard.setName(name);
+                    newCard.setDue(job.getEnds());
+                    ResourceMember resourceMember = resourceMemberRepository.findByUserIdAndResourceId(user.getUserId(),job.getResource().getId());
+                    if(resourceMember != null) {
+                        newCard.addMember(resourceMember.getTrelloUserId());
+                    }
+                    Date startDate = dateFormat.parse(job.getStarts());
+                    String description = feature.getDescription() + "\n\n";
+                    description += "**Start date:** " + dateFormat2.format(startDate) + "\n**Depends on:**";
+                    int dependsOnSize = job.getDepends_on().size();
+                    if( dependsOnSize == 0){
+                        description += " -";
+                    }
+                    else {
+                        int count = 0;
+                        Feature featureDepending;
+                        for (JobReduced jr : job.getDepends_on()) {
+                            featureDepending = persistenceController.getFeature(jr.getFeature_id());
+                            description += " ("+ Math.round(featureDepending.getEffort()) +") " + featureDepending.getName();
+                            if(count < dependsOnSize - 1) {
+                                description += " ,";
+                            }
+                            ++count;
+                        }
+                    }
+                    newCard.setDesc(description);
+                    newCard.setIdList(onHoldListId);
+                    if(cardDependency.stillDependsOnAnotherCard(newCard,cardsDone)){
+                        newCard.addLabel(yellowLabelId);
+                    }
+                    newCards.add(newCard);
+                }
+                else {
+                    featureCardMaps.put(featureId, cardId);
+                }
             }
 
             if(cardJobsMap.containsKey(cardId)){
@@ -204,16 +253,16 @@ public class LogsController {
             }
         }
 
+        //create new cards
+        newCards = trelloService.createCards(newCards,user.getTrelloToken());
+
         List<Card> oldCards = trelloService.getCards(new ArrayList<>(cardJobsMap.keySet()),info.get("userToken"));
 
         //mirar què canvia
-        String onHoldListId = persistenceController.getListId(boardId,"On-hold");
         List<Job> jobList1;
         List<String> oldMembersList;
         Job j;
         Card oldCard;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date jobStartDate;
         String jobStartDateString;
         for(int i = 0; i < oldCards.size(); i++){
@@ -283,7 +332,9 @@ public class LogsController {
             oldCards.set(i,oldCard);
         }
 
-        //new nextcards
+        //afegir les cards de la llista newcards a oldcards per poder calcular la next card
+        oldCards.addAll(newCards);
+        //recalculate nextcards after replan
         List<Card> updatedCards = getNextCards(oldCards,boardId,readyListId);
         //update cards in Trello
         trelloService.updateCards(updatedCards,user.getTrelloToken());
@@ -295,8 +346,7 @@ public class LogsController {
             cardOutId = persistenceController.getCardId(featureOutId);
             //remove from trello
             trelloService.removeCard(cardOutId,user.getTrelloToken());
-            //remove from db ?
-
+            //crear log que digui out of release (aquest log es mostrarà a card tracking i no a la taula
         }
     }
 

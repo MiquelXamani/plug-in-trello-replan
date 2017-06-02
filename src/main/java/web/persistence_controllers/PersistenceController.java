@@ -240,8 +240,10 @@ public class PersistenceController {
     public void saveCardAndJobs(Card card, List<Job> jobs){
         CardPersist cardPersist = new CardPersist(card.getId(),card.getName());
         List<JobPersist> jobPersists = new ArrayList<>();
+        Feature feature;
         for(Job j : jobs){
-            jobPersists.add(new JobPersist(j.getId(),cardPersist,j.getFeature().getId()));
+            feature = j.getFeature();
+            jobPersists.add(new JobPersist(j.getId(),cardPersist,feature.getId(),feature.getEffort(),feature.getName()));
         }
         cardPersist.setJobs(jobPersists);
 
@@ -316,5 +318,10 @@ public class PersistenceController {
             inProgressJobsIds.add(j.getId());
         }
         return inProgressJobsIds;
+    }
+
+    public Feature getFeature(int featureId){
+        JobPersist jobPersist = jobRepository.findFirstByFeatureId(featureId);
+        return new Feature(jobPersist.getFeatureId(),jobPersist.getFeatureName(),jobPersist.getFeatureEffort());
     }
 }

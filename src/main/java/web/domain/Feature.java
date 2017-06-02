@@ -12,6 +12,12 @@ public class Feature {
 
     public Feature(){}
 
+    public Feature(int id, String name, double effort){
+        this.id = id;
+        this.name = name;
+        this.effort = effort;
+    }
+
     public int getId() {
         return id;
     }
