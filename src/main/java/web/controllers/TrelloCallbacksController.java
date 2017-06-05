@@ -228,7 +228,12 @@ public class TrelloCallbacksController {
                     }
                     //Només les que no depenen d'una card sense finalitzar poden ser next card
                     nextCard = getNextCard(cardsAssignedNotDepending,readyListId,inProgressListId,onHoldListId);
-                    nextCardsMap.put(nextCard.getId(),nextCard);
+                    if(nextCard != null) {
+                        nextCardsMap.put(nextCard.getId(), nextCard);
+                    }
+                    else{
+                        System.out.println("Next card is null");
+                    }
                 }
 
                 System.out.println("cards moved from On-Hold to ready: ");
