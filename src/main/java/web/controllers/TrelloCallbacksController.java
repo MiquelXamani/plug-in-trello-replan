@@ -190,7 +190,8 @@ public class TrelloCallbacksController {
                         String idMember;
                         for(int i = 0; i < idMembersDependingCards.size(); i++){
                             idMember = idMembersDependingCards.get(i);
-                            if(!c.isAssigned(idMember)){
+                            if(!card.isAssigned(idMember)){
+                                System.out.println("Member not assigned to card moved");
                                 cardsAssigned = trelloService.getMemberCards(idMember,boardId,userToken);
                                 nextCard = getNextCard(cardsAssigned,readyListId,inProgressListId,onHoldListId);
                                 nextCardsMap.put(nextCard.getId(),nextCard);
