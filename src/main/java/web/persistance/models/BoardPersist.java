@@ -29,7 +29,7 @@ public class BoardPersist {
     private List<LogPersist> logs;
     @ManyToOne
     @JoinColumn(name = "endpointId")
-    private Endpoint endpoint;
+    private EndpointPersist endpoint;
     private int projectId;
     private int releaseId;
 
@@ -104,11 +104,11 @@ public class BoardPersist {
         this.logs.add(log);
     }
 
-    public Endpoint getEndpoint() {
+    public EndpointPersist getEndpoint() {
         return endpoint;
     }
 
-    public void setEndpoint(Endpoint endpoint) {
+    public void setEndpoint(EndpointPersist endpoint) {
         this.endpoint = endpoint;
     }
 

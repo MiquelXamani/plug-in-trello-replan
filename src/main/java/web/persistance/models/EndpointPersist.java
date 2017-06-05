@@ -8,7 +8,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
-public class Endpoint {
+public class EndpointPersist {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
@@ -17,9 +17,9 @@ public class Endpoint {
     @OneToMany(mappedBy = "endpoint")
     private List<BoardPersist> boards;
 
-    public Endpoint(){}
+    public EndpointPersist(){}
 
-    public Endpoint(String url, String name){
+    public EndpointPersist(String url, String name){
         this.url = url;
         this.name = name;
     }

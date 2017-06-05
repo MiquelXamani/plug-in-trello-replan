@@ -256,7 +256,7 @@ public class LogsController {
         //create new cards
         newCards = trelloService.createCards(newCards,user.getTrelloToken());
 
-        List<Card> oldCards = trelloService.getCards(new ArrayList<>(cardJobsMap.keySet()),info.get("userToken"));
+        List<Card> oldCards = trelloService.getCards(new ArrayList<>(cardJobsMap.keySet()),user.getTrelloToken());
 
         //mirar què canvia
         List<Job> jobList1;

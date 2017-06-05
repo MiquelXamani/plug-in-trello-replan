@@ -66,7 +66,7 @@ public class PersistenceController {
         user.addBoard(boardPersist);
         boardPersist.setUser(user);
 
-        Endpoint endpoint = endpointRepository.findOne(endpointId);
+        EndpointPersist endpoint = endpointRepository.findOne(endpointId);
         endpoint.addBoard(boardPersist);
         boardPersist.setEndpoint(endpoint);
 
@@ -88,15 +88,22 @@ public class PersistenceController {
     }
 
     public List<Endpoint> getEndpoints(){
-        return endpointRepository.findAll();
+        List<EndpointPersist> endpointPersists = endpointRepository.findAll();
+        List<Endpoint> endpoints = new ArrayList<>();
+        for(EndpointPersist endpointPersist:endpointPersists){
+            endpoints.add(new Endpoint(endpointPersist.getId(),endpointPersist.getUrl(),endpointPersist.getName()));
+        }
+        return endpoints;
     }
 
     public Endpoint getEndpoint(int endpointId){
-        return endpointRepository.findOne(endpointId);
+        EndpointPersist endpointPersist = endpointRepository.findOne(endpointId);
+        return new Endpoint(endpointPersist.getId(),endpointPersist.getUrl(),endpointPersist.getName());
     }
 
     public Endpoint saveEndpoint(String url, String name){
-        return endpointRepository.save(new Endpoint(url,name));
+        EndpointPersist endpointPersist = endpointRepository.save(new EndpointPersist(url,name));
+        return new Endpoint(endpointPersist.getId(),endpointPersist.getUrl(),endpointPersist.getName());
     }
 
     public String getLabelId(String boardId, String color){
@@ -266,7 +273,6 @@ public class PersistenceController {
         boardInfo.put("project",String.valueOf(bp.getProjectId()));
         boardInfo.put("release",String.valueOf(bp.getReleaseId()));
         boardInfo.put("endpoint",bp.getEndpoint().getUrl());
-        boardInfo.put("userToken",bp.getUser().getTrelloToken());
         return boardInfo;
     }
 
