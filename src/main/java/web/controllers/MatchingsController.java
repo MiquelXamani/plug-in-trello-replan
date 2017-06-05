@@ -9,6 +9,7 @@ import web.domain.*;
 import web.persistance.repositories.ResourceMemberRepository;
 import web.persistance.models.ResourceMember;
 import web.persistence_controllers.PersistenceController;
+import web.services.ReplanFake;
 import web.services.ReplanService;
 import web.services.TrelloService;
 
@@ -89,10 +90,19 @@ public class MatchingsController {
 
         MatchingsContainer matchingDTO = new MatchingsContainer();
         ReplanService replanService = new ReplanService();
+        ReplanFake replanFake = new ReplanFake();
 
         //get plan
         String url = persistenceController.getEndpoint(Integer.parseInt(endpointId)).getUrl();
-        Plan plan = replanService.getPlan(url,projectId,releaseId);
+        Plan plan;
+        if(url.equals("simulation mode")){
+            plan = replanFake.getPlan(projectId,releaseId);
+            System.out.println("PLAN FROM JSON");
+        }
+        else {
+            System.out.println("PLAN FROM ENDPOINT URL " + url);
+            plan = replanService.getPlan(url, projectId, releaseId);
+        }
         matchingDTO.setPlan(plan);
 
         User2 user = persistenceController.getUser(username);

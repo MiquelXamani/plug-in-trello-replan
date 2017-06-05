@@ -31,17 +31,6 @@ public class BoardsController {
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO) throws ParseException {
-        //Test arxiu
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            Plan plan = mapper.readValue(new File("src/main/java/web/plan_examples/plan_ecommerce_llibres.json"),Plan.class);
-            System.out.println("Plan size jackson: "+plan.getJobs().size());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //-----------------------------------------------------
-
         System.out.println("BOARD CONTROLLER REQUEST RECEIVED");
         User2 u = persistenceController.getUser(planBoardDTO.getUsername());
         System.out.println(planBoardDTO.getUsername());
