@@ -1,5 +1,8 @@
 package web.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JobReduced {
     private int id;
     private String starts;

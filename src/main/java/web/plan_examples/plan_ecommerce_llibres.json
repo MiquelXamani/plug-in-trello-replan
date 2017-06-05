@@ -1,0 +1,1126 @@
+{
+  "id": 1,
+  "created_at": "2017-06-03T15:58:51.673Z",
+  "release_id": 5,
+  "num_features": 22,
+  "num_jobs": 19,
+  "jobs": [
+    {
+      "id": 1,
+      "starts": "2017-06-05T09:00:00.000Z",
+      "ends": "2017-06-05T13:00:00.000Z",
+      "feature": {
+        "id": 31,
+        "code": 422,
+        "name": "Pàgina de contacte",
+        "description": "Bla, bla, bla",
+        "effort": "4.0",
+        "deadline": "2017-07-23",
+        "priority": 5,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 6,
+        "name": "Maria",
+        "description": "Maria Miller",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 4,
+            "name": "AngularJS",
+            "description": "AngularJS"
+          },
+          {
+            "id": 5,
+            "name": "HTML",
+            "description": "HyperText Markup Language"
+          },
+          {
+            "id": 6,
+            "name": "JavaScript",
+            "description": "JavaScript Programming Language"
+          },
+          {
+            "id": 7,
+            "name": "CSS",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 9,
+            "name": "SEO",
+            "description": "Search Engine Optimization"
+          }
+        ]
+      },
+      "depends_on": []
+    },
+    {
+      "id": 2,
+      "starts": "2017-06-05T09:00:00.000Z",
+      "ends": "2017-06-05T17:00:00.000Z",
+      "feature": {
+        "id": 15,
+        "code": 406,
+        "name": "Maquetació parts comunes",
+        "description": "Bla, bla, bla",
+        "effort": "8.0",
+        "deadline": "2017-07-03",
+        "priority": 3,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 7,
+        "name": "Sergi",
+        "description": "Sergi Snow",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 4,
+            "name": "AngularJS",
+            "description": "AngularJS"
+          },
+          {
+            "id": 5,
+            "name": "HTML",
+            "description": "HyperText Markup Language"
+          },
+          {
+            "id": 6,
+            "name": "JavaScript",
+            "description": "JavaScript Programming Language"
+          },
+          {
+            "id": 7,
+            "name": "CSS",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 9,
+            "name": "SEO",
+            "description": "Search Engine Optimization"
+          }
+        ]
+      },
+      "depends_on": []
+    },
+    {
+      "id": 3,
+      "starts": "2017-06-05T13:00:00.000Z",
+      "ends": "2017-06-05T17:00:00.000Z",
+      "feature": {
+        "id": 30,
+        "code": 421,
+        "name": "FAQ",
+        "description": "Bla, bla, bla",
+        "effort": "4.0",
+        "deadline": "2017-07-23",
+        "priority": 5,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 6,
+        "name": "Maria",
+        "description": "Maria Miller",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 4,
+            "name": "AngularJS",
+            "description": "AngularJS"
+          },
+          {
+            "id": 5,
+            "name": "HTML",
+            "description": "HyperText Markup Language"
+          },
+          {
+            "id": 6,
+            "name": "JavaScript",
+            "description": "JavaScript Programming Language"
+          },
+          {
+            "id": 7,
+            "name": "CSS",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 9,
+            "name": "SEO",
+            "description": "Search Engine Optimization"
+          }
+        ]
+      },
+      "depends_on": []
+    },
+    {
+      "id": 4,
+      "starts": "2017-06-05T09:00:00.000Z",
+      "ends": "2017-06-06T17:00:00.000Z",
+      "feature": {
+        "id": 10,
+        "code": 401,
+        "name": "Configuració inicial servidor",
+        "description": "Bla, bla, bla",
+        "effort": "16.0",
+        "deadline": "2017-06-09",
+        "priority": 1,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 5,
+        "name": "Josep",
+        "description": "Josep Jackson",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 11,
+            "name": "Security",
+            "description": "Security"
+          },
+          {
+            "id": 12,
+            "name": "Oracle",
+            "description": "Oracle Database"
+          },
+          {
+            "id": 13,
+            "name": "Ubuntu Server",
+            "description": "Ubuntu Server"
+          }
+        ]
+      },
+      "depends_on": []
+    },
+    {
+      "id": 5,
+      "starts": "2017-06-06T17:00:00.000Z",
+      "ends": "2017-06-07T17:00:00.000Z",
+      "feature": {
+        "id": 11,
+        "code": 402,
+        "name": "Configuració inicial BD",
+        "description": "Bla, bla, bla",
+        "effort": "8.0",
+        "deadline": "2017-06-11",
+        "priority": 1,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 5,
+        "name": "Josep",
+        "description": "Josep Jackson",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 11,
+            "name": "Security",
+            "description": "Security"
+          },
+          {
+            "id": 12,
+            "name": "Oracle",
+            "description": "Oracle Database"
+          },
+          {
+            "id": 13,
+            "name": "Ubuntu Server",
+            "description": "Ubuntu Server"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 4,
+          "starts": "2017-06-05T09:00:00.000Z",
+          "ends": "2017-06-06T17:00:00.000Z",
+          "feature_id": 10,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "starts": "2017-06-07T17:00:00.000Z",
+      "ends": "2017-06-09T17:00:00.000Z",
+      "feature": {
+        "id": 12,
+        "code": 403,
+        "name": "Disseny BD",
+        "description": "Bla, bla, bla",
+        "effort": "16.0",
+        "deadline": "2017-06-12",
+        "priority": 1,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 5,
+        "name": "Josep",
+        "description": "Josep Jackson",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 11,
+            "name": "Security",
+            "description": "Security"
+          },
+          {
+            "id": 12,
+            "name": "Oracle",
+            "description": "Oracle Database"
+          },
+          {
+            "id": 13,
+            "name": "Ubuntu Server",
+            "description": "Ubuntu Server"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 5,
+          "starts": "2017-06-06T17:00:00.000Z",
+          "ends": "2017-06-07T17:00:00.000Z",
+          "feature_id": 11,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "starts": "2017-06-09T17:00:00.000Z",
+      "ends": "2017-06-12T13:00:00.000Z",
+      "feature": {
+        "id": 18,
+        "code": 409,
+        "name": "Registre",
+        "description": "Bla, bla, bla",
+        "effort": "4.0",
+        "deadline": "2017-06-18",
+        "priority": 1,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 9,
+        "name": "Albert",
+        "description": "Albert Allen",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "starts": "2017-06-09T17:00:00.000Z",
+      "ends": "2017-06-12T13:00:00.000Z",
+      "feature": {
+        "id": 32,
+        "code": 423,
+        "name": "Gestió usuaris backend",
+        "description": "Bla, bla, bla",
+        "effort": "32.0",
+        "deadline": "2017-06-19",
+        "priority": 1,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 5,
+        "name": "Josep",
+        "description": "Josep Jackson",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 11,
+            "name": "Security",
+            "description": "Security"
+          },
+          {
+            "id": 12,
+            "name": "Oracle",
+            "description": "Oracle Database"
+          },
+          {
+            "id": 13,
+            "name": "Ubuntu Server",
+            "description": "Ubuntu Server"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "starts": "2017-06-12T13:00:00.000Z",
+      "ends": "2017-06-12T17:00:00.000Z",
+      "feature": {
+        "id": 19,
+        "code": 410,
+        "name": "Login",
+        "description": "Bla, bla, bla",
+        "effort": "4.0",
+        "deadline": "2017-06-18",
+        "priority": 1,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 9,
+        "name": "Albert",
+        "description": "Albert Allen",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "starts": "2017-06-12T13:00:00.000Z",
+      "ends": "2017-06-12T17:00:00.000Z",
+      "feature": {
+        "id": 22,
+        "code": 413,
+        "name": "Obtenir productes",
+        "description": "Bla, bla, bla",
+        "effort": "8.0",
+        "deadline": "2017-06-28",
+        "priority": 2,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 8,
+        "name": "Pere",
+        "description": "Pere Patterson",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "starts": "2017-06-12T17:00:00.000Z",
+      "ends": "2017-06-13T17:00:00.000Z",
+      "feature": {
+        "id": 33,
+        "code": 424,
+        "name": "Control sessions",
+        "description": "Bla, bla, bla",
+        "effort": "8.0",
+        "deadline": "2017-06-20",
+        "priority": 1,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 9,
+        "name": "Albert",
+        "description": "Albert Allen",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        },
+        {
+          "id": 9,
+          "starts": "2017-06-12T13:00:00.000Z",
+          "ends": "2017-06-12T17:00:00.000Z",
+          "feature_id": 19,
+          "resource_id": 9
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "starts": "2017-06-12T17:00:00.000Z",
+      "ends": "2017-06-15T17:00:00.000Z",
+      "feature": {
+        "id": 23,
+        "code": 414,
+        "name": "Cercar productes",
+        "description": "Bla, bla, bla",
+        "effort": "24.0",
+        "deadline": "2017-06-30",
+        "priority": 2,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 8,
+        "name": "Pere",
+        "description": "Pere Patterson",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 10,
+          "starts": "2017-06-12T13:00:00.000Z",
+          "ends": "2017-06-12T17:00:00.000Z",
+          "feature_id": 22,
+          "resource_id": 8
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "starts": "2017-06-12T17:00:00.000Z",
+      "ends": "2017-06-13T17:00:00.000Z",
+      "feature": {
+        "id": 13,
+        "code": 404,
+        "name": "Pàgina registre",
+        "description": "Bla, bla, bla",
+        "effort": "8.0",
+        "deadline": "2017-06-23",
+        "priority": 1,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 6,
+        "name": "Maria",
+        "description": "Maria Miller",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 4,
+            "name": "AngularJS",
+            "description": "AngularJS"
+          },
+          {
+            "id": 5,
+            "name": "HTML",
+            "description": "HyperText Markup Language"
+          },
+          {
+            "id": 6,
+            "name": "JavaScript",
+            "description": "JavaScript Programming Language"
+          },
+          {
+            "id": 7,
+            "name": "CSS",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 9,
+            "name": "SEO",
+            "description": "Search Engine Optimization"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 7,
+          "starts": "2017-06-09T17:00:00.000Z",
+          "ends": "2017-06-12T13:00:00.000Z",
+          "feature_id": 18,
+          "resource_id": 9
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "starts": "2017-06-13T17:00:00.000Z",
+      "ends": "2017-06-14T17:00:00.000Z",
+      "feature": {
+        "id": 26,
+        "code": 417,
+        "name": "Obtenir informació usuari",
+        "description": "Bla, bla, bla",
+        "effort": "8.0",
+        "deadline": "2017-07-08",
+        "priority": 3,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 9,
+        "name": "Albert",
+        "description": "Albert Allen",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "starts": "2017-06-13T17:00:00.000Z",
+      "ends": "2017-06-14T17:00:00.000Z",
+      "feature": {
+        "id": 14,
+        "code": 405,
+        "name": "Pàgina login",
+        "description": "Bla, bla, bla",
+        "effort": "8.0",
+        "deadline": "2017-06-23",
+        "priority": 1,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 6,
+        "name": "Maria",
+        "description": "Maria Miller",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 4,
+            "name": "AngularJS",
+            "description": "AngularJS"
+          },
+          {
+            "id": 5,
+            "name": "HTML",
+            "description": "HyperText Markup Language"
+          },
+          {
+            "id": 6,
+            "name": "JavaScript",
+            "description": "JavaScript Programming Language"
+          },
+          {
+            "id": 7,
+            "name": "CSS",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 9,
+            "name": "SEO",
+            "description": "Search Engine Optimization"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 9,
+          "starts": "2017-06-12T13:00:00.000Z",
+          "ends": "2017-06-12T17:00:00.000Z",
+          "feature_id": 19,
+          "resource_id": 9
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "starts": "2017-06-14T17:00:00.000Z",
+      "ends": "2017-06-15T17:00:00.000Z",
+      "feature": {
+        "id": 29,
+        "code": 420,
+        "name": "Modificar informació usuari",
+        "description": "Bla, bla, bla",
+        "effort": "8.0",
+        "deadline": "2017-07-01",
+        "priority": 3,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 9,
+        "name": "Albert",
+        "description": "Albert Allen",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "starts": "2017-06-15T17:00:00.000Z",
+      "ends": "2017-06-16T17:00:00.000Z",
+      "feature": {
+        "id": 28,
+        "code": 419,
+        "name": "Canviar contrasenya",
+        "description": "Bla, bla, bla",
+        "effort": "8.0",
+        "deadline": "2017-07-01",
+        "priority": 3,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 9,
+        "name": "Albert",
+        "description": "Albert Allen",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "starts": "2017-06-15T17:00:00.000Z",
+      "ends": "2017-06-22T17:00:00.000Z",
+      "feature": {
+        "id": 24,
+        "code": 415,
+        "name": "Comprar productes",
+        "description": "Bla, bla, bla",
+        "effort": "16.0",
+        "deadline": "2017-07-03",
+        "priority": 2,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 8,
+        "name": "Pere",
+        "description": "Pere Patterson",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "starts": "2017-06-15T17:00:00.000Z",
+      "ends": "2017-06-21T17:00:00.000Z",
+      "feature": {
+        "id": 16,
+        "code": 407,
+        "name": "Pàgina home",
+        "description": "Bla, bla, bla",
+        "effort": "32.0",
+        "deadline": "2017-07-02",
+        "priority": 2,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 6,
+        "name": "Maria",
+        "description": "Maria Miller",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 4,
+            "name": "AngularJS",
+            "description": "AngularJS"
+          },
+          {
+            "id": 5,
+            "name": "HTML",
+            "description": "HyperText Markup Language"
+          },
+          {
+            "id": 6,
+            "name": "JavaScript",
+            "description": "JavaScript Programming Language"
+          },
+          {
+            "id": 7,
+            "name": "CSS",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 9,
+            "name": "SEO",
+            "description": "Search Engine Optimization"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 12,
+          "starts": "2017-06-12T17:00:00.000Z",
+          "ends": "2017-06-15T17:00:00.000Z",
+          "feature_id": 23,
+          "resource_id": 8
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "starts": "2017-06-15T17:00:00.000Z",
+      "ends": "2017-06-23T17:00:00.000Z",
+      "feature": {
+        "id": 16,
+        "code": 407,
+        "name": "Pàgina producte",
+        "description": "Bla, bla, bla",
+        "effort": "56.0",
+        "deadline": "2017-06-30",
+        "priority": 2,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 7,
+        "name": "Sergi",
+        "description": "Sergi Snow",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 4,
+            "name": "AngularJS",
+            "description": "AngularJS"
+          },
+          {
+            "id": 5,
+            "name": "HTML",
+            "description": "HyperText Markup Language"
+          },
+          {
+            "id": 6,
+            "name": "JavaScript",
+            "description": "JavaScript Programming Language"
+          },
+          {
+            "id": 7,
+            "name": "CSS",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 9,
+            "name": "SEO",
+            "description": "Search Engine Optimization"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 12,
+          "starts": "2017-06-12T17:00:00.000Z",
+          "ends": "2017-06-15T17:00:00.000Z",
+          "feature_id": 23,
+          "resource_id":8
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "starts": "2017-06-16T17:00:00.000Z",
+      "ends": "2017-06-23T17:00:00.000Z",
+      "feature": {
+        "id": 21,
+        "code": 412,
+        "name": "Gestió inventari",
+        "description": "Bla, bla, bla",
+        "effort": "40.0",
+        "deadline": "2017-07-01",
+        "priority": 4,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 9,
+        "name": "Albert",
+        "description": "Albert Allen",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 8,
+            "name": "PHP",
+            "description": "PHP"
+          },
+          {
+            "id": 10,
+            "name": "SQL",
+            "description": "Cascading Stylesheets"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 6,
+          "starts": "2017-06-07T17:00:00.000Z",
+          "ends": "2017-06-09T17:00:00.000Z",
+          "feature_id": 12,
+          "resource_id": 5
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "starts": "2017-06-21T17:00:00.000Z",
+      "ends": "2017-06-23T17:00:00.000Z",
+      "feature": {
+        "id": 27,
+        "code": 418,
+        "name": "Pàgina informació usuari",
+        "description": "Bla, bla, bla",
+        "effort": "16.0",
+        "deadline": "2017-07-01",
+        "priority": 3,
+        "release": {
+          "release_id": 5
+        }
+      },
+      "resource": {
+        "id": 6,
+        "name": "Maria",
+        "description": "Maria Miller",
+        "availability": "100.0",
+        "skills": [
+          {
+            "id": 4,
+            "name": "AngularJS",
+            "description": "AngularJS"
+          },
+          {
+            "id": 5,
+            "name": "HTML",
+            "description": "HyperText Markup Language"
+          },
+          {
+            "id": 6,
+            "name": "JavaScript",
+            "description": "JavaScript Programming Language"
+          },
+          {
+            "id": 7,
+            "name": "CSS",
+            "description": "Cascading Stylesheets"
+          },
+          {
+            "id": 9,
+            "name": "SEO",
+            "description": "Search Engine Optimization"
+          }
+        ]
+      },
+      "depends_on": [
+        {
+          "id": 14,
+          "starts": "2017-06-13T17:00:00.000Z",
+          "ends": "2017-06-14T17:00:00.000Z",
+          "feature_id": 26,
+          "resource_id": 9
+        },
+        {
+          "id": 17,
+          "starts": "2017-06-15T17:00:00.000Z",
+          "ends": "2017-06-16T17:00:00.000Z",
+          "feature_id": 28,
+          "resource_id": 9
+        },
+        {
+          "id": 16,
+          "starts": "2017-06-14T17:00:00.000Z",
+          "ends": "2017-06-15T17:00:00.000Z",
+          "feature_id": 29,
+          "resource_id": 9
+        }
+      ]
+    }
+  ]
+}

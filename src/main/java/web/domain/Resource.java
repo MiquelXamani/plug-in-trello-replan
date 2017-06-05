@@ -1,8 +1,8 @@
 package web.domain;
 
-/**
- * Created by Miquel on 10/03/2017.
- */
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Resource implements Comparable<Resource>{
     private int id;
     private String name;
