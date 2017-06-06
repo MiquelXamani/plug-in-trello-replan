@@ -21,6 +21,20 @@ public class JobFake {
     @JoinColumn(name = "planId")
     private PlanFake plan;
 
+    @ManyToMany
+    @JoinTable(name="tbl_precedence",
+            joinColumns=@JoinColumn(name="previousJobId"),
+            inverseJoinColumns=@JoinColumn(name="nextJobId")
+    )
+    private List<JobFake> previous;
+
+    @ManyToMany
+    @JoinTable(name="tbl_precedence",
+            joinColumns=@JoinColumn(name="nextJobId"),
+            inverseJoinColumns=@JoinColumn(name="previousJobId")
+    )
+    private List<JobFake> next;
+
     public JobFake(){
 
     }
@@ -73,5 +87,21 @@ public class JobFake {
 
     public void setPlan(PlanFake plan) {
         this.plan = plan;
+    }
+
+    public List<JobFake> getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(List<JobFake> previous) {
+        this.previous = previous;
+    }
+
+    public List<JobFake> getNext() {
+        return next;
+    }
+
+    public void setNext(List<JobFake> next) {
+        this.next = next;
     }
 }
