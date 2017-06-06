@@ -32,6 +32,11 @@ public class BoardsController {
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO) throws ParseException {
         System.out.println("BOARD CONTROLLER REQUEST RECEIVED");
+
+        //Save info required to simulate Replan replanification
+        Plan plan = new Plan(planBoardDTO.getId(),planBoardDTO.getCreated_at(),planBoardDTO.getJobs());
+        persistenceController.savePlan(plan);
+
         User2 u = persistenceController.getUser(planBoardDTO.getUsername());
         System.out.println(planBoardDTO.getUsername());
         System.out.println(u.getTrelloToken());
@@ -88,6 +93,7 @@ public class BoardsController {
 
 
         List<Job> jobs = planBoardDTO.getJobs();
+
         //Map of resourceId and trelloUserId
         Map<Integer,String> resourcesAddedBoard = new HashMap<>();
 

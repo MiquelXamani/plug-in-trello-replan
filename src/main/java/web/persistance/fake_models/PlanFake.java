@@ -1,21 +1,27 @@
-package web.domain;
+package web.persistance.fake_models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import web.domain.Job;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Plan {
+@Entity
+public class PlanFake {
+    @Id
     private int id;
     private String created_at;
-    private List<Job> jobs;
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+    private List<JobFake> jobs;
 
-    public Plan(){
+    public PlanFake(){
         this.jobs = new ArrayList<>();
     }
 
-    public Plan(int id, String created_at, List<Job> jobs) {
+    public PlanFake(int id, String created_at, List<JobFake> jobs) {
         this.id = id;
         this.created_at = created_at;
         this.jobs = jobs;
@@ -37,11 +43,11 @@ public class Plan {
         this.created_at = created_at;
     }
 
-    public List<Job> getJobs() {
+    public List<JobFake> getJobs() {
         return jobs;
     }
 
-    public void setJobs(List<Job> jobs) {
+    public void setJobs(List<JobFake> jobs) {
         this.jobs = jobs;
     }
 }

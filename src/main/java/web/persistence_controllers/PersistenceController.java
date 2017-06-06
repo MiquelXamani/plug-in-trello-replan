@@ -4,6 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import web.LogType;
 import web.domain.*;
+import web.persistance.fake_models.FeatureFake;
+import web.persistance.fake_repositories.FeatureFakeRepository;
+import web.persistance.fake_repositories.JobFakeRepository;
+import web.persistance.fake_repositories.PlanFakeRepository;
+import web.persistance.fake_repositories.ResourceFakeRepository;
 import web.persistance.models.*;
 import web.persistance.repositories.*;
 
@@ -29,14 +34,14 @@ public class PersistenceController {
     @Autowired (required = true)
     private JobRepository jobRepository;
     //Fake repositories
-    /*@Autowired (required = true)
+    @Autowired (required = true)
     private PlanFakeRepository planFakeRepository;
     @Autowired (required = true)
     private JobFakeRepository jobFakeRepository;
     @Autowired (required = true)
     private FeatureFakeRepository featureFakeRepository;
     @Autowired (required = true)
-    private ResourceFakeRepository resourceFakeRepository;*/
+    private ResourceFakeRepository resourceFakeRepository;
 
     public void saveBoard(Board board, List<Label> labels, List<ListTrello> lists, User2 user2, int endpointId, int projectId, int releaseId){
         System.out.println(endpointId+" "+projectId+" "+releaseId);
@@ -329,5 +334,9 @@ public class PersistenceController {
     public Feature getFeature(int featureId){
         JobPersist jobPersist = jobRepository.findFirstByFeatureId(featureId);
         return new Feature(jobPersist.getFeatureId(),jobPersist.getFeatureName(),jobPersist.getFeatureEffort());
+    }
+
+    public void savePlan(Plan plan){
+
     }
 }
