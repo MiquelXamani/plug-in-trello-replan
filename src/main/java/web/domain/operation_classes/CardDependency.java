@@ -43,8 +43,8 @@ public class CardDependency {
         }
         else{
             count = 0;
-            found = false;
             for(int i = 0; i < dependsOnList.size(); i++){
+                found = false;
                 for(int j = 0; !found && j < cardsDone.length; j++){
                     if(cardsDone[j].getName().equals(dependsOnList.get(i))){
                         found = true;
