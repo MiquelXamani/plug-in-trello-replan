@@ -32,9 +32,9 @@ public class CardDependency {
         }
 
         System.out.println("cards in done list size: " + cardsDone.length);
-        for(int j = 0; j < cardsDone.length; j++){
+        /*for(int j = 0; j < cardsDone.length; j++){
             System.out.println(cardsDone[j].getName());
-        }
+        }*/
 
         boolean depends = true;
         if(dependsOnList.size() == 1 && dependsOnList.get(0).equals("-")){
@@ -57,6 +57,12 @@ public class CardDependency {
                 depends = false;
                 System.out.println("Yellow label removed!");
             }
+        }
+        if(depends){
+            System.out.println("CARD "+card.getName()+" DEPENDS");
+        }
+        else{
+            System.out.println("CARD "+card.getName()+" NO DEPENDS");
         }
         return depends;
     }
