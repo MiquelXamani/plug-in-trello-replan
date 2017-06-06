@@ -14,17 +14,18 @@ public class PlanFake {
     @Id
     private int id;
     private String created_at;
-    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "plan")
     private List<JobFake> jobs;
 
     public PlanFake(){
         this.jobs = new ArrayList<>();
+        jobs = new ArrayList<>();
     }
 
-    public PlanFake(int id, String created_at, List<JobFake> jobs) {
+    public PlanFake(int id, String created_at) {
         this.id = id;
         this.created_at = created_at;
-        this.jobs = jobs;
+        jobs = new ArrayList<>();
     }
 
     public int getId() {

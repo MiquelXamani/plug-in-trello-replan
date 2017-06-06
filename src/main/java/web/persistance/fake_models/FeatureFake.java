@@ -3,6 +3,7 @@ package web.persistance.fake_models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,15 +17,17 @@ public class FeatureFake {
     @OneToMany(mappedBy = "feature")
     private List<JobFake> jobs;
 
-    public FeatureFake(){}
+    public FeatureFake(){
+        jobs = new ArrayList<>();
+    }
 
-    public FeatureFake(int id, String name, String description, double effort, String deadline, List<JobFake> jobs) {
+    public FeatureFake(int id, String name, String description, double effort, String deadline) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.effort = effort;
         this.deadline = deadline;
-        this.jobs = jobs;
+        jobs = new ArrayList<>();
     }
 
     public int getId() {
@@ -65,5 +68,9 @@ public class FeatureFake {
 
     public void setDeadline(String deadline) {
         this.deadline = deadline;
+    }
+
+    public void addJob(JobFake jobFake){
+        jobs.add(jobFake);
     }
 }

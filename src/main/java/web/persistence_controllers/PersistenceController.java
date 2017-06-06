@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import web.LogType;
 import web.domain.*;
 import web.persistance.fake_models.FeatureFake;
+import web.persistance.fake_models.JobFake;
+import web.persistance.fake_models.PlanFake;
+import web.persistance.fake_models.ResourceFake;
 import web.persistance.fake_repositories.FeatureFakeRepository;
 import web.persistance.fake_repositories.JobFakeRepository;
 import web.persistance.fake_repositories.PlanFakeRepository;
@@ -336,7 +339,60 @@ public class PersistenceController {
         return new Feature(jobPersist.getFeatureId(),jobPersist.getFeatureName(),jobPersist.getFeatureEffort());
     }
 
-    public void savePlan(Plan plan){
+    public void savePlan(Plan p){
+        PlanFake planFake = new PlanFake(p.getId(),p.getCreated_at());
+        List<Job> jobs = p.getJobs();
+        Feature f;
+        Resource r;
+        List<JobReduced> jrs;
+        FeatureFake featureFake;
+        ResourceFake resourceFake;
+        JobFake previousJobFake;
+        JobFake jobFake;
+        Map<Integer,JobFake> jobFakeMap = new HashMap<>();
+        Map<Integer,ResourceFake> resourceFakeMap = new HashMap<>();
+        for(Job j:jobs){
+            jobFake = new JobFake(j.getId(),j.getStarts(),j.getEnds(),planFake);
+
+            f = j.getFeature();
+            featureFake = featureFakeRepository.findOne(f.getId());
+            if(featureFake == null){
+                featureFake = new FeatureFake(f.getId(),f.getName(),f.getDescription(),f.getEffort(),f.getDeadline());
+            }
+            jobFake.setFeature(featureFake);
+            featureFake.addJob(jobFake);
+
+            r = j.getResource();
+            //resourceFake = resourceFakeMap.get(r.getId());
+            resourceFake = resourceFakeRepository.findOne(r.getId());
+            if(resourceFake == null){
+                resourceFake = new ResourceFake(r.getId(),r.getName(),r.getDescription());
+                //resourceFakeMap.put(r.getId(),resourceFake);
+            }
+            jobFake.setResource(resourceFake);
+            resourceFake.addJob(jobFake);
+
+            jrs = j.getDepends_on();
+            for(JobReduced previous:jrs){
+                previousJobFake = jobFakeMap.get(previous.getId());
+                if(previousJobFake != null){
+                    jobFake.addPrevious(previousJobFake);
+                    previousJobFake.addNext(jobFake);
+                }
+            }
+            jobFakeRepository.save(jobFake);
+            jobFakeMap.put(jobFake.getId(),jobFake);
+        }
+        planFake.setJobs(new ArrayList<>(jobFakeMap.values()));
+        planFakeRepository.save(planFake);
+
+        List<FeatureFake> foundFeatures = featureFakeRepository.findAll();
+        int count = 0;
+        for(FeatureFake fk:foundFeatures){
+            System.out.println(count + " "+fk.getName());
+            count ++;
+        }
+        System.out.println(jobFakeRepository.findOne(6).getPrevious().get(0).getId());
 
     }
 }

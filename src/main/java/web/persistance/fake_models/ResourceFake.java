@@ -4,6 +4,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,13 +16,15 @@ public class ResourceFake {
     @OneToMany(mappedBy = "resource")
     private List<JobFake> jobs;
 
-    public ResourceFake(){}
+    public ResourceFake(){
+        jobs = new ArrayList<>();
+    }
 
-    public ResourceFake(int id, String name, String description, List<JobFake> jobs) {
+    public ResourceFake(int id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.jobs = jobs;
+        jobs = new ArrayList<>();
     }
 
     public int getId() {
@@ -54,5 +57,9 @@ public class ResourceFake {
 
     public void setJob(List<JobFake> jobs) {
         this.jobs = jobs;
+    }
+
+    public void addJob(JobFake jobFake){
+        jobs.add(jobFake);
     }
 }
