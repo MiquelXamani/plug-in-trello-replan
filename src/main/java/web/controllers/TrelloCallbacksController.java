@@ -164,12 +164,13 @@ public class TrelloCallbacksController {
                 //Exemple d'aquest cas: M1 assignat a T1, M2 assignat a T2, T2 depèn de T1
                 System.out.println("+++++++depending cards part+++++++++");
                 List<Card> dependingCards = trelloService.getDependingCards(boardId,cardId,cardName,userToken);
-                System.out.println("Depending cards size: " + dependingCards.size());
 
                 //Only for testing purposes
+                String print = "";
                 for (Card c: dependingCards) {
-                    System.out.println(c.getName());
+                    print += c.getName()+" ";
                 }
+                System.out.println("Depending cards of "+card.getName()+": "+print);
 
                 Card[] cardsDone = trelloService.getListCards(doneListId,userToken);
 

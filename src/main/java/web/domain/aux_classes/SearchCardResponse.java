@@ -23,7 +23,7 @@ public class SearchCardResponse {
     public String printCardNames(){
         String result = "";
         for(int i=0; i< cards.size(); i++){
-            result += "Card " + i + ": " + cards.get(i).getName() + "\n";
+            result += "Card " + i + ": " + cards.get(i).getName() + "+";
         }
         return result;
     }
