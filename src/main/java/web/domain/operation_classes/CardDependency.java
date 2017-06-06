@@ -24,7 +24,7 @@ public class CardDependency {
         endIndex = description.length();
         dependsOnCards = description.substring(startIndex,endIndex);
         System.out.println("substring: " + dependsOnCards);
-        dependsOnList = Arrays.asList(dependsOnCards.split(",[ ]*"));
+        dependsOnList = Arrays.asList(dependsOnCards.split("\\s*,\\s*"));
 
         System.out.println("depends list size: " + dependsOnList.size());
         for(int i = 0; i < dependsOnList.size(); i++){
