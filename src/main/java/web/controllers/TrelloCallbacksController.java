@@ -203,7 +203,7 @@ public class TrelloCallbacksController {
                 }
 
 
-                System.out.println("---------next card part, move to ready and add green label-------");
+                System.out.println("---------next card of finished card assigned members: move to ready and add green label-------");
                 //posar green label a les següents card i moure-les a Ready, l'actual de cada membre
                 System.out.println(card.getIdMembers().size());
                 //a part dels membres assignats a la card moguda, també s'han d'afegir els membres assignats a les cards que se'ls hi ha
