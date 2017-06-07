@@ -295,6 +295,17 @@ public class TrelloService {
         return result;
     }
 
+    public List<Card>getAllCards(String boardId,String userToken){
+        url = "https://api.trello.com/1/boards/{boardId}/cards?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        vars.put("boardId",boardId);
+        Card[] cards = restTemplate.getForObject(url,Card[].class,vars);
+        return Arrays.asList(cards);
+
+    }
+
     public void removeCard(String cardId, String userToken){
         url = "https://api.trello.com/1/cards/{cardId}?key={key}&token={token}";
         vars = new HashMap<>();
