@@ -134,6 +134,21 @@ public class TrelloCallbacksController {
             if(newListId.equals(doneListId)){
                 System.out.println("CARD MOVED TO DONE LIST");
 
+                //create log
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                Date dueDate = dateFormat.parse(card.getDue());
+                Date currentDate = new Date();
+                LogType logType;
+                if(currentDate.after(dueDate)){
+                    logType = LogType.FINISHED_LATE;
+                    System.out.println("LATER");
+                }
+                else{
+                    logType = LogType.FINISHED_EARLIER;
+                    System.out.println("EARLIER");
+                }
+                createLog(boardId,boardName,cardId,cardName,action.getMemberCreator().getUsername(),logType);
+
                 //get usertoken
                 TrelloService trelloService = new TrelloService();
                 String userToken = persistenceController.getBoardUser(boardId).getTrelloToken();
@@ -248,21 +263,6 @@ public class TrelloCallbacksController {
                     System.out.println(nextCards.get(i).getName());
                 }
                 trelloService.moveCardsAndAddLabel(nextCardsIds,readyListId,greenLabelId,userToken);
-
-                //create log
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                Date dueDate = dateFormat.parse(card.getDue());
-                Date currentDate = new Date();
-                LogType logType;
-                if(currentDate.after(dueDate)){
-                    logType = LogType.FINISHED_LATE;
-                    System.out.println("LATER");
-                }
-                else{
-                    logType = LogType.FINISHED_EARLIER;
-                    System.out.println("EARLIER");
-                }
-                createLog(boardId,boardName,cardId,cardName,action.getMemberCreator().getUsername(),logType);
 
             }
             else if (newListId.equals(readyListId)){

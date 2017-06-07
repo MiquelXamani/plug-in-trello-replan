@@ -92,12 +92,12 @@ public class CardMovementSimulation {
                 trelloService.moveCard(card.getId(),doneListId,sergiToken);
                 card = cardMap.get("(16) Configuració inicial servidor");
                 trelloService.moveCard(card.getId(),doneListId,josepToken);
-                Thread.sleep(5);
+                Thread.sleep(500);
                 card = cardMap.get("(8) Configuració inicial BD");
                 trelloService.moveCard(card.getId(),inProgressListId,josepToken);
                 card = cardMap.get("(8) Configuració inicial BD");
                 trelloService.moveCard(card.getId(),doneListId,josepToken);
-                Thread.sleep(5);
+                Thread.sleep(500);
                 card = cardMap.get("(16) Disseny BD");
                 trelloService.moveCard(card.getId(),inProgressListId,josepToken);
                 card = cardMap.get("(16) Disseny BD");
