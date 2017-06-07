@@ -200,12 +200,14 @@ public class LogsController {
             feature = job.getFeature();
             featureId = feature.getId();
             if(featureCardMaps.containsKey(featureId)){
+                System.out.println("està en el map de features (no hauria)");
                 cardId = featureCardMaps.get(featureId);
             }
             else{
                 cardId = persistenceController.getCardId(featureId,endpointId,projectId,releaseId);
                 //New feature added to release plan, new card will be created
                 if(cardId == null){
+                    System.out.println("NOVA FEATURE implica NOVA CARD");
                     Card newCard = new Card();
                     String name = "("+ Math.round(feature.getEffort()) +") " + feature.getName();
                     newCard.setName(name);
@@ -289,7 +291,9 @@ public class LogsController {
             j = jobList1.get(0);
 
             //New due date?
-            if(!oldCard.getDue().equals(j.getEnds())){
+            Date endDate = dateFormat.parse(j.getEnds());
+            String endDateString = dateFormat2.format(endDate);
+            if(!oldCard.getDue().equals(endDateString)){
                 oldCard.setDue(j.getEnds());
             }
 
@@ -297,6 +301,7 @@ public class LogsController {
             jobStartDate = dateFormat.parse(j.getStarts());
             jobStartDateString = dateFormat2.format(jobStartDate);
             if(!oldCard.obtainStartDate().equals(jobStartDateString)){
+                System.out.println("Modifying b:"+j.getStarts()+" a:"+jobStartDateString);
                 oldCard.modifyStartDate(jobStartDateString);
             }
 

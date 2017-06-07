@@ -40,14 +40,14 @@ public class TrelloCallbacksController {
     }
 
     public void createLog(String boardId, String boardName, String cardId, String cardName, String memberUsername, LogType logType){
-        System.out.println("Create log function params:");
-        System.out.println("boardId: " + boardId + " boardName: " + boardName + " cardId: " + cardId + " cardName: " + cardName + " member: " + memberUsername);
+        //System.out.println("Create log function params:");
+        //System.out.println("boardId: " + boardId + " boardName: " + boardName + " cardId: " + cardId + " cardName: " + cardName + " member: " + memberUsername);
         persistenceController.saveLog(boardId,boardName,cardId,cardName,memberUsername,logType);
     }
 
 
     private Card getNextCard(List<Card>cardsAssigned, String readyListId, String inProgressListId,String onHoldListId) throws ParseException {
-        System.out.println("*** GetNextCard Function ***");
+        //System.out.println("*** GetNextCard Function ***");
         boolean workingInOtherCard = false;
         String idList;
         Card cardAssigned;
@@ -58,11 +58,11 @@ public class TrelloCallbacksController {
             idList = cardAssigned.getIdList();
             if(idList.equals(inProgressListId) || idList.equals(readyListId)){
                 workingInOtherCard = true;
-                System.out.println("Working in another card: " + cardAssigned.getName());
+                //System.out.println("Working in another card: " + cardAssigned.getName());
             }
         }
         if(!workingInOtherCard){
-            System.out.println("NOT working in another card");
+            //System.out.println("NOT working in another card");
             String description, date, earliestDate = "";
             String startDateText = "**Start date:** ";
             int textLength = startDateText.length();
@@ -95,17 +95,17 @@ public class TrelloCallbacksController {
             }
         }
         if(nextCard != null){
-            System.out.println("Next card:" + nextCard.getName());
+            //System.out.println("Next card:" + nextCard.getName());
         }
         else{
-            System.out.println("Next card null");
+            //System.out.println("Next card null");
         }
         return nextCard;
     }
 
     @RequestMapping(value = "/cards", method= RequestMethod.POST)
     public ResponseEntity<String> cardModified(@RequestParam(value = "username") String webUserTrelloUsername, @RequestBody WebhookCardTrelloResponse response) throws ParseException {
-        System.out.println("Trello notified me!!");
+        //System.out.println("Trello notified me!!");
         Action action = response.getAction();
         String boardId = action.getData().getBoard().getId();
         String boardName = action.getData().getBoard().getName();
@@ -114,7 +114,7 @@ public class TrelloCallbacksController {
         if (action.getType().equals("updateCard") &&  listAfter != null){
             String newListId = listAfter.getId();
             String oldListId = listBefore.getId();
-            System.out.println(newListId + " " + listAfter.getName());
+            //System.out.println(newListId + " " + listAfter.getName());
 
             String actionCreator = action.getMemberCreator().getUsername();
             if(actionCreator.equals(webUserTrelloUsername)){
@@ -132,7 +132,7 @@ public class TrelloCallbacksController {
             String cardName = card.getName();
 
             if(newListId.equals(doneListId)){
-                System.out.println("CARD MOVED TO DONE LIST");
+                //System.out.println("CARD MOVED TO DONE LIST");
 
                 //create log
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -141,11 +141,11 @@ public class TrelloCallbacksController {
                 LogType logType;
                 if(currentDate.after(dueDate)){
                     logType = LogType.FINISHED_LATE;
-                    System.out.println("LATER");
+                    //System.out.println("LATER");
                 }
                 else{
                     logType = LogType.FINISHED_EARLIER;
-                    System.out.println("EARLIER");
+                    //System.out.println("EARLIER");
                 }
                 createLog(boardId,boardName,cardId,cardName,action.getMemberCreator().getUsername(),logType);
 
@@ -154,10 +154,10 @@ public class TrelloCallbacksController {
                 String userToken = persistenceController.getBoardUser(boardId).getTrelloToken();
 
                 //borrar label verda de la card (si en té)
-                System.out.println("Board id: " + boardId);
+                //System.out.println("Board id: " + boardId);
                 String greenLabelId = persistenceController.getLabelId(boardId,"green");
                 if(cardHasLabel(greenLabelId,card.getIdLabels())){
-                    System.out.println("Card id: "+ cardId);
+                    //System.out.println("Card id: "+ cardId);
                     trelloService.removeLabel(cardId,greenLabelId,userToken);
                 }
 
@@ -177,7 +177,7 @@ public class TrelloCallbacksController {
                 //i es troba la next card per aquells membres que estaven assignats a una de les cards dependents de la card moguda
                 //a Done però que no estan assignats a aquesta carta
                 //Exemple d'aquest cas: M1 assignat a T1, M2 assignat a T2, T2 depèn de T1
-                System.out.println("+++++++depending cards part+++++++++");
+                //System.out.println("+++++++depending cards part+++++++++");
                 List<Card> dependingCards = trelloService.getDependingCards(boardId,cardId,cardName,userToken);
 
                 //Only for testing purposes
@@ -185,7 +185,7 @@ public class TrelloCallbacksController {
                 for (Card c: dependingCards) {
                     print += c.getName()+" ";
                 }
-                System.out.println("Depending cards of "+card.getName()+": "+print);
+                //System.out.println("Depending cards of "+card.getName()+": "+print);
 
                 Card[] cardsDone = trelloService.getListCards(doneListId,userToken);
 
@@ -207,7 +207,7 @@ public class TrelloCallbacksController {
                         for(int i = 0; i < idMembersDependingCards.size(); i++){
                             idMember = idMembersDependingCards.get(i);
                             if(!card.isAssigned(idMember)){
-                                System.out.println("Member not assigned to card moved");
+                                //System.out.println("Member not assigned to card moved");
                                 cardsAssigned = trelloService.getMemberCards(idMember,boardId,userToken);
                                 nextCard = getNextCard(cardsAssigned,readyListId,inProgressListId,onHoldListId);
                                 if(nextCard != null) {
@@ -220,9 +220,9 @@ public class TrelloCallbacksController {
                 }
 
 
-                System.out.println("---------next card of finished card assigned members: move to ready and add green label-------");
+                //System.out.println("---------next card of finished card assigned members: move to ready and add green label-------");
                 //posar green label a les següents card i moure-les a Ready, l'actual de cada membre
-                System.out.println(card.getIdMembers().size());
+                //System.out.println(card.getIdMembers().size());
                 //a part dels membres assignats a la card moguda, també s'han d'afegir els membres assignats a les cards que se'ls hi ha
                 //eliminat la label groga les nextcard dels quals s'han trobat abans.
                 boolean depends2;
@@ -235,13 +235,13 @@ public class TrelloCallbacksController {
                         cardAssigned = cardsAssigned.get(i);
                         //Si la card no està a On-hold, no fa falta continuar
                         if(cardAssigned.getIdList().equals(onHoldListId)) {
-                            System.out.println("Card assigned: " + cardAssigned.getName());
+                            //System.out.println("Card assigned: " + cardAssigned.getName());
                             depends2 = cardDependency.stillDependsOnAnotherCard(cardAssigned, cardsDone);
                             if (!depends2) {
-                                System.out.println("Depends is FALSE");
+                                //System.out.println("Depends is FALSE");
                                 cardsAssignedNotDepending.add(cardAssigned);
                             } else {
-                                System.out.println("Depends is TRUE");
+                                //System.out.println("Depends is TRUE");
                             }
                         }
                     }
@@ -251,39 +251,39 @@ public class TrelloCallbacksController {
                         nextCardsMap.put(nextCard.getId(), nextCard);
                     }
                     else{
-                        System.out.println("Next card is null");
+                        //System.out.println("Next card is null");
                     }
                 }
 
-                System.out.println("cards moved from On-Hold to ready: ");
+                //System.out.println("cards moved from On-Hold to ready: ");
 
                 List<String> nextCardsIds = new ArrayList<>(nextCardsMap.keySet());
                 List<Card> nextCards = new ArrayList<>(nextCardsMap.values());
                 for (int i = 0; i < nextCards.size(); i++) {
-                    System.out.println(nextCards.get(i).getName());
+                    //System.out.println(nextCards.get(i).getName());
                 }
                 trelloService.moveCardsAndAddLabel(nextCardsIds,readyListId,greenLabelId,userToken);
 
             }
             else if (newListId.equals(readyListId)){
-                System.out.println("CARD MOVED TO READY LIST");
+                //System.out.println("CARD MOVED TO READY LIST");
                 if(actionCreator.equals("")){
                     actionCreator = "Project Leader";
                 }
                 createLog(boardId,boardName,cardId,cardName,actionCreator,LogType.MOVED_TO_READY);
             }
             else if (newListId.equals(inProgressListId)){
-                System.out.println("CARD MOVED TO IN PROGRESS LIST");
+                //System.out.println("CARD MOVED TO IN PROGRESS LIST");
                 if(!actionCreator.equals("")) {
                     persistenceController.saveLog(boardId, boardName, cardId, cardName, actionCreator, LogType.MOVED_TO_IN_PROGRESS);
                 }
             }
             else{
-                System.out.println("ANOTHER CARD MOVEMENT");
+                //System.out.println("ANOTHER CARD MOVEMENT");
             }
         }
         else{
-            System.out.println("NOT A CARD MOVEMENT");
+            //System.out.println("NOT A CARD MOVEMENT");
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

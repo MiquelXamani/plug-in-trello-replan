@@ -24,7 +24,7 @@ public class ReplanFake {
         Date startDate = dateFormat.parse(date);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startDate);
-        calendar.add(Calendar.DATE,1);
+        calendar.add(Calendar.DATE,amount);
         startDate = calendar.getTime();
         return dateFormat.format(startDate);
     }
@@ -34,6 +34,7 @@ public class ReplanFake {
         System.out.println("Start date before: "+job.getStarts()+" Start date after: "+newStartDate);
         job.setStarts(newStartDate);
         String newEndDate = incrementDays(job.getEnds(),days);
+        System.out.println("End date before: "+job.getEnds()+" End date after: "+newEndDate);
         job.setEnds(newEndDate);
         return job;
     }
@@ -71,6 +72,7 @@ public class ReplanFake {
                             e.printStackTrace();
                         }
                     }
+                    System.out.println("Jobs delayed size:"+jobsDelayed.size());
                     updatedPlan.setJobs(jobsDelayed);
                     //updatedPlan.setCreated_at();
                     updatedPlan.setId(releaseId);
