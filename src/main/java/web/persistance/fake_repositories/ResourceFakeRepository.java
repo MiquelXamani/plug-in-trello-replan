@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface ResourceFakeRepository extends CrudRepository<ResourceFake,Integer> {
     List<ResourceFake> findAll();
+    ResourceFake findFirstByName(String name);
 }

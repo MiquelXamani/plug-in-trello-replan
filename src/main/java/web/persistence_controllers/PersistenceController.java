@@ -435,4 +435,9 @@ public class PersistenceController {
         }
         return jobs;
     }
+
+    public Resource getResourceByName(String name){
+        ResourceFake rf = resourceFakeRepository.findFirstByName(name);
+        return new Resource(rf.getId(),rf.getName(),rf.getDescription());
+    }
 }

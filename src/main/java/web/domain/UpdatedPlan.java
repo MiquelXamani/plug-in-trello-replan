@@ -1,5 +1,6 @@
 package web.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +10,9 @@ import java.util.List;
 public class UpdatedPlan extends Plan {
     List<Integer> jobs_out;
 
-    public UpdatedPlan(){}
+    public UpdatedPlan(){
+        jobs_out = new ArrayList<>();
+    }
 
     public List<Integer> getJobs_out() {
         return jobs_out;

@@ -43,6 +43,8 @@ public class ReplanFake {
         List<CompletedJob> completedJobs = jobsToReplan.getCompletedJobs();
         List<InProgressJob> inProgressJobs = jobsToReplan.getInProgressJobs();
         UpdatedPlan updatedPlan = new UpdatedPlan();
+        List<Integer> jobsNoModify = new ArrayList<>();
+        List<Job> replannedJobs;
         if(projectId == 4){
             switch (releaseId){
                 case 6:
@@ -53,14 +55,13 @@ public class ReplanFake {
                     jobsOut.add(22);
                     jobsOut.add(20);
                     updatedPlan.setJobs_out(jobsOut);
-                    List<Integer> jobsNoModify = new ArrayList<>();
                     for (CompletedJob cj:completedJobs) {
                         jobsNoModify.add(cj.getJob_id());
                     }
                     for (InProgressJob ipj:inProgressJobs) {
                         jobsNoModify.add(ipj.getJob_id());
                     }
-                    List<Job> replannedJobs = persistenceController.getChangeableJobs(releaseId,jobsNoModify);
+                    replannedJobs = persistenceController.getChangeableJobs(releaseId,jobsNoModify);
                     //Delay all jobs one day (startdate and endate)
                     List<Job> jobsDelayed = new ArrayList<>();
                     Job aux;
@@ -75,6 +76,28 @@ public class ReplanFake {
                     System.out.println("Jobs delayed size:"+jobsDelayed.size());
                     updatedPlan.setJobs(jobsDelayed);
                     //updatedPlan.setCreated_at();
+                    updatedPlan.setId(releaseId);
+                    break;
+                case 9:
+                    //Sergi finished Maq parts comunes earlier than expected while Maria is working on Pàgina contacte
+                    //Replan assigns to Sergi the feature FAQ, that was previously assigned to Maria
+                    for (CompletedJob cj:completedJobs) {
+                        jobsNoModify.add(cj.getJob_id());
+                    }
+                    for (InProgressJob ipj:inProgressJobs) {
+                        jobsNoModify.add(ipj.getJob_id());
+                    }
+                    replannedJobs = persistenceController.getChangeableJobs(releaseId,jobsNoModify);
+                    //Find the job that contains FAQ and replace resource Maria by Sergi
+                    for(int i = 0; i < replannedJobs.size(); i++){
+                        if(replannedJobs.get(i).getFeature().getName().equals("FAQ")){
+                            Resource resource = persistenceController.getResourceByName("Sergi");
+                            replannedJobs.get(i).setResource(resource);
+                            replannedJobs.get(i).setStarts("2017-06-05T11:00:00.000Z");
+                            replannedJobs.get(i).setEnds("2017-06-05T16:00:00.000Z");
+                        }
+                    }
+                    updatedPlan.setJobs(replannedJobs);
                     updatedPlan.setId(releaseId);
                     break;
                 default:
