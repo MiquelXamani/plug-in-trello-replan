@@ -46,6 +46,13 @@ public class ReplanFake {
         List<Integer> jobsNoModify = new ArrayList<>();
         List<Job> replannedJobs;
         if(projectId == 4){
+            for (CompletedJob cj:completedJobs) {
+                jobsNoModify.add(cj.getJob_id());
+            }
+            for (InProgressJob ipj:inProgressJobs) {
+                jobsNoModify.add(ipj.getJob_id());
+            }
+            replannedJobs = persistenceController.getChangeableJobs(releaseId,jobsNoModify);
             switch (releaseId){
                 case 6:
                     //Disseny BD feature suffers a delay of 1 day, 3 features out
@@ -55,13 +62,6 @@ public class ReplanFake {
                     jobsOut.add(22);
                     jobsOut.add(20);
                     updatedPlan.setJobs_out(jobsOut);
-                    for (CompletedJob cj:completedJobs) {
-                        jobsNoModify.add(cj.getJob_id());
-                    }
-                    for (InProgressJob ipj:inProgressJobs) {
-                        jobsNoModify.add(ipj.getJob_id());
-                    }
-                    replannedJobs = persistenceController.getChangeableJobs(releaseId,jobsNoModify);
                     //Delay all jobs one day (startdate and endate)
                     List<Job> jobsDelayed = new ArrayList<>();
                     Job aux;
@@ -81,13 +81,6 @@ public class ReplanFake {
                 case 9:
                     //Sergi finished Maq parts comunes earlier than expected while Maria is working on Pàgina contacte
                     //Replan assigns to Sergi the feature FAQ, that was previously assigned to Maria
-                    for (CompletedJob cj:completedJobs) {
-                        jobsNoModify.add(cj.getJob_id());
-                    }
-                    for (InProgressJob ipj:inProgressJobs) {
-                        jobsNoModify.add(ipj.getJob_id());
-                    }
-                    replannedJobs = persistenceController.getChangeableJobs(releaseId,jobsNoModify);
                     //Find the job that contains FAQ and replace resource Maria by Sergi
                     for(int i = 0; i < replannedJobs.size(); i++){
                         if(replannedJobs.get(i).getFeature().getName().equals("FAQ")){
@@ -100,6 +93,34 @@ public class ReplanFake {
                     updatedPlan.setJobs(replannedJobs);
                     updatedPlan.setId(releaseId);
                     break;
+                case 10:
+                    //When Albert finished Login, Obtenir informació usuari was expected to be his next card
+                    //but a replanification took place and Control sessions was assigned as his new next card
+                    //because of that, Control sessions and Obtenir informació usuari changes their start date and due date
+                    int controlSessionsIndex = -1, obtInfoUserIndex = -1;
+                    String controlSessionsStarts = "", controlSessionsEnds = "", obtInfoUserStarts = "", obtInfoUserEnds = "";
+                    for(int i = 0; i < replannedJobs.size(); i++){
+                        if(replannedJobs.get(i).getFeature().getName().equals("Control sessions")){
+                            controlSessionsIndex = i;
+                            controlSessionsStarts = replannedJobs.get(i).getStarts();
+                            controlSessionsEnds = replannedJobs.get(i).getEnds();
+                        }
+                        else if(replannedJobs.get(i).getFeature().getName().equals("Obtenir informació usuari")){
+                            obtInfoUserIndex = i;
+                            obtInfoUserStarts = replannedJobs.get(i).getStarts();
+                            obtInfoUserEnds = replannedJobs.get(i).getEnds();
+                        }
+                    }
+
+                    Job controlSessionsJob = replannedJobs.get(controlSessionsIndex);
+                    controlSessionsJob.setStarts(obtInfoUserStarts);
+                    controlSessionsJob.setEnds(obtInfoUserEnds);
+                    replannedJobs.set(controlSessionsIndex,controlSessionsJob);
+
+                    Job obtInfoUserJob = replannedJobs.get(obtInfoUserIndex);
+                    obtInfoUserJob.setStarts(controlSessionsStarts);
+                    obtInfoUserJob.setEnds(controlSessionsEnds);
+                    replannedJobs.set(obtInfoUserIndex,obtInfoUserJob);
                 default:
                     break;
             }
@@ -117,7 +138,7 @@ public class ReplanFake {
     public Release[] getReleases(int projectId){
         if(projectId == 4) {
             Release genericRelease = new Release(5, "June Release Generic");
-            Release featureOut = new Release(6, "\"Pàg home\" s'allarga fent que \"Pàg info usuari\" quedi fora");
+            Release featureOut = new Release(6, "\"Disseny Bd\" s'allarga fent que \"Pàg info usuari\", \"Gestió inventari\" i \"Pàgina producte\" quedin fora");
             Release featureIn = new Release(7, "\"Pàg producte\" acaba abans d'hora i s'afegeix nova feature a release");
             Release canviDates = new Release(8, "\"Cercar producte\" acaba abans d'hora i es canvien les dates de cards següents");
             Release canviRecursAssignat = new Release(9, "Sergi acaba abans d'hora \"Maq. parts comunes\" i se li assigna \"FAQ\" que era de la Maria");
