@@ -271,7 +271,7 @@ public class PersistenceController {
        List<JobPersist> jobsPersists = logRepository.findOne(logId).getCard().getJobs();
        List<Integer> jobsIds = new ArrayList<>();
        for(JobPersist jp:jobsPersists){
-           jobsIds.add(jp.getId());
+           jobsIds.add(jp.getJobId());
        }
        return jobsIds;
     }

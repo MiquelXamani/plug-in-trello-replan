@@ -300,8 +300,8 @@ public class LogsController {
 
             //New start date?
             jobStartDate = dateFormat.parse(j.getStarts());
-            jobStartDateString = dateFormat2.format(jobStartDate);
-            if(!oldCard.obtainStartDate().equals(jobStartDateString)){
+            if(!oldCard.obtainStartDate().equals(jobStartDate)){
+                jobStartDateString = dateFormat2.format(jobStartDate);
                 System.out.println(j.getId()+": Modifying b:"+oldCard.obtainStartDate()+" a:"+jobStartDateString);
                 oldCard.modifyStartDate(jobStartDateString);
             }
