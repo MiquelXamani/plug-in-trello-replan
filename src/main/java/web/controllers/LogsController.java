@@ -266,7 +266,7 @@ public class LogsController {
                 oldCards.add(boardCard);
             }
         }
-        
+
         //mirar què canvia
         List<Job> jobList1;
         List<String> oldMembersList;

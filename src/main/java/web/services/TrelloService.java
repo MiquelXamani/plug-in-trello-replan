@@ -324,7 +324,7 @@ public class TrelloService {
             vars.put("cardId",card.getId());
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<Card> requestUpdate = new HttpEntity<>(card, headers);
-            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, requestUpdate, String.class);
+            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, requestUpdate, String.class,vars);
             String responseBody = response.getBody();
             System.out.println(responseBody);
         }
