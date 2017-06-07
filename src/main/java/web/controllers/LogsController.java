@@ -108,6 +108,7 @@ public class LogsController {
         Card currentCard;
         List<String> members;
         Date currentCardStartDate, earliestCardStartDate;
+        System.out.println("cardsupdated size:" + cardsUpdated.size());
         for(int i = 0; i < cardsUpdated.size(); i++){
             currentCard = cardsUpdated.get(i);
             if(!currentCard.hasLabel(yellowLabelId)){

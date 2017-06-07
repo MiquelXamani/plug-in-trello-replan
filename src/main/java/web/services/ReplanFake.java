@@ -121,6 +121,9 @@ public class ReplanFake {
                     obtInfoUserJob.setStarts(controlSessionsStarts);
                     obtInfoUserJob.setEnds(controlSessionsEnds);
                     replannedJobs.set(obtInfoUserIndex,obtInfoUserJob);
+
+                    updatedPlan.setJobs(replannedJobs);
+                    updatedPlan.setId(releaseId);
                 default:
                     break;
             }
