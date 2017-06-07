@@ -359,27 +359,23 @@ public class PersistenceController {
         JobFake previousJobFake;
         JobFake jobFake;
         Map<Integer,JobFake> jobFakeMap = new HashMap<>();
-        Map<Integer,ResourceFake> resourceFakeMap = new HashMap<>();
         for(Job j:jobs){
             jobFake = new JobFake(j.getId(),j.getStarts(),j.getEnds(),planFake);
 
             f = j.getFeature();
-            featureFake = featureFakeRepository.findOne(f.getId());
-            if(featureFake == null){
-                featureFake = new FeatureFake(f.getId(),f.getName(),f.getDescription(),f.getEffort(),f.getDeadline());
-            }
+            featureFake = new FeatureFake(f.getId(),f.getName(),f.getDescription(),f.getEffort(),f.getDeadline());
             jobFake.setFeature(featureFake);
             featureFake.addJob(jobFake);
 
             r = j.getResource();
-            //resourceFake = resourceFakeMap.get(r.getId());
             resourceFake = resourceFakeRepository.findOne(r.getId());
-            if(resourceFake == null){
-                resourceFake = new ResourceFake(r.getId(),r.getName(),r.getDescription());
-                //resourceFakeMap.put(r.getId(),resourceFake);
+            if(resourceFake == null) {
+                resourceFake = new ResourceFake(r.getId(), r.getName(), r.getDescription());
+
             }
             jobFake.setResource(resourceFake);
-            resourceFake.addJob(jobFake);
+            //resourceFake.addJob(jobFake);
+            resourceFakeRepository.save(resourceFake);
 
             jrs = j.getDepends_on();
             for(JobReduced previous:jrs){
@@ -402,6 +398,18 @@ public class PersistenceController {
             count ++;
         }
         System.out.println(jobFakeRepository.findOne(6).getPrevious().get(0).getId());*/
+
+        List<ResourceFake> foundResources = resourceFakeRepository.findAll();
+        int count = 0;
+        for(ResourceFake rk:foundResources){
+            System.out.println(count + " "+rk.getName());
+            List<JobFake> jobFakeList = rk.getJobs();
+            for(JobFake jff:jobFakeList){
+                System.out.println(jff.getId());
+            }
+            count ++;
+        }
+        System.out.println(jobFakeRepository.findOne(10).getResource().getName());
 
     }
 

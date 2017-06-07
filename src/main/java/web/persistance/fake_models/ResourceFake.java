@@ -51,11 +51,11 @@ public class ResourceFake {
         this.description = description;
     }
 
-    public List<JobFake> getJob() {
+    public List<JobFake> getJobs() {
         return jobs;
     }
 
-    public void setJob(List<JobFake> jobs) {
+    public void setJobs(List<JobFake> jobs) {
         this.jobs = jobs;
     }
 

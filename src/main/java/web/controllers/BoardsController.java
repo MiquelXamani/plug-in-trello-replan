@@ -41,6 +41,7 @@ public class BoardsController {
         int planId = releaseId;
 
         Plan plan = new Plan(planId,planBoardDTO.getCreated_at(),planBoardDTO.getJobs());
+        System.out.println("+++ SAVE PLAN +++");
         persistenceController.savePlan(plan);
 
         User2 u = persistenceController.getUser(planBoardDTO.getUsername());
