@@ -296,7 +296,8 @@ public class BoardsController {
         result.setCards(createdCards);
 
 
-        int endpointId = planBoardDTO.getEndpointId();
+        //TODO comentat perquè no dóna temps a reaccionar davant dels canvis de llista
+        /*int endpointId = planBoardDTO.getEndpointId();
         int projectId = planBoardDTO.getProjectId();
         if(endpointId == 2 && projectId == 4){
             int releaseId = planBoardDTO.getReleaseId();
@@ -305,7 +306,7 @@ public class BoardsController {
                 CardMovementSimulation cardMovementSimulation = new CardMovementSimulation(persistenceController);
                 cardMovementSimulation.simulateMovement(testCase,createdCards,boardId,trelloToken);
             }
-        }
+        }*/
 
 
         return new ResponseEntity<>(result,HttpStatus.OK);
