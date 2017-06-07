@@ -283,7 +283,7 @@ public class BoardsController {
             fid = featuresIds.get(k);
             persistenceController.saveCardAndJobs(createdCards.get(k),featureJobsMap.get(fid),boardId);
         }
-        System.out.println(persistenceController.getFeature(1,1,1,1).getName());
+        //System.out.println(persistenceController.getFeature(1,1,1,1).getName());
         //end persistence
 
         //Create webhooks for each card to track

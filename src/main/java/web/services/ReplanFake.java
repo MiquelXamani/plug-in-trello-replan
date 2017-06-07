@@ -24,9 +24,19 @@ public class ReplanFake {
 
     public Release[] getReleases(int projectId){
         if(projectId == 4) {
-            Release release = new Release(5, "June Release");
-            Release[] releases = new Release[1];
-            releases[0] = release;
+            Release genericRelease = new Release(5, "June Release Generic");
+            Release featureOut = new Release(6, "\"Pàg home\" s'allarga fent que \"Pàg info usuari\" quedi fora");
+            Release featureIn = new Release(7, "\"Pàg producte\" acaba abans d'hora i s'afegeix nova feature a release");
+            Release canviDates = new Release(8, "\"Cercar producte\" acaba abans d'hora i es canvien les dates de cards següents");
+            Release canviRecursAssignat = new Release(9, "Sergi acaba abans d'hora \"Maq. parts comunes\" i se li assigna \"FAQ\" que era de la Maria");
+            Release canviDeNextCard = new Release(10, "Albert acaba \"Login\" i la seva next card era \"Obt info usuari\" però passa a ser \"Control sessions\"");
+            Release[] releases = new Release[6];
+            releases[0] = genericRelease;
+            releases[1] = featureOut;
+            releases[2] = featureIn;
+            releases[3] = canviDates;
+            releases[4] = canviRecursAssignat;
+            releases[5] = canviDeNextCard;
             return releases;
         }
         else{
