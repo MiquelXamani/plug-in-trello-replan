@@ -31,10 +31,10 @@ public class ReplanFake {
 
     private Job delayJob(Job job, int days) throws ParseException {
         String newStartDate = incrementDays(job.getStarts(),days);
-        System.out.println("Start date before: "+job.getStarts()+" Start date after: "+newStartDate);
+        //System.out.println("Start date before: "+job.getStarts()+" Start date after: "+newStartDate);
         job.setStarts(newStartDate);
         String newEndDate = incrementDays(job.getEnds(),days);
-        System.out.println("End date before: "+job.getEnds()+" End date after: "+newEndDate);
+        //System.out.println("End date before: "+job.getEnds()+" End date after: "+newEndDate);
         job.setEnds(newEndDate);
         return job;
     }

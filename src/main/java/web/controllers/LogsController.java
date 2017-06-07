@@ -259,6 +259,7 @@ public class LogsController {
 
         //create new cards
         newCards = trelloService.createCards(newCards,user.getTrelloToken());
+        System.out.println("new cards size: "+newCards.size());
 
         //List<Card> oldCards = trelloService.getCards(new ArrayList<>(cardJobsMap.keySet()),user.getTrelloToken());
         List<Card> allCards = trelloService.getAllCards(boardId,user.getTrelloToken());
@@ -301,7 +302,7 @@ public class LogsController {
             jobStartDate = dateFormat.parse(j.getStarts());
             jobStartDateString = dateFormat2.format(jobStartDate);
             if(!oldCard.obtainStartDate().equals(jobStartDateString)){
-                System.out.println("Modifying b:"+j.getStarts()+" a:"+jobStartDateString);
+                System.out.println(j.getId()+": Modifying b:"+oldCard.obtainStartDate()+" a:"+jobStartDateString);
                 oldCard.modifyStartDate(jobStartDateString);
             }
 
