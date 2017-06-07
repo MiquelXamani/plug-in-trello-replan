@@ -18,6 +18,14 @@ public class Feature {
         this.effort = effort;
     }
 
+    public Feature(int id, String name, String description, double effort, String deadline) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.effort = effort;
+        this.deadline = deadline;
+    }
+
     public int getId() {
         return id;
     }

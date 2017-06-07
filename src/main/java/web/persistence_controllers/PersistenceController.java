@@ -328,6 +328,10 @@ public class PersistenceController {
         //return jobRepository.findFirstByFeatureId(featureId).getCard().getId();
     }
 
+    public String getCardIdOfJob(int jobid, int endpointId, int projectId, int releaseId){
+        return jobRepository.findFirstByJobIdAndAndBoardEndpointIdAndBoardReleaseIdAndBoardProjectId(jobid,endpointId,releaseId,projectId).getCard().getId();
+    }
+
     public List<Integer> getInProgressJobs(List<String> inProgressCardsId){
         List<JobPersist> jobPersistList = jobRepository.findByCardIdIn(inProgressCardsId);
         List<Integer> inProgressJobsIds = new ArrayList<>();
@@ -341,6 +345,8 @@ public class PersistenceController {
         JobPersist jobPersist = jobRepository.findFirstByFeatureIdAndBoardEndpointIdAndBoardReleaseIdAndBoardProjectId(featureId,endpointId,releaseId,projectId);
         return new Feature(jobPersist.getFeatureId(),jobPersist.getFeatureName(),jobPersist.getFeatureEffort());
     }
+
+    //Methods to simulate Replan replanning
 
     public void savePlan(Plan p){
         PlanFake planFake = new PlanFake(p.getId(),p.getCreated_at());
@@ -397,5 +403,25 @@ public class PersistenceController {
         }
         System.out.println(jobFakeRepository.findOne(6).getPrevious().get(0).getId());*/
 
+    }
+
+    //Get jobs that are not in progress or finished
+    public List<Job> getChangeableJobs(int planId, List<Integer> jobsIds){
+        List<JobFake> jobFakes = jobFakeRepository.findByPlanIdAndIdNotIn(planId,jobsIds);
+        List<Job> jobs = new ArrayList<>();
+        for (JobFake jf:jobFakes) {
+            FeatureFake ff = jf.getFeature();
+            Feature feature = new Feature(ff.getId(),ff.getName(),ff.getDescription(),ff.getEffort(),ff.getDeadline());
+            ResourceFake rf = jf.getResource();
+            Resource resource = new Resource(rf.getId(),rf.getName(),rf.getDescription());
+            List<JobFake> dependsOn = jf.getPrevious();
+            List<JobReduced> jobsReduced = new ArrayList<>();
+            for(JobFake prev:dependsOn){
+                jobsReduced.add(new JobReduced(prev.getId(),prev.getStarts(), prev.getEnds(),prev.getFeature().getId(),prev.getResource().getId()));
+            }
+            Job job = new Job(jf.getId(),jf.getStarts(),resource, feature,jobsReduced, jf.getEnds());
+            jobs.add(job);
+        }
+        return jobs;
     }
 }

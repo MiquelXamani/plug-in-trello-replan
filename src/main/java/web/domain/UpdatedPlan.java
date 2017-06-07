@@ -7,15 +7,15 @@ import java.util.List;
  * Replan return isn't defined yet
  */
 public class UpdatedPlan extends Plan {
-    List<Integer> features_out;
+    List<Integer> jobs_out;
 
     public UpdatedPlan(){}
 
-    public List<Integer> getFeatures_out() {
-        return features_out;
+    public List<Integer> getJobs_out() {
+        return jobs_out;
     }
 
-    public void setFeatures_out(List<Integer> features_out) {
-        this.features_out = features_out;
+    public void setJobs_out(List<Integer> jobs_out) {
+        this.jobs_out = jobs_out;
     }
 }

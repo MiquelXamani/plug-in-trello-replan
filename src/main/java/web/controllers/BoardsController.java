@@ -35,7 +35,12 @@ public class BoardsController {
         System.out.println("BOARD CONTROLLER REQUEST RECEIVED");
 
         //Save info required to simulate Replan replanification
-        Plan plan = new Plan(planBoardDTO.getId(),planBoardDTO.getCreated_at(),planBoardDTO.getJobs());
+        int endpointId = planBoardDTO.getEndpointId();
+        int projectId = planBoardDTO.getProjectId();
+        int releaseId = planBoardDTO.getReleaseId();
+        int planId = releaseId;
+
+        Plan plan = new Plan(planId,planBoardDTO.getCreated_at(),planBoardDTO.getJobs());
         persistenceController.savePlan(plan);
 
         User2 u = persistenceController.getUser(planBoardDTO.getUsername());

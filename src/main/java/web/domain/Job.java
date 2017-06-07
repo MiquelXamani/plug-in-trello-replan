@@ -18,6 +18,15 @@ public class Job {
         this.depends_on = new ArrayList<>();
     }
 
+    public Job(int id, String starts, Resource resource, Feature feature, List<JobReduced> depends_on, String ends) {
+        this.id = id;
+        this.starts = starts;
+        this.resource = resource;
+        this.feature = feature;
+        this.depends_on = depends_on;
+        this.ends = ends;
+    }
+
     public Resource getResource() {
         return resource;
     }

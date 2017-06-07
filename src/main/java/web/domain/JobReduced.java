@@ -12,6 +12,14 @@ public class JobReduced {
 
     public JobReduced(){}
 
+    public JobReduced(int id, String starts, String ends, int feature_id, int resource_id) {
+        this.id = id;
+        this.starts = starts;
+        this.ends = ends;
+        this.feature_id = feature_id;
+        this.resource_id = resource_id;
+    }
+
     public int getId() {
         return id;
     }

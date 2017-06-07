@@ -90,7 +90,7 @@ public class MatchingsController {
 
         MatchingsContainer matchingDTO = new MatchingsContainer();
         ReplanService replanService = new ReplanService();
-        ReplanFake replanFake = new ReplanFake();
+        ReplanFake replanFake = new ReplanFake(persistenceController);
 
         //get plan
         String url = persistenceController.getEndpoint(Integer.parseInt(endpointId)).getUrl();

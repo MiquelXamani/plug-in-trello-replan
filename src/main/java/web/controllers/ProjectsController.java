@@ -33,7 +33,7 @@ public class ProjectsController {
     public Project[] getProjects(@PathVariable("endpointId") int endpointId){
         String url = persistenceController.getEndpoint(endpointId).getUrl();
         if(url.equals("simulation mode")){
-            ReplanFake replanFake = new ReplanFake();
+            ReplanFake replanFake = new ReplanFake(persistenceController);
             return replanFake.getProjects();
         }
         else {
@@ -45,7 +45,7 @@ public class ProjectsController {
     @RequestMapping(value="/{endpointId}/projects/{projectId}/releases", method = RequestMethod.GET)
     public Release[] getReleases(@PathVariable("endpointId") int endpointId,@PathVariable("projectId") int projectId){
         if(endpointId == 2){
-            ReplanFake replanFake = new ReplanFake();
+            ReplanFake replanFake = new ReplanFake(persistenceController);
             return replanFake.getReleases(projectId);
         }
         else {

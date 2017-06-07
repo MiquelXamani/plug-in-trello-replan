@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface JobFakeRepository extends CrudRepository<JobFake,Integer> {
     List<JobFake> findAll();
+    List<JobFake> findByPlanIdAndIdNotIn(int planId, List<Integer> jobsIds);
 }

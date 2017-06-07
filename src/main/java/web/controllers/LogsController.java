@@ -140,7 +140,6 @@ public class LogsController {
         return cardsUpdated;
     }
 
-    //Will frozen logs passed also?
     @RequestMapping(value = "/replan-fake", method = RequestMethod.POST)
     public void doReplanFake(@RequestBody List<Log> logs) throws ParseException {
         System.out.println("DO REPLAN");
@@ -175,7 +174,7 @@ public class LogsController {
         int endpointId = Integer.parseInt(info.get("endpointId"));
         int projectId = Integer.parseInt(info.get("project"));
         int releaseId = Integer.parseInt(info.get("release"));
-        ReplanFake replanFake = new ReplanFake();
+        ReplanFake replanFake = new ReplanFake(persistenceController);
         UpdatedPlan updatedPlan = replanFake.doReplanFake(info.get("endpoint"),projectId,releaseId,jobsToReplan);
 
         //<featureId,cardId>, to avoid redundant accesses to db
@@ -343,10 +342,10 @@ public class LogsController {
         trelloService.updateCards(updatedCards,user.getTrelloToken());
 
         //Remove cards
-        List<Integer> featuresOut = updatedPlan.getFeatures_out();
+        List<Integer> jobsOut = updatedPlan.getJobs_out();
         String cardOutId;
-        for(int featureOutId:featuresOut) {
-            cardOutId = persistenceController.getCardId(featureOutId,endpointId,projectId,releaseId);
+        for(int jobOutId:jobsOut) {
+            cardOutId = persistenceController.getCardIdOfJob(jobOutId,endpointId,projectId,releaseId);
             //remove from trello
             trelloService.removeCard(cardOutId,user.getTrelloToken());
             //crear log que digui out of release (aquest log es mostrarà a card tracking i no a la taula

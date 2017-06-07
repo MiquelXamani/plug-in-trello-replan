@@ -13,4 +13,5 @@ public interface JobRepository extends CrudRepository<JobPersist,String> {
     JobPersist findFirstByFeatureId(int featureId);
     JobPersist findFirstByFeatureIdAndBoardEndpointIdAndBoardReleaseIdAndBoardProjectId(int featureId, int endpointId, int releaseId, int projectId);
     List<JobPersist> findByCardIdIn(List<String> cardsIds);
+    JobPersist findFirstByJobIdAndAndBoardEndpointIdAndBoardReleaseIdAndBoardProjectId(int jobId,int endpointId,int releaseId, int projectId);
 }
