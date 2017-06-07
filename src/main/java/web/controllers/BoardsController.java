@@ -31,7 +31,7 @@ public class BoardsController {
     }
 
     @RequestMapping(method= RequestMethod.POST)
-    public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO) throws ParseException {
+    public ResponseEntity<PlanTrello> createBoard(@RequestBody PlanBoardDTO planBoardDTO) throws ParseException, InterruptedException {
         System.out.println("BOARD CONTROLLER REQUEST RECEIVED");
 
         //Save info required to simulate Replan replanification

@@ -31,18 +31,18 @@ public class CardMovementSimulation {
         5: Next card assigned to a resource changed
 
      */
-    public void simulateMovement(int caseToSimulate, List<Card> cards, String boardId, String userToken){
+    public void simulateMovement(int caseToSimulate, List<Card> cards, String boardId, String userToken) throws InterruptedException {
         //Team ecommerce llibres
         System.out.println("Test feature out");
         String teamId = "593570a6e779fbbd879b0278";
         TeamWithMembers teamWithMembers = trelloService.getTrelloTeamMembers(teamId,userToken);
         List<Member> members = teamWithMembers.getMembers();
         String josepId, albertId, pereId, mariaId, sergiId;
-        String josepToken = userToken;
-        String albertToken = userToken;
-        String pereToken = userToken;
-        String mariaToken = userToken;
-        String sergiToken = userToken;
+        String josepToken = "7cd729590c8d9ea48339b61ad5eb511ecfc66c3b62ea9c5cb896987f94b77ead";
+        String albertToken = "9a1ad1d2dc10859c4968295f06f848cf8ccfbcb4de15307eae84ef8ffa55cdc8";
+        String pereToken = "c62fa6953152edbc8612a402f1b84e08c1724295e95af1354e9d8e5de5d16de5";
+        String mariaToken = "32726636750f565b014498e37738a150c111693debcd84a2db201bc6f1d7cf5e";
+        String sergiToken = "fd4ad63325314d6300366ef2353a989307afff8f3a19b594e3ee89283c4b3beb";
         for (Member m:members) {
             switch(m.getUsername()){
                 case "josep248":
@@ -92,10 +92,12 @@ public class CardMovementSimulation {
                 trelloService.moveCard(card.getId(),doneListId,sergiToken);
                 card = cardMap.get("(16) Configuració inicial servidor");
                 trelloService.moveCard(card.getId(),doneListId,josepToken);
+                Thread.sleep(5);
                 card = cardMap.get("(8) Configuració inicial BD");
                 trelloService.moveCard(card.getId(),inProgressListId,josepToken);
                 card = cardMap.get("(8) Configuració inicial BD");
                 trelloService.moveCard(card.getId(),doneListId,josepToken);
+                Thread.sleep(5);
                 card = cardMap.get("(16) Disseny BD");
                 trelloService.moveCard(card.getId(),inProgressListId,josepToken);
                 card = cardMap.get("(16) Disseny BD");
