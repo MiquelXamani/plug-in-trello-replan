@@ -252,13 +252,14 @@ public class PersistenceController {
         return new Log(lp.getId(),lp.getCreatedAt(),lp.getBoard().getId(),lp.getBoard().getName(),cp.getId(),cp.getName(),lp.getAccepted(),lp.isRejected(),logType,lp.getDescription());
     }
 
-    public void saveCardAndJobs(Card card, List<Job> jobs){
+    public void saveCardAndJobs(Card card, List<Job> jobs, String boardId){
         CardPersist cardPersist = new CardPersist(card.getId(),card.getName());
         List<JobPersist> jobPersists = new ArrayList<>();
         Feature feature;
+        BoardPersist boardPersist = boardRepository.findOne(boardId);
         for(Job j : jobs){
             feature = j.getFeature();
-            jobPersists.add(new JobPersist(j.getId(),cardPersist,feature.getId(),feature.getEffort(),feature.getName()));
+            jobPersists.add(new JobPersist(j.getId(),cardPersist,feature.getId(),feature.getEffort(),feature.getName(),boardPersist));
         }
         cardPersist.setJobs(jobPersists);
 
@@ -281,6 +282,7 @@ public class PersistenceController {
         boardInfo.put("project",String.valueOf(bp.getProjectId()));
         boardInfo.put("release",String.valueOf(bp.getReleaseId()));
         boardInfo.put("endpoint",bp.getEndpoint().getUrl());
+        boardInfo.put("endpointId",String.valueOf(bp.getEndpoint().getId()));
         return boardInfo;
     }
 
@@ -321,8 +323,9 @@ public class PersistenceController {
         return cardTrackingInfos;
     }
 
-    public String getCardId(int featureId){
-        return jobRepository.findFirstByFeatureId(featureId).getCard().getId();
+    public String getCardId(int featureId, int endpointId, int projectId, int releaseId){
+        return jobRepository.findFirstByFeatureIdAndBoardEndpointIdAndBoardReleaseIdAndBoardProjectId(featureId,endpointId,releaseId,projectId).getCard().getId();
+        //return jobRepository.findFirstByFeatureId(featureId).getCard().getId();
     }
 
     public List<Integer> getInProgressJobs(List<String> inProgressCardsId){
@@ -334,8 +337,8 @@ public class PersistenceController {
         return inProgressJobsIds;
     }
 
-    public Feature getFeature(int featureId){
-        JobPersist jobPersist = jobRepository.findFirstByFeatureId(featureId);
+    public Feature getFeature(int featureId, int endpointId, int projectId, int releaseId){
+        JobPersist jobPersist = jobRepository.findFirstByFeatureIdAndBoardEndpointIdAndBoardReleaseIdAndBoardProjectId(featureId,endpointId,releaseId,projectId);
         return new Feature(jobPersist.getFeatureId(),jobPersist.getFeatureName(),jobPersist.getFeatureEffort());
     }
 
@@ -386,13 +389,13 @@ public class PersistenceController {
         planFake.setJobs(new ArrayList<>(jobFakeMap.values()));
         planFakeRepository.save(planFake);
 
-        List<FeatureFake> foundFeatures = featureFakeRepository.findAll();
+        /*List<FeatureFake> foundFeatures = featureFakeRepository.findAll();
         int count = 0;
         for(FeatureFake fk:foundFeatures){
             System.out.println(count + " "+fk.getName());
             count ++;
         }
-        System.out.println(jobFakeRepository.findOne(6).getPrevious().get(0).getId());
+        System.out.println(jobFakeRepository.findOne(6).getPrevious().get(0).getId());*/
 
     }
 }

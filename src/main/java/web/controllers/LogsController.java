@@ -172,8 +172,11 @@ public class LogsController {
         JobsToReplan jobsToReplan = new JobsToReplan(completedJobs,inProgressJobs);
 
         Map<String,String> info = persistenceController.getBoardReplanInfoFromLogId(logs.get(0).getId());
+        int endpointId = Integer.parseInt(info.get("endpointId"));
+        int projectId = Integer.parseInt(info.get("project"));
+        int releaseId = Integer.parseInt(info.get("release"));
         ReplanFake replanFake = new ReplanFake();
-        UpdatedPlan updatedPlan = replanFake.doReplanFake(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),jobsToReplan);
+        UpdatedPlan updatedPlan = replanFake.doReplanFake(info.get("endpoint"),projectId,releaseId,jobsToReplan);
 
         //<featureId,cardId>, to avoid redundant accesses to db
         Map<Integer,String> featureCardMaps = new HashMap<>();
@@ -201,7 +204,7 @@ public class LogsController {
                 cardId = featureCardMaps.get(featureId);
             }
             else{
-                cardId = persistenceController.getCardId(featureId);
+                cardId = persistenceController.getCardId(featureId,endpointId,projectId,releaseId);
                 //New feature added to release plan, new card will be created
                 if(cardId == null){
                     Card newCard = new Card();
@@ -223,7 +226,7 @@ public class LogsController {
                         int count = 0;
                         Feature featureDepending;
                         for (JobReduced jr : job.getDepends_on()) {
-                            featureDepending = persistenceController.getFeature(jr.getFeature_id());
+                            featureDepending = persistenceController.getFeature(jr.getFeature_id(),endpointId,projectId,releaseId);
                             description += " ("+ Math.round(featureDepending.getEffort()) +") " + featureDepending.getName();
                             if(count < dependsOnSize - 1) {
                                 description += " ,";
@@ -343,7 +346,7 @@ public class LogsController {
         List<Integer> featuresOut = updatedPlan.getFeatures_out();
         String cardOutId;
         for(int featureOutId:featuresOut) {
-            cardOutId = persistenceController.getCardId(featureOutId);
+            cardOutId = persistenceController.getCardId(featureOutId,endpointId,projectId,releaseId);
             //remove from trello
             trelloService.removeCard(cardOutId,user.getTrelloToken());
             //crear log que digui out of release (aquest log es mostrarà a card tracking i no a la taula

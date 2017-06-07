@@ -273,13 +273,18 @@ public class BoardsController {
         List<Card> cards = new ArrayList<>(featuresConverted.values());
         cards.add(notification);
         List<Card> createdCards = trelloService.createCards(cards,trelloToken);
+
+        //persistence
+        persistenceController.saveBoard(board,labelList,lists,u,planBoardDTO.getEndpointId(),planBoardDTO.getProjectId(),planBoardDTO.getReleaseId());
         List<Integer> featuresIds = new ArrayList<>(featuresConverted.keySet());
         System.out.println("Values size: "+createdCards.size()+" Keys size: "+featuresIds.size());
         int fid;
         for(int k = 0; k < featuresIds.size(); k++){
             fid = featuresIds.get(k);
-            persistenceController.saveCardAndJobs(createdCards.get(k),featureJobsMap.get(fid));
+            persistenceController.saveCardAndJobs(createdCards.get(k),featureJobsMap.get(fid),boardId);
         }
+        System.out.println(persistenceController.getFeature(1,1,1,1).getName());
+        //end persistence
 
         //Create webhooks for each card to track
         trelloService.createWebhooks(createdCards,u.getTrelloUsername(),trelloToken);
@@ -288,9 +293,6 @@ public class BoardsController {
         result.setBoard(board);
         result.setLists(lists);
         result.setCards(cards);
-
-        //persistence
-        persistenceController.saveBoard(board,labelList,lists,u,planBoardDTO.getEndpointId(),planBoardDTO.getProjectId(),planBoardDTO.getReleaseId());
 
         return new ResponseEntity<>(result,HttpStatus.OK);
     }

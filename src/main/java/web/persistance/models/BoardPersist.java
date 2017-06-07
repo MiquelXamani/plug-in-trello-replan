@@ -32,6 +32,8 @@ public class BoardPersist {
     private EndpointPersist endpoint;
     private int projectId;
     private int releaseId;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<JobPersist> jobs;
 
     public BoardPersist(){
     }
@@ -126,5 +128,13 @@ public class BoardPersist {
 
     public void setReleaseId(int releaseId) {
         this.releaseId = releaseId;
+    }
+
+    public List<JobPersist> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<JobPersist> jobs) {
+        this.jobs = jobs;
     }
 }
