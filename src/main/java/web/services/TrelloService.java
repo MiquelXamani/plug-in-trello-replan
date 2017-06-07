@@ -228,6 +228,18 @@ public class TrelloService {
         }
     }
 
+    public void moveCard(String cardId, String listId, String userToken){
+        url = "https://api.trello.com/1/cards/{cardId}?key={key}&token={token}";
+        vars = new HashMap<>();
+        vars.put("key",key);
+        vars.put("token",userToken);
+        vars.put("cardId",cardId);
+        input = new HashMap<>();
+        input.put("idList",listId);
+        System.out.println("cardid: "+cardId+"listId: "+listId);
+        restTemplate.put(url,input,vars);
+    }
+
 
     public List<Card> getMemberCards(String memberId,String boardId, String userToken){
         url = "https://api.trello.com/1/search?query=board:"+boardId+" member:"+memberId+"&cards_limit=1000&key="+key+"&token="+userToken;

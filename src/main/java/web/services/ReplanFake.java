@@ -47,7 +47,7 @@ public class ReplanFake {
 
     public Plan getPlan(String projectId, String releaseId){
         Plan plan = new Plan();
-        if(Integer.parseInt(projectId) == 4 && Integer.parseInt(releaseId) == 5){
+        if(Integer.parseInt(projectId) == 4){
             //Load json file as a plan
             ObjectMapper mapper = new ObjectMapper();
             try {

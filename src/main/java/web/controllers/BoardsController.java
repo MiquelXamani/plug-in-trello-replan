@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.domain.*;
+import web.domain.operation_classes.CardMovementSimulation;
 import web.persistance.repositories.*;
 import web.persistance.models.ResourceMember;
 import web.persistence_controllers.PersistenceController;
@@ -292,7 +293,20 @@ public class BoardsController {
         PlanTrello result = new PlanTrello();
         result.setBoard(board);
         result.setLists(lists);
-        result.setCards(cards);
+        result.setCards(createdCards);
+
+
+        int endpointId = planBoardDTO.getEndpointId();
+        int projectId = planBoardDTO.getProjectId();
+        if(endpointId == 2 && projectId == 4){
+            int releaseId = planBoardDTO.getReleaseId();
+            int testCase = releaseId - 5;
+            if(testCase > 0 && testCase <= 5){
+                CardMovementSimulation cardMovementSimulation = new CardMovementSimulation(persistenceController);
+                cardMovementSimulation.simulateMovement(testCase,createdCards,boardId,trelloToken);
+            }
+        }
+
 
         return new ResponseEntity<>(result,HttpStatus.OK);
     }

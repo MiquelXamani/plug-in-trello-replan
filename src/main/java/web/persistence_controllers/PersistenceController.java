@@ -332,7 +332,7 @@ public class PersistenceController {
         List<JobPersist> jobPersistList = jobRepository.findByCardIdIn(inProgressCardsId);
         List<Integer> inProgressJobsIds = new ArrayList<>();
         for(JobPersist j:jobPersistList){
-            inProgressJobsIds.add(j.getId());
+            inProgressJobsIds.add(j.getJobId());
         }
         return inProgressJobsIds;
     }
