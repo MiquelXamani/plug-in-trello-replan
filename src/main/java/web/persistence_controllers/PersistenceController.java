@@ -436,6 +436,7 @@ public class PersistenceController {
             Job job = new Job(jf.getId(),jf.getStarts(),resource, feature,jobsReduced, jf.getEnds());
             jobs.add(job);
         }
+        System.out.println("No changeable jobs size "+jobsIds.size());
         for (Job test:jobs) {
             System.out.println(test.getId()+" "+test.getFeature().getName());
         }

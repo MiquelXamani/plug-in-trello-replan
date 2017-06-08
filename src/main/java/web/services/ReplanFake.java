@@ -47,12 +47,16 @@ public class ReplanFake {
         List<Job> replannedJobs;
         Resource resource;
         if(projectId == 4){
+            String printjobsids="";
             for (CompletedJob cj:completedJobs) {
                 jobsNoModify.add(cj.getJob_id());
+                printjobsids += " "+cj.getJob_id();
             }
             for (InProgressJob ipj:inProgressJobs) {
                 jobsNoModify.add(ipj.getJob_id());
+                printjobsids+=" "+ipj.getJob_id();
             }
+            System.out.println(printjobsids);
             replannedJobs = persistenceController.getChangeableJobs(releaseId,jobsNoModify);
             switch (releaseId){
                 case 6:
