@@ -139,6 +139,6 @@ public class Card {
         Date d = obtainStartDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String oldStartDate = dateFormat.format(d);
-        desc.replaceAll(oldStartDate,startDate);
+        desc = desc.replaceAll(oldStartDate,startDate);
     }
 }

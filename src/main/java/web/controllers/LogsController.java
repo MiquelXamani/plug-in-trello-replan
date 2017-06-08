@@ -308,6 +308,7 @@ public class LogsController {
                 jobStartDateString = dateFormat2.format(jobStartDate);
                 System.out.println(j.getId()+": Modifying b:"+oldCard.obtainStartDate()+" a:"+jobStartDateString);
                 oldCard.modifyStartDate(jobStartDateString);
+                System.out.println(oldCard.obtainStartDate());
             }
 
             //Members assigned changed?
