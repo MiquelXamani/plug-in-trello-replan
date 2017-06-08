@@ -156,6 +156,8 @@ public class LogsController {
             }
         }
 
+        System.out.println(logs.get(0).getBoardName());
+        System.out.println("log id "+logs.get(0).getId());
         String boardId = logs.get(0).getBoardId();
         String readyListId = persistenceController.getListId(boardId,"Ready");
         User2 user = persistenceController.getBoardUser(boardId);
