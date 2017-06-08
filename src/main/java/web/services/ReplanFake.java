@@ -45,6 +45,7 @@ public class ReplanFake {
         UpdatedPlan updatedPlan = new UpdatedPlan();
         List<Integer> jobsNoModify = new ArrayList<>();
         List<Job> replannedJobs;
+        Resource resource;
         if(projectId == 4){
             for (CompletedJob cj:completedJobs) {
                 jobsNoModify.add(cj.getJob_id());
@@ -78,13 +79,25 @@ public class ReplanFake {
                     //updatedPlan.setCreated_at();
                     updatedPlan.setId(releaseId);
                     break;
+                case 7:
+                    Feature feature = new Feature(34,"Banner publicitari","Bla, bla, bla",16.0,"2017-06-23T17:00:00.000Z");
+                    resource = persistenceController.getResourceByName("Sergi");
+                    Job dependingJob = persistenceController.getJobByJobId(19,releaseId);
+                    List<JobReduced> prev = new ArrayList<>();
+                    prev.add(new JobReduced(dependingJob.getId(),dependingJob.getStarts(),dependingJob.getEnds(),dependingJob.getFeature().getId(),dependingJob.getResource().getId()));
+                    Job extraJob = new Job(23,"2017-06-22T09:00:00.000Z",resource,feature,prev,"2017-06-23T17:00:00.000Z");
+                    //TODO save this new job in persistance fake
+                    replannedJobs.add(extraJob);
+                    updatedPlan.setJobs(replannedJobs);
+                    updatedPlan.setId(releaseId);
+                    break;
                 case 9:
                     //Sergi finished Maq parts comunes earlier than expected while Maria is working on Pàgina contacte
                     //Replan assigns to Sergi the feature FAQ, that was previously assigned to Maria
                     //Find the job that contains FAQ and replace resource Maria by Sergi
                     for(int i = 0; i < replannedJobs.size(); i++){
                         if(replannedJobs.get(i).getFeature().getName().equals("FAQ")){
-                            Resource resource = persistenceController.getResourceByName("Sergi");
+                            resource = persistenceController.getResourceByName("Sergi");
                             replannedJobs.get(i).setResource(resource);
                             replannedJobs.get(i).setStarts("2017-06-05T11:00:00.000Z");
                             replannedJobs.get(i).setEnds("2017-06-05T16:00:00.000Z");

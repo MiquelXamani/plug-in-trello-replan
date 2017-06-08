@@ -440,4 +440,18 @@ public class PersistenceController {
         ResourceFake rf = resourceFakeRepository.findFirstByName(name);
         return new Resource(rf.getId(),rf.getName(),rf.getDescription());
     }
+
+    public Job getJobByJobId(int jobId, int planId){
+        JobFake jf = jobFakeRepository.findFirstByPlanIdAndId(planId,jobId);
+        FeatureFake ff = jf.getFeature();
+        Feature feature = new Feature(ff.getId(),ff.getName(),ff.getDescription(),ff.getEffort(),ff.getDeadline());
+        ResourceFake rf = jf.getResource();
+        Resource resource = new Resource(rf.getId(),rf.getName(),rf.getDescription());
+        List<JobFake> dependsOn = jf.getPrevious();
+        List<JobReduced> jobsReduced = new ArrayList<>();
+        for(JobFake prev:dependsOn){
+            jobsReduced.add(new JobReduced(prev.getId(),prev.getStarts(), prev.getEnds(),prev.getFeature().getId(),prev.getResource().getId()));
+        }
+        return new Job(jf.getId(),jf.getStarts(),resource,feature,jobsReduced,jf.getEnds());
+    }
 }

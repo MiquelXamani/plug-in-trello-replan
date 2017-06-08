@@ -211,6 +211,7 @@ public class LogsController {
                 cardId = persistenceController.getCardId(featureId,endpointId,projectId,releaseId);
                 //New feature added to release plan, new card will be created
                 if(cardId == null){
+                    //TODO Save job and card in persistence
                     System.out.println("NOVA FEATURE implica NOVA CARD");
                     Card newCard = new Card();
                     String name = "("+ Math.round(feature.getEffort()) +") " + feature.getName();
