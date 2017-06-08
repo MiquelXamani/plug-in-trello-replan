@@ -145,7 +145,7 @@ public class ReplanFake {
             Release featureIn = new Release(7, "\"Pàg producte\" acaba abans d'hora i s'afegeix nova feature a release");
             Release canviDates = new Release(8, "\"Cercar producte\" acaba abans d'hora i es canvien les dates de cards següents");
             Release canviRecursAssignat = new Release(9, "Sergi acaba abans d'hora \"Maq. parts comunes\" i se li assigna \"FAQ\" que era de la Maria");
-            Release canviDeNextCard = new Release(10, "Albert acaba \"Login\" i la seva next card era \"Obt info usuari\" però passa a ser \"Control sessions\"");
+            Release canviDeNextCard = new Release(10, "Albert acaba \"Login\" i la seva next card era \"Control sessions\" però passa a ser \"Obt info usuari\"");
             Release[] releases = new Release[6];
             releases[0] = genericRelease;
             releases[1] = featureOut;
