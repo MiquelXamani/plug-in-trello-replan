@@ -117,6 +117,9 @@ public class LogsController {
                     if (nextCards.containsKey(memberId)) {
                         currentCardStartDate = currentCard.obtainStartDate();
                         earliestCardStartDate = nextCards.get(memberId).obtainStartDate();
+                        if(currentCard.getName().equals("(8) Control sessions") || currentCard.getName().equals("(8) Obtenir informació usuari")) {
+                            System.out.println(currentCard.getName()+" current: " + currentCardStartDate + " earlier: " + earliestCardStartDate);
+                        }
                         if(earliestCardStartDate.after(currentCardStartDate)){
                             nextCards.put(memberId,currentCard);
                         }
