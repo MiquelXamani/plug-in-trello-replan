@@ -145,7 +145,7 @@ public class LogsController {
     }
 
     @RequestMapping(value = "/replan-fake", method = RequestMethod.POST)
-    public void doReplanFake(@RequestBody List<Log> logs) throws ParseException {
+    public List<Card> doReplanFake(@RequestBody List<Log> logs) throws ParseException {
         System.out.println("DO REPLAN");
         List<CompletedJob> completedJobs = new ArrayList<>();
         List<Integer> jobsIds;
@@ -373,6 +373,8 @@ public class LogsController {
             trelloService.removeCard(cardOutId,user.getTrelloToken());
             //crear log que digui out of release (aquest log es mostrarà a card tracking i no a la taula
         }
+
+        return trelloService.getAllCards(boardId,user.getTrelloToken());
     }
 
 }
