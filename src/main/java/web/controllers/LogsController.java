@@ -178,6 +178,7 @@ public class LogsController {
         int endpointId = Integer.parseInt(info.get("endpointId"));
         int projectId = Integer.parseInt(info.get("project"));
         int releaseId = Integer.parseInt(info.get("release"));
+        System.out.println("endpointid "+endpointId+" projectid "+projectId+" releaseid "+releaseId);
         ReplanFake replanFake = new ReplanFake(persistenceController);
         UpdatedPlan updatedPlan = replanFake.doReplanFake(info.get("endpoint"),projectId,releaseId,jobsToReplan);
 
@@ -265,6 +266,7 @@ public class LogsController {
         //create new cards
         newCards = trelloService.createCards(newCards,user.getTrelloToken());
         System.out.println("new cards size: "+newCards.size());
+        System.out.println("jobs out size: "+updatedPlan.getJobs_out().size());
 
         //List<Card> oldCards = trelloService.getCards(new ArrayList<>(cardJobsMap.keySet()),user.getTrelloToken());
         List<Card> allCards = trelloService.getAllCards(boardId,user.getTrelloToken());
