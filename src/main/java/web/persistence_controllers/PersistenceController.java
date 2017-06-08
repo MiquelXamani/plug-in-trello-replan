@@ -324,7 +324,13 @@ public class PersistenceController {
     }
 
     public String getCardId(int featureId, int endpointId, int projectId, int releaseId){
-        return jobRepository.findFirstByFeatureIdAndBoardEndpointIdAndBoardReleaseIdAndBoardProjectId(featureId,endpointId,releaseId,projectId).getCard().getId();
+        JobPersist jp = jobRepository.findFirstByFeatureIdAndBoardEndpointIdAndBoardReleaseIdAndBoardProjectId(featureId,endpointId,releaseId,projectId);
+        if(jp == null){
+            return null;
+        }
+        else{
+            return jp.getCard().getId();
+        }
         //return jobRepository.findFirstByFeatureId(featureId).getCard().getId();
     }
 
