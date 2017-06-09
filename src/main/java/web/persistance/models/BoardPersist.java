@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import web.domain.Board;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +43,7 @@ public class BoardPersist {
         this.url = url;
         this.projectId = projectId;
         this.releaseId = releaseId;
+        this.cards = new ArrayList<>();
     }
 
     public String getName(){

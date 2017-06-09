@@ -5,6 +5,7 @@ import web.domain.Board;
 import web.domain.Log;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,6 +34,8 @@ public class CardPersist {
         this.accepted = true;
         this.rejected = false;
         this.accepted = false;
+        this.jobs = new ArrayList<>();
+        this.logs = new ArrayList<>();
     }
 
     public String getId() {
