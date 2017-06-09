@@ -131,7 +131,7 @@
             var logToRefuse = vm.logs[vm.logToRefuseIndex];
             console.log(logToRefuse);
             console.log(vm.comment);
-            BoardPendingActionsService.RejectCardDone($rootScope.globals.currentUser.username,logToRefuse.cardId,logToRefuse.cardName,logToRefuse.boardId,vm.comment)
+            BoardPendingActionsService.RejectCardDone($rootScope.globals.currentUser.username,logToRefuse.card.cardId,logToRefuse.card.cardName,logToRefuse.card.boardId,vm.comment)
                 .then(function(response){
                     vm.dataLoading = false;
                     console.log(response);
