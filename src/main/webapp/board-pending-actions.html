@@ -76,7 +76,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="log in vm.logs" ng-class="{'log_accepted': log.card.accepted}">
+            <tr ng-repeat="log in vm.logs" ng-class="{'log_accepted': log.card.accepted && (log.type === 'FINISHED_LATE' || log.type === 'FINISHED_EARLIER')}">
                 <td>{{ vm.formatDate(log.createdAt) }}</td>
                 <td>{{ log.board.name }}</td>
                 <td>{{ vm.getType(log.type) }}</td>

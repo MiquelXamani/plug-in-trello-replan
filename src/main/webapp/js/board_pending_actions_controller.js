@@ -93,15 +93,15 @@
             console.log("Mark as completed clicked!");
             console.log(vm.acceptedLogs);
             var accepted;
-            if(vm.logs[index].accepted){
-                vm.logs[index].accepted = false;
+            if(vm.logs[index].card.accepted){
+                vm.logs[index].card.accepted = false;
                 accepted = false;
                 for (var i = 0, len = vm.acceptedLogs.length; i < len; i++) {
                     vm.acceptedLogs.splice(i,1);
                 }
             }
             else{
-                vm.logs[index].accepted = true;
+                vm.logs[index].card.accepted = true;
                 accepted = true;
                 vm.acceptedLogs.push(vm.logs[index]);
             }
