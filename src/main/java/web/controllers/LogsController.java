@@ -176,6 +176,10 @@ public class LogsController {
         ReplanFake replanFake = new ReplanFake(persistenceController);
         UpdatedPlan updatedPlan = replanFake.doReplanFake(info.get("endpoint"),projectId,releaseId,jobsToReplan);
 
+        //Set cards corresponding to finsihed jobs as replanned
+        persistenceController.setCardsAsReplanned(boardId,new ArrayList<>(jobsInfo.keySet()));
+
+
         //<featureId,cardId>, to avoid redundant accesses to db
         Map<Integer,String> featureCardMaps = new HashMap<>();
         //<cardId,jobs of this card>

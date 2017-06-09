@@ -14,4 +14,5 @@ public interface CardRepository extends CrudRepository<CardPersist,String> {
     List<CardPersist> findByBoardIdAndAcceptedTrue(String boardId);
     CardPersist findFirstByBoardEndpointIdAndBoardProjectIdAndBoardReleaseIdAndJobsJobId(int endpointId, int projectId, int releaseId, int jobId);
     CardPersist findFirstByBoardEndpointIdAndBoardProjectIdAndBoardReleaseIdAndJobsFeatureId(int endpointId, int projectId, int releaseId, int featureId);
+    List<CardPersist> findDistinctByBoardIdAndJobsJobIdIn(String boardId, List<Integer> jobIds);
 }

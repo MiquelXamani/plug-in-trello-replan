@@ -356,7 +356,6 @@ public class PersistenceController {
         return new Feature(jobPersist.getFeatureId(),jobPersist.getFeatureName(),jobPersist.getFeatureEffort());
     }
 
-    //Methods to simulate Replan replanning
 
     public void savePlan(Plan p){
         PlanFake planFake = new PlanFake(p.getId(),p.getCreated_at());
@@ -481,4 +480,13 @@ public class PersistenceController {
         }
         return result;
     }
+
+    public void setCardsAsReplanned(String boardId, List<Integer> jobsIds){
+        List<CardPersist> cardPersists = cardRepository.findDistinctByBoardIdAndJobsJobIdIn(boardId,jobsIds);
+        for(int i = 0; i < cardPersists.size(); i++){
+            cardPersists.get(i).setAlive(false);
+        }
+        cardRepository.save(cardPersists);
+    }
+
 }

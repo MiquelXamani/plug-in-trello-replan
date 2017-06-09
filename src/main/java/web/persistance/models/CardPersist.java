@@ -31,7 +31,7 @@ public class CardPersist {
         this.id = id;
         this.name = name;
         this.board = boardPersist;
-        this.accepted = true;
+        this.alive = true;
         this.rejected = false;
         this.accepted = false;
         this.jobs = new ArrayList<>();
