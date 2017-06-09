@@ -39,10 +39,10 @@ public class TrelloCallbacksController {
         return found;
     }
 
-    public void createLog(String boardId, String boardName, String cardId, String cardName, String memberUsername, LogType logType){
+    public void createLog(String cardId, String cardName, String memberUsername, LogType logType){
         //System.out.println("Create log function params:");
         //System.out.println("boardId: " + boardId + " boardName: " + boardName + " cardId: " + cardId + " cardName: " + cardName + " member: " + memberUsername);
-        persistenceController.saveLog(boardId,boardName,cardId,cardName,memberUsername,logType);
+        persistenceController.saveLog(cardId,cardName,memberUsername,logType);
     }
 
 
@@ -147,7 +147,8 @@ public class TrelloCallbacksController {
                     logType = LogType.FINISHED_EARLIER;
                     //System.out.println("EARLIER");
                 }
-                createLog(boardId,boardName,cardId,cardName,action.getMemberCreator().getUsername(),logType);
+                //createLog(cardId,cardName,action.getMemberCreator().getUsername(),logType);
+                persistenceController.saveLog(cardId, cardName, actionCreator, logType);
 
                 //get usertoken
                 TrelloService trelloService = new TrelloService();
@@ -270,12 +271,12 @@ public class TrelloCallbacksController {
                 if(actionCreator.equals("")){
                     actionCreator = "Project Leader";
                 }
-                createLog(boardId,boardName,cardId,cardName,actionCreator,LogType.MOVED_TO_READY);
+                createLog(cardId,cardName,actionCreator,LogType.MOVED_TO_READY);
             }
             else if (newListId.equals(inProgressListId)){
                 //System.out.println("CARD MOVED TO IN PROGRESS LIST");
                 if(!actionCreator.equals("")) {
-                    persistenceController.saveLog(boardId, boardName, cardId, cardName, actionCreator, LogType.MOVED_TO_IN_PROGRESS);
+                    persistenceController.saveLog(cardId, cardName, actionCreator, LogType.MOVED_TO_IN_PROGRESS);
                 }
             }
             else{

@@ -25,15 +25,13 @@ public class BoardPersist {
     @ManyToOne
     @JoinColumn(name = "userId")
     private UserPersist user;
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<LogPersist> logs;
     @ManyToOne
     @JoinColumn(name = "endpointId")
     private EndpointPersist endpoint;
     private int projectId;
     private int releaseId;
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<JobPersist> jobs;
+    @OneToMany(mappedBy = "board")
+    private List<CardPersist> cards;
 
     public BoardPersist(){
     }
@@ -94,18 +92,6 @@ public class BoardPersist {
         this.user = user;
     }
 
-    public List<LogPersist> getLogs() {
-        return logs;
-    }
-
-    public void setLogs(List<LogPersist> logs) {
-        this.logs = logs;
-    }
-
-    public void addLog(LogPersist log){
-        this.logs.add(log);
-    }
-
     public EndpointPersist getEndpoint() {
         return endpoint;
     }
@@ -130,11 +116,15 @@ public class BoardPersist {
         this.releaseId = releaseId;
     }
 
-    public List<JobPersist> getJobs() {
-        return jobs;
+    public List<CardPersist> getCards() {
+        return cards;
     }
 
-    public void setJobs(List<JobPersist> jobs) {
-        this.jobs = jobs;
+    public void setCards(List<CardPersist> cards) {
+        this.cards = cards;
+    }
+
+    public void addCard(CardPersist cardPersist){
+        cards.add(cardPersist);
     }
 }

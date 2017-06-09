@@ -75,28 +75,26 @@ public class LogsController {
 
         //create log
         String boardName = persistenceController.getBoard(boardId).getName();
-        return persistenceController.saveLog(boardId,boardName,cardId,rejection.getCardName(),"Project Leader",LogType.REJECTED);
+        return persistenceController.saveLog(cardId,rejection.getCardName(),"Project Leader",LogType.REJECTED);
 
     }
 
     @RequestMapping(value = "/{logId}/completed",method = RequestMethod.POST)
-    public Log changeAcceptedLog(@PathVariable("logId") int logId, @RequestBody CompleteLogOp completeLogOp){
+    public CardReduced changeAcceptedLog(@PathVariable("logId") int logId, @RequestBody CompleteLogOp completeLogOp){
         System.out.println("Mark as completed");
         return persistenceController.setAcceptedFinishedLog(logId,completeLogOp.isAccepted());
     }
 
     @RequestMapping(value = "/replan", method = RequestMethod.POST)
-    public String doReplanProvisional(@RequestBody List<Log> logs){
+    public String doReplanProvisional(@RequestBody String boardId){
         System.out.println("DO REPLAN");
         List<CompletedJob> completedJobs = new ArrayList<>();
-        List<Integer> jobsIds;
-        for (Log log:logs) {
-            jobsIds = persistenceController.getJobsIdsLog(log.getId());
-            for(int jobId:jobsIds){
-                completedJobs.add(new CompletedJob(jobId,log.getCreatedAt()));
-            }
+        Map<Integer,String> jobsInfo = persistenceController.jobsCompletedIds(boardId);
+        for (Map.Entry<Integer, String> entry : jobsInfo.entrySet()) {
+            completedJobs.add(new CompletedJob(entry.getKey(),entry.getValue()));
         }
-        Map<String,String> info = persistenceController.getBoardReplanInfoFromLogId(logs.get(0).getId());
+
+        Map<String,String> info = persistenceController.getBoardReplanInfo(boardId);
         ReplanService replanService = new ReplanService();
         return replanService.doReplan(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),completedJobs);
     }
@@ -145,20 +143,14 @@ public class LogsController {
     }
 
     @RequestMapping(value = "/replan-fake", method = RequestMethod.POST)
-    public List<Card> doReplanFake(@RequestBody List<Log> logs) throws ParseException {
+    public List<Card> doReplanFake(@RequestBody String boardId) throws ParseException {
         System.out.println("DO REPLAN");
         List<CompletedJob> completedJobs = new ArrayList<>();
-        List<Integer> jobsIds;
-        for (Log log:logs) {
-            jobsIds = persistenceController.getJobsIdsLog(log.getId());
-            for(int jobId:jobsIds){
-                completedJobs.add(new CompletedJob(jobId,log.getCreatedAt()));
-            }
+        Map<Integer,String> jobsInfo = persistenceController.jobsCompletedIds(boardId);
+        for (Map.Entry<Integer, String> entry : jobsInfo.entrySet()) {
+            completedJobs.add(new CompletedJob(entry.getKey(),entry.getValue()));
         }
 
-        System.out.println(logs.get(0).getBoardName());
-        System.out.println("log id "+logs.get(0).getId());
-        String boardId = logs.get(0).getBoardId();
         String readyListId = persistenceController.getListId(boardId,"Ready");
         User2 user = persistenceController.getBoardUser(boardId);
 
@@ -176,7 +168,7 @@ public class LogsController {
         }
         JobsToReplan jobsToReplan = new JobsToReplan(completedJobs,inProgressJobs);
 
-        Map<String,String> info = persistenceController.getBoardReplanInfoFromLogId(logs.get(0).getId());
+        Map<String,String> info = persistenceController.getBoardReplanInfo(boardId);
         int endpointId = Integer.parseInt(info.get("endpointId"));
         int projectId = Integer.parseInt(info.get("project"));
         int releaseId = Integer.parseInt(info.get("release"));

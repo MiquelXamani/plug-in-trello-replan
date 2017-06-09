@@ -11,11 +11,6 @@ public class LogPersist {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private int id;
     private String createdAt;
-    private boolean accepted;
-    private boolean rejected;
-    @ManyToOne
-    @JoinColumn(name = "boardId")
-    private BoardPersist board;
     @ManyToOne
     @JoinColumn(name = "cardId")
     private CardPersist card;
@@ -25,11 +20,8 @@ public class LogPersist {
 
     public LogPersist(){}
 
-    public LogPersist(String createdAt,boolean accepted, boolean rejected, BoardPersist boardPersist,CardPersist cardPersist,String memberUsername,String type, String description){
+    public LogPersist(String createdAt,CardPersist cardPersist,String memberUsername,String type, String description){
         this.createdAt = createdAt;
-        this.accepted = accepted;
-        this.rejected = rejected;
-        this.board = boardPersist;
         this.card = cardPersist;
         this.memberUsername = memberUsername;
         this.type = type;
@@ -50,26 +42,6 @@ public class LogPersist {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public boolean getAccepted(){
-        return accepted;
-    }
-
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(boolean read) {
-        this.accepted = read;
-    }
-
-    public BoardPersist getBoard() {
-        return board;
-    }
-
-    public void setBoard(BoardPersist board) {
-        this.board = board;
     }
 
     public CardPersist getCard() {
@@ -102,13 +74,5 @@ public class LogPersist {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isRejected() {
-        return rejected;
-    }
-
-    public void setRejected(boolean rejected) {
-        this.rejected = rejected;
     }
 }

@@ -57,9 +57,9 @@
             return $http.post('/logs/reject-card',body).then(handleSuccess,handleError);
         }
 
-        function Replan(logs){
+        function Replan(boardId){
             //return $http.post('/logs/replan',logs).then(handleSuccess,handleError);
-            return $http.post('/logs/replan-fake',logs).then(handleSuccess,handleError);
+            return $http.post('/logs/replan-fake',boardId).then(handleSuccess,handleError);
         }
 
         // private functions

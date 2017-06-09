@@ -6,36 +6,18 @@ import web.LogType;
 public class Log implements Comparable<Log>{
     private int id;
     private String createdAt;
-    private String boardId;
-    private String boardName;
-    private String cardId;
-    private String cardName;
-    private boolean accepted;
-    private boolean rejected;
+    private CardReduced card;
+    private Board board;
     private LogType type;
     private String description;
 
     public Log(){}
 
-    public Log(int id, String createdAt, String boardId, String boardName, String cardId, String cardName, boolean accepted, boolean rejected, LogType type, String description) {
+    public Log(int id, String createdAt, CardReduced card, Board board, LogType type, String description) {
         this.id = id;
         this.createdAt = createdAt;
-        this.boardId = boardId;
-        this.boardName = boardName;
-        this.cardId = cardId;
-        this.cardName = cardName;
-        this.accepted = accepted;
-        this.rejected = rejected;
-        this.type = type;
-        this.description = description;
-    }
-
-    public Log(String createdAt, String boardId, String boardName, String cardId, String cardName, LogType type, String description) {
-        this.createdAt = createdAt;
-        this.boardId = boardId;
-        this.boardName = boardName;
-        this.cardId = cardId;
-        this.cardName = cardName;
+        this.card = card;
+        this.board = board;
         this.type = type;
         this.description = description;
     }
@@ -56,36 +38,20 @@ public class Log implements Comparable<Log>{
         this.createdAt = createdAt;
     }
 
-    public String getBoardName() {
-        return boardName;
+    public CardReduced getCard() {
+        return card;
     }
 
-    public void setBoardName(String boardName) {
-        this.boardName = boardName;
+    public void setCard(CardReduced card) {
+        this.card = card;
     }
 
-    public String getBoardId() {
-        return boardId;
+    public Board getBoard() {
+        return board;
     }
 
-    public void setBoardId(String boardId) {
-        this.boardId = boardId;
-    }
-
-    public String getCardId() {
-        return cardId;
-    }
-
-    public void setCardId(String cardId) {
-        this.cardId = cardId;
-    }
-
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(boolean read) {
-        this.accepted = read;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 
     public LogType getType() {
@@ -102,22 +68,6 @@ public class Log implements Comparable<Log>{
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getCardName() {
-        return cardName;
-    }
-
-    public void setCardName(String cardName) {
-        this.cardName = cardName;
-    }
-
-    public boolean isRejected() {
-        return rejected;
-    }
-
-    public void setRejected(boolean rejected) {
-        this.rejected = rejected;
     }
 
     //DESC ORDER

@@ -65,7 +65,7 @@
             for (var i = 0, len = vm.logs.length; i < len; i++) {
                 l = vm.logs[i];
                 console.log(l);
-                if(l.accepted){
+                if(l.card.accepted){
                     console.log("PUSH");
                     vm.acceptedLogs.push(l);
                 }
@@ -154,7 +154,7 @@
             if (c) {
                 console.log("CONFIRMED");
                 vm.dataLoading = true;
-                BoardPendingActionsService.Replan(vm.acceptedLogs).then(function (response) {
+                BoardPendingActionsService.Replan(vm.selectedBoard.id).then(function (response) {
                     console.log(response);
                     vm.dataLoading = false;
                     if (response.success) {

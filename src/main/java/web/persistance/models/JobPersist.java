@@ -17,19 +17,15 @@ public class JobPersist {
     @ManyToOne
     @JoinColumn(name = "cardId")
     private CardPersist card;
-    @ManyToOne
-    @JoinColumn(name = "boardId")
-    private BoardPersist board;
 
     public JobPersist(){}
 
-    public JobPersist(int jobId, CardPersist card, int featureId, double featureEffort, String featureName, BoardPersist boardPersist) {
+    public JobPersist(int jobId, CardPersist card, int featureId, double featureEffort, String featureName) {
         this.jobId = jobId;
         this.card = card;
         this.featureId = featureId;
         this.featureEffort = featureEffort;
         this.featureName = featureName;
-        this.board = boardPersist;
     }
 
     public int getId() {
@@ -78,13 +74,5 @@ public class JobPersist {
 
     public void setFeatureName(String featureName) {
         this.featureName = featureName;
-    }
-
-    public BoardPersist getBoard() {
-        return board;
-    }
-
-    public void setBoard(BoardPersist board) {
-        this.board = board;
     }
 }
