@@ -317,7 +317,6 @@ public class PersistenceController {
     }
 
     public List<CardTrackingInfo> getCardTrackingInfo(String cardId){
-        //List<LogPersist> logPersists = cardRepository.findOne(cardId).getLogs();
         List<LogPersist> logPersists = logRepository.findByCardIdOrderById(cardId);
         List<CardTrackingInfo> cardTrackingInfos = new ArrayList<>();
         String listName;

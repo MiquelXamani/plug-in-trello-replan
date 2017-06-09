@@ -77,7 +77,7 @@
             var log = vm.logs[index];
             vm.cardNameTracking = log.cardName;
             $('#cardTrackingModal').modal('toggle');
-            BoardPendingActionsService.GetCardTracking(log.cardId).then(function(response){
+            BoardPendingActionsService.GetCardTracking(log.card.cardId).then(function(response){
                 console.log(response);
                 if(response.success){
                     console.log("GET CARD TRACKING SUCCESSFUL");
