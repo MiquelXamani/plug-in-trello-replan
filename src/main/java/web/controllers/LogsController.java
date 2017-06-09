@@ -57,8 +57,8 @@ public class LogsController {
         TrelloService trelloService = new TrelloService();
 
         //remove green label
-        String greenLabelId = persistenceController.getLabelId(boardId,"green");
-        trelloService.removeLabel(cardId,greenLabelId,userToken);
+        String purpleLabelId = persistenceController.getLabelId(boardId,"purple");
+        trelloService.removeLabel(cardId,purpleLabelId,userToken);
 
         //move card to In Progress list and add red label
         String inProgressListId = persistenceController.getListId(boardId,"In Progress");
