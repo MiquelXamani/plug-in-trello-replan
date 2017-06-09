@@ -75,7 +75,7 @@
 
         function displayCardTracking(index){
             var log = vm.logs[index];
-            vm.cardNameTracking = log.card.cardName;
+            vm.cardNameTracking = log.card.name;
             $('#cardTrackingModal').modal('toggle');
             BoardPendingActionsService.GetCardTracking(log.card.id).then(function(response){
                 console.log(response);
@@ -131,7 +131,7 @@
             var logToRefuse = vm.logs[vm.logToRefuseIndex];
             console.log(logToRefuse);
             console.log(vm.comment);
-            BoardPendingActionsService.RejectCardDone($rootScope.globals.currentUser.username,logToRefuse.card.id,logToRefuse.card.cardName,logToRefuse.card.boardId,vm.comment)
+            BoardPendingActionsService.RejectCardDone($rootScope.globals.currentUser.username,logToRefuse.card.id,logToRefuse.card.name,logToRefuse.card.boardId,vm.comment)
                 .then(function(response){
                     vm.dataLoading = false;
                     console.log(response);
