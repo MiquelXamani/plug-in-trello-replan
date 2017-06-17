@@ -36,10 +36,10 @@ public class InitialDataLoader implements ApplicationRunner {
         //ResourceMember resourceMember = new ResourceMember(new Long(1),1,"Josep","589b03b9b6ee4d99b0da3dca","josep248","Josep");
         //resourceMemberRepository.save(resourceMember);
 
-        ResourceMember resourceMember2 = new ResourceMember(new Long(1),2,"Miquel Xamani","Miquel Xamaní Moreno","585bec12bec126f26851c2fb","miquelxamani1","Miquel Xamani");
-        resourceMemberRepository.save(resourceMember2);
+        //ResourceMember resourceMember2 = new ResourceMember(new Long(1),2,"Miquel Xamani","Miquel Xamaní Moreno","585bec12bec126f26851c2fb","miquelxamani1","Miquel Xamani");
+        //resourceMemberRepository.save(resourceMember2);
 
-        ResourceMember resourceMember3 = new ResourceMember(new Long(1),3,"Miquel","Miquel Munford","5870fd94eabd62f19de4ef5f","miquel133","Miquel");
-        resourceMemberRepository.save(resourceMember3);
+        //ResourceMember resourceMember3 = new ResourceMember(new Long(1),3,"Miquel","Miquel Munford","5870fd94eabd62f19de4ef5f","miquel133","Miquel");
+        //resourceMemberRepository.save(resourceMember3);
     }
 }
