@@ -418,7 +418,7 @@ public class PersistenceController {
             }
             count ++;
         }
-        System.out.println(jobFakeRepository.findOne(10).getResource().getName());
+        //System.out.println(jobFakeRepository.findOne(10).getResource().getName());
 
     }
 
