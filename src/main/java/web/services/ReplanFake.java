@@ -1,9 +1,9 @@
 package web.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import web.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import web.domain.*;
-import web.persistence_controllers.PersistenceController;
+import web.domain_controllers.DomainController;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,11 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ReplanFake {
-    private PersistenceController persistenceController;
+    private DomainController domainController;
 
     @Autowired
-    public ReplanFake(PersistenceController persistenceController){
-        this.persistenceController = persistenceController;
+    public ReplanFake(DomainController domainController){
+        this.domainController = domainController;
     }
 
     private String incrementDays(String date, int amount) throws ParseException {
@@ -57,7 +57,7 @@ public class ReplanFake {
                 printjobsids+=" "+ipj.getJob_id();
             }
             System.out.println(printjobsids);
-            replannedJobs = persistenceController.getChangeableJobs(releaseId,jobsNoModify);
+            replannedJobs = domainController.getChangeableJobs(releaseId,jobsNoModify);
             switch (releaseId){
                 case 6:
                     //Disseny BD feature suffers a delay of 1 day, 3 features out
@@ -85,8 +85,8 @@ public class ReplanFake {
                     break;
                 case 7:
                     Feature feature = new Feature(34,"Banner publicitari","Bla, bla, bla",16.0,"2017-06-23T17:00:00.000Z");
-                    resource = persistenceController.getResourceByName("Sergi");
-                    Job dependingJob = persistenceController.getJobByJobId(19,releaseId);
+                    resource = domainController.getResourceByName("Sergi");
+                    Job dependingJob = domainController.getJobByJobId(19,releaseId);
                     List<JobReduced> prev = new ArrayList<>();
                     prev.add(new JobReduced(dependingJob.getId(),dependingJob.getStarts(),dependingJob.getEnds(),dependingJob.getFeature().getId(),dependingJob.getResource().getId()));
                     Job extraJob = new Job(23,"2017-06-22T09:00:00.000Z",resource,feature,prev,"2017-06-23T17:00:00.000Z");
@@ -101,7 +101,7 @@ public class ReplanFake {
                     //Find the job that contains FAQ and replace resource Maria by Sergi
                     for(int i = 0; i < replannedJobs.size(); i++){
                         if(replannedJobs.get(i).getFeature().getName().equals("FAQ")){
-                            resource = persistenceController.getResourceByName("Sergi");
+                            resource = domainController.getResourceByName("Sergi");
                             replannedJobs.get(i).setResource(resource);
                             replannedJobs.get(i).setStarts("2017-06-05T11:00:00.000Z");
                             replannedJobs.get(i).setEnds("2017-06-05T16:00:00.000Z");

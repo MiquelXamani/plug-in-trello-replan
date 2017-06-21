@@ -1,12 +1,10 @@
 package web.persistance.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import web.domain.Board;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Miquel on 13/02/2017.

@@ -1,15 +1,17 @@
 package web.controllers;
 
+import web.dtos.Member;
+import web.dtos.Team;
+import web.dtos.TeamWithMembers;
+import web.dtos.User2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import web.persistence_controllers.PersistenceController;
+import web.domain_controllers.DomainController;
 import web.services.TrelloService;
-import web.domain.*;
 import web.persistance.repositories.ResourceMemberRepository;
-import web.persistance.repositories.UserRepository;
 
 import java.util.*;
 
@@ -19,17 +21,17 @@ public class TeamsController {
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
 
-    private PersistenceController persistenceController;
+    private DomainController domainController;
 
     @Autowired
-    public TeamsController(PersistenceController persistenceController){
-        this.persistenceController = persistenceController;
+    public TeamsController(DomainController domainController){
+        this.domainController = domainController;
     }
 
     //retorna els noms dels teams de Trello als qual pertany l'usuari
     @RequestMapping(method = RequestMethod.GET)
     public Team[] getTeams(@RequestParam(value = "username") String username) {
-        User2 u = persistenceController.getUser(username);
+        User2 u = domainController.getUser(username);
         String trelloUsername = u.getTrelloUsername();
         String trelloToken = u.getTrelloToken();
         TrelloService trelloService = new TrelloService();
@@ -41,7 +43,7 @@ public class TeamsController {
     @RequestMapping(value = "/members", method = RequestMethod.GET)
     public List<Member> getTeamMembers(@RequestParam(value = "username") String username,
                                        @RequestParam(value = "teamId") String teamId) {
-        User2 u = persistenceController.getUser(username);
+        User2 u = domainController.getUser(username);
         String trelloToken = u.getTrelloToken();
         TrelloService trelloService = new TrelloService();
         TeamWithMembers teamWithMembers = trelloService.getTrelloTeamMembers(teamId,trelloToken);

@@ -1,14 +1,14 @@
 package web.controllers;
 
+import web.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import web.domain.*;
 import web.persistance.repositories.ResourceMemberRepository;
 import web.persistance.models.ResourceMember;
-import web.persistence_controllers.PersistenceController;
+import web.domain_controllers.DomainController;
 import web.services.ReplanFake;
 import web.services.ReplanService;
 import web.services.TrelloService;
@@ -20,11 +20,11 @@ import java.util.*;
 public class MatchingsController {
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
-    private PersistenceController persistenceController;
+    private DomainController domainController;
 
     @Autowired
-    public MatchingsController(PersistenceController persistenceController){
-        this.persistenceController = persistenceController;
+    public MatchingsController(DomainController domainController){
+        this.domainController = domainController;
     }
 
     @RequestMapping(value = "/create-matchings", method = RequestMethod.POST)
@@ -32,7 +32,7 @@ public class MatchingsController {
         Resource r;
         Member m;
         ResourceMember resourceMember;
-        User2 u = persistenceController.getUser(username);
+        User2 u = domainController.getUser(username);
         Long userId = u.getUserId();
         List <ResourceMember> resourceMembers = new ArrayList<>();
         for (Matching matching: newMatchings) {
@@ -61,7 +61,7 @@ public class MatchingsController {
 
     @RequestMapping(value = "/delete-matchings", method = RequestMethod.POST)
     public List<ResourceMember> deleteMatchings(@RequestParam(value = "username") String username, @RequestBody Matching[] matchingsToDelete){
-        User2 u = persistenceController.getUser(username);
+        User2 u = domainController.getUser(username);
         Long userId = u.getUserId();
         List <ResourceMember> resourceMembersDeleted = new ArrayList<>();
         ResourceMember resourceMember;
@@ -90,10 +90,10 @@ public class MatchingsController {
 
         MatchingsContainer matchingDTO = new MatchingsContainer();
         ReplanService replanService = new ReplanService();
-        ReplanFake replanFake = new ReplanFake(persistenceController);
+        ReplanFake replanFake = new ReplanFake(domainController);
 
         //get plan
-        String url = persistenceController.getEndpoint(Integer.parseInt(endpointId)).getUrl();
+        String url = domainController.getEndpoint(Integer.parseInt(endpointId)).getUrl();
         Plan plan;
         if(url.equals("simulation mode")){
             plan = replanFake.getPlan(projectId,releaseId);
@@ -105,7 +105,7 @@ public class MatchingsController {
         }
         matchingDTO.setPlan(plan);
 
-        User2 user = persistenceController.getUser(username);
+        User2 user = domainController.getUser(username);
         Long userId = user.getUserId();
         System.out.println("****************" + userId.toString());
 

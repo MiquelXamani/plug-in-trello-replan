@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import web.domain.User2;
-import web.persistence_controllers.PersistenceController;
+import web.dtos.User2;
+import web.domain_controllers.DomainController;
 import web.services.TrelloService;
 
 import java.util.HashMap;
@@ -14,11 +14,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 public class UsersController {
-    private PersistenceController persistenceController;
+    private DomainController domainController;
 
     @Autowired
-    public UsersController(PersistenceController persistenceController){
-        this.persistenceController = persistenceController;
+    public UsersController(DomainController domainController){
+        this.domainController = domainController;
     }
 /*
     @RequestMapping(method= RequestMethod.GET)//s'ha de passar paràmetre user i si retorna buit vol dir que no ha trobat cap usuari amb aquest username
@@ -39,7 +39,7 @@ public class UsersController {
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<Object> createUser(@RequestBody User2 user){
-            User2 u = persistenceController.getUser(user.getUsername());
+            User2 u = domainController.getUser(user.getUsername());
             if(u == null){
                 //crida api trello per saber username
                 TrelloService trelloService = new TrelloService();
@@ -49,7 +49,7 @@ public class UsersController {
 
                 System.out.println("Usertoken: " + user.getTrelloToken());
 
-                User2 userCreated = persistenceController.saveUser(user);
+                User2 userCreated = domainController.saveUser(user);
                 return new ResponseEntity<>(userCreated, HttpStatus.CREATED);
             }
             else {

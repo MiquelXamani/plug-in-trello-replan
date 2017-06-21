@@ -1,13 +1,15 @@
 package web.services;
 
+import web.dtos.CompletedJob;
+import web.dtos.Plan;
+import web.dtos.Project;
+import web.dtos.Release;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import web.domain.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

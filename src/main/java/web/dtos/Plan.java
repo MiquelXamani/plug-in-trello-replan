@@ -1,28 +1,24 @@
-package web.persistance.fake_models;
+package web.dtos;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-public class PlanFake {
-    @Id
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Plan {
     private int id;
     private String created_at;
-    @OneToMany(mappedBy = "plan")
-    private List<JobFake> jobs;
+    private List<Job> jobs;
 
-    public PlanFake(){
+    public Plan(){
         this.jobs = new ArrayList<>();
-        jobs = new ArrayList<>();
     }
 
-    public PlanFake(int id, String created_at) {
+    public Plan(int id, String created_at, List<Job> jobs) {
         this.id = id;
         this.created_at = created_at;
-        jobs = new ArrayList<>();
+        this.jobs = jobs;
     }
 
     public int getId() {
@@ -41,11 +37,11 @@ public class PlanFake {
         this.created_at = created_at;
     }
 
-    public List<JobFake> getJobs() {
+    public List<Job> getJobs() {
         return jobs;
     }
 
-    public void setJobs(List<JobFake> jobs) {
+    public void setJobs(List<Job> jobs) {
         this.jobs = jobs;
     }
 }

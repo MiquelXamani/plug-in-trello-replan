@@ -1,16 +1,11 @@
 package web.services;
 
+import web.dtos.*;
 import org.springframework.http.*;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import web.domain.*;
-import web.domain.aux_classes.SearchCardResponse;
+import web.dtos.aux_classes.SearchCardResponse;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -71,7 +66,7 @@ public class TrelloService {
         return board;
     }
 
-    public ListTrello[] createLists(String idBoard,String userToken){
+    public ListTrello[] createLists(String idBoard, String userToken){
         url = "https://api.trello.com/1/lists/?key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);
@@ -99,7 +94,7 @@ public class TrelloService {
         restTemplate.put(url,null,vars);
     }
 
-    public List<Card> createCards(List<Card> cards,String userToken){
+    public List<Card> createCards(List<Card> cards, String userToken){
         url = "https://api.trello.com/1/cards/?key={key}&token={token}";
         vars = new HashMap<>();
         vars.put("key",key);

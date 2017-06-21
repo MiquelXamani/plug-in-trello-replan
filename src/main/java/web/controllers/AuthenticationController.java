@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import web.domain.User2;
-import web.persistance.repositories.UserRepository;
-import web.persistence_controllers.PersistenceController;
+import web.dtos.User2;
+import web.domain_controllers.DomainController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,18 +16,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/authenticate")
 public class AuthenticationController {
-    private PersistenceController persistenceController;
+    private DomainController domainController;
 
     @Autowired
-    public AuthenticationController(PersistenceController persistenceController){
-        this.persistenceController = persistenceController;
+    public AuthenticationController(DomainController domainController){
+        this.domainController = domainController;
     }
 
     @RequestMapping(method= RequestMethod.POST)
     public ResponseEntity<Object> createUser(@RequestBody Map<String,String> authInfo){
         String username = authInfo.get("username");
         String password = authInfo.get("password");
-        User2 user = persistenceController.getUser(username);
+        User2 user = domainController.getUser(username);
         Map<String,String> errorInfo = new HashMap<>();
         if(user == null){
             errorInfo.put("description","User doesn't exist");
@@ -36,7 +35,7 @@ public class AuthenticationController {
         }
         else if(!user.getPassword().equals(password) ) {
             errorInfo.put("description","Incorrect password");
-            return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(errorInfo, HttpStatus.UNAUTHORIZED);
         }
         else {
             return new ResponseEntity<>(user, HttpStatus.OK);

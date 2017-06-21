@@ -1,7 +1,6 @@
 package web.persistance.repositories;
 
 import org.springframework.data.repository.CrudRepository;
-import web.domain.Card;
 import web.persistance.models.CardPersist;
 
 import java.util.List;

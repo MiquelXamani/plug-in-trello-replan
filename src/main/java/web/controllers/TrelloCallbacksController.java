@@ -5,13 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.LogType;
-import web.domain.Action;
-import web.domain.Card;
-import web.domain.Label;
-import web.domain.aux_classes.IdNameObject;
-import web.domain.aux_classes.WebhookCardTrelloResponse;
-import web.domain.operation_classes.CardDependency;
-import web.persistence_controllers.PersistenceController;
+import web.dtos.Action;
+import web.dtos.Card;
+import web.dtos.aux_classes.IdNameObject;
+import web.dtos.aux_classes.WebhookCardTrelloResponse;
+import web.operation_classes.CardDependency;
+import web.domain_controllers.DomainController;
 import web.services.TrelloService;
 
 import java.text.ParseException;
@@ -21,12 +20,12 @@ import java.util.*;
 @RestController
 @RequestMapping("/trello-callbacks")
 public class TrelloCallbacksController {
-    private PersistenceController persistenceController;
+    private DomainController domainController;
     private CardDependency cardDependency;
 
     @Autowired
-    public TrelloCallbacksController(PersistenceController persistenceController){
-        this.persistenceController = persistenceController;
+    public TrelloCallbacksController(DomainController domainController){
+        this.domainController = domainController;
     }
 
     private boolean cardHasLabel(String idLabel, List<String> idLabels){
@@ -42,7 +41,7 @@ public class TrelloCallbacksController {
     public void createLog(String cardId, String cardName, String memberUsername, LogType logType){
         //System.out.println("Create log function params:");
         //System.out.println("boardId: " + boardId + " boardName: " + boardName + " cardId: " + cardId + " cardName: " + cardName + " member: " + memberUsername);
-        persistenceController.saveLog(cardId,cardName,memberUsername,logType);
+        domainController.saveLog(cardId,cardName,memberUsername,logType);
     }
 
 
@@ -122,10 +121,10 @@ public class TrelloCallbacksController {
             }
 
             //Get id lists
-            String doneListId = persistenceController.getListId(boardId,"Done");
-            String onHoldListId = persistenceController.getListId(boardId,"On-hold");
-            String readyListId =  persistenceController.getListId(boardId,"Ready");
-            String inProgressListId = persistenceController.getListId(boardId,"In Progress");
+            String doneListId = domainController.getListId(boardId,"Done");
+            String onHoldListId = domainController.getListId(boardId,"On-hold");
+            String readyListId =  domainController.getListId(boardId,"Ready");
+            String inProgressListId = domainController.getListId(boardId,"In Progress");
 
             Card card = response.getModel();
             String cardId = card.getId();
@@ -148,28 +147,28 @@ public class TrelloCallbacksController {
                     //System.out.println("EARLIER");
                 }
                 //createLog(cardId,cardName,action.getMemberCreator().getUsername(),logType);
-                persistenceController.saveLog(cardId, cardName, actionCreator, logType);
+                domainController.saveLog(cardId, cardName, actionCreator, logType);
 
                 //get usertoken
                 TrelloService trelloService = new TrelloService();
-                String userToken = persistenceController.getBoardUser(boardId).getTrelloToken();
+                String userToken = domainController.getBoardUser(boardId).getTrelloToken();
 
                 //borrar label verda de la card (si en té)
                 //System.out.println("Board id: " + boardId);
-                String greenLabelId = persistenceController.getLabelId(boardId,"green");
+                String greenLabelId = domainController.getLabelId(boardId,"green");
                 if(cardHasLabel(greenLabelId,card.getIdLabels())){
                     //System.out.println("Card id: "+ cardId);
                     trelloService.removeLabel(cardId,greenLabelId,userToken);
                 }
 
                 //borrar label vermella de la card (si en té)
-                String redLabelId = persistenceController.getLabelId(boardId,"red");
+                String redLabelId = domainController.getLabelId(boardId,"red");
                 if(cardHasLabel(redLabelId,card.getIdLabels())){
                     trelloService.removeLabel(cardId,redLabelId,userToken);
                 }
 
                 //afegir nova label a la card
-                String purpleLabelId = persistenceController.getLabelId(boardId,"purple");
+                String purpleLabelId = domainController.getLabelId(boardId,"purple");
                 if(!cardHasLabel(purpleLabelId,card.getIdLabels())) {
                     trelloService.addLabel(card.getId(), purpleLabelId, userToken);
                 }
@@ -191,7 +190,7 @@ public class TrelloCallbacksController {
                 Card[] cardsDone = trelloService.getListCards(doneListId,userToken);
 
                 //fer funció per utilitzar la part d'extreure les dependències de la descripció i borrar les labels grogues
-                String yellowLabelId = persistenceController.getLabelId(boardId,"yellow");
+                String yellowLabelId = domainController.getLabelId(boardId,"yellow");
                 Map<String,Card> nextCardsMap = new HashMap<>();
                 Card nextCard;
                 List<Card> cardsAssigned;
@@ -276,7 +275,7 @@ public class TrelloCallbacksController {
             else if (newListId.equals(inProgressListId)){
                 //System.out.println("CARD MOVED TO IN PROGRESS LIST");
                 if(!actionCreator.equals("")) {
-                    persistenceController.saveLog(cardId, cardName, actionCreator, LogType.MOVED_TO_IN_PROGRESS);
+                    domainController.saveLog(cardId, cardName, actionCreator, LogType.MOVED_TO_IN_PROGRESS);
                 }
             }
             else{

@@ -1,19 +1,15 @@
 package web.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import web.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import web.domain.*;
-import web.domain.operation_classes.CardMovementSimulation;
 import web.persistance.repositories.*;
 import web.persistance.models.ResourceMember;
-import web.persistence_controllers.PersistenceController;
+import web.domain_controllers.DomainController;
 import web.services.TrelloService;
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -23,11 +19,11 @@ import java.util.*;
 public class BoardsController {
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
-    private PersistenceController persistenceController;
+    private DomainController domainController;
 
     @Autowired
-    public BoardsController(PersistenceController persistenceController){
-        this.persistenceController = persistenceController;
+    public BoardsController(DomainController domainController){
+        this.domainController = domainController;
     }
 
     @RequestMapping(method= RequestMethod.POST)
@@ -42,9 +38,9 @@ public class BoardsController {
 
         Plan plan = new Plan(planId,planBoardDTO.getCreated_at(),planBoardDTO.getJobs());
         System.out.println("+++ SAVE PLAN +++");
-        persistenceController.savePlan(plan);
+        domainController.savePlan(plan);
 
-        User2 u = persistenceController.getUser(planBoardDTO.getUsername());
+        User2 u = domainController.getUser(planBoardDTO.getUsername());
         System.out.println(planBoardDTO.getUsername());
         System.out.println(u.getTrelloToken());
         String trelloToken = u.getTrelloToken();
@@ -107,7 +103,7 @@ public class BoardsController {
         //Map of featureId and card corresponding to the feature
         //Ordered map because we want to keep the relation between cards and features after cards are created on Trello and a id
         //are assigned to them.
-        Map<Integer,Card> featuresConverted = new TreeMap<>();
+        Map<Integer, Card> featuresConverted = new TreeMap<>();
 
         //To keep the relation between features and jobs in order to store in persistence
         Map<Integer,List<Job>> featureJobsMap = new HashMap();
@@ -116,7 +112,7 @@ public class BoardsController {
         Map<String,Job> firstsJobs = new HashMap<>();
 
         //Map to store features in order to get their names and effort because depends_on object doesn't cointain these information
-        Map<Integer,Feature> featureMap = new HashMap<>();
+        Map<Integer, Feature> featureMap = new HashMap<>();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -282,13 +278,13 @@ public class BoardsController {
         List<Card> createdCards = trelloService.createCards(cards,trelloToken);
 
         //persistence
-        persistenceController.saveBoard(board,labelList,lists,u,planBoardDTO.getEndpointId(),planBoardDTO.getProjectId(),planBoardDTO.getReleaseId());
+        domainController.saveBoard(board,labelList,lists,u,planBoardDTO.getEndpointId(),planBoardDTO.getProjectId(),planBoardDTO.getReleaseId());
         List<Integer> featuresIds = new ArrayList<>(featuresConverted.keySet());
         System.out.println("Values size: "+createdCards.size()+" Keys size: "+featuresIds.size());
         int fid;
         for(int k = 0; k < featuresIds.size(); k++){
             fid = featuresIds.get(k);
-            persistenceController.saveCardAndJobs(createdCards.get(k),featureJobsMap.get(fid),boardId);
+            domainController.saveCardAndJobs(createdCards.get(k),featureJobsMap.get(fid),boardId);
         }
         //System.out.println(persistenceController.getFeature(1,1,1,1).getName());
         //end persistence
@@ -320,6 +316,6 @@ public class BoardsController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Board> getBoards(@RequestParam(value = "username") String username) {
-        return persistenceController.getUserBoards(username);
+        return domainController.getUserBoards(username);
     }
 }

@@ -2,26 +2,26 @@ package web.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import web.domain.CardTrackingInfo;
-import web.domain.aux_classes.CardTrackingInfoContainer;
-import web.persistence_controllers.PersistenceController;
+import web.dtos.CardTrackingInfo;
+import web.dtos.aux_classes.CardTrackingInfoContainer;
+import web.domain_controllers.DomainController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/card")
 public class CardsController {
-    private PersistenceController persistenceController;
+    private DomainController domainController;
 
     @Autowired
-    public CardsController(PersistenceController persistenceController){
-        this.persistenceController = persistenceController;
+    public CardsController(DomainController domainController){
+        this.domainController = domainController;
     }
 
     @RequestMapping(value = "/tracking/{cardId}",method = RequestMethod.GET)
     public CardTrackingInfoContainer getCardTrackingInfo(@PathVariable(value = "cardId") String cardId) {
         System.out.println("GET card tracking info");
-        List<CardTrackingInfo> cardTrackingInfoList = persistenceController.getCardTrackingInfo(cardId);
+        List<CardTrackingInfo> cardTrackingInfoList = domainController.getCardTrackingInfo(cardId);
         return new CardTrackingInfoContainer(cardId,cardTrackingInfoList);
     }
 }

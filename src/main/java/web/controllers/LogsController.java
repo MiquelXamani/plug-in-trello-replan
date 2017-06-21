@@ -1,17 +1,14 @@
 package web.controllers;
 
+import web.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import web.LogType;
-import web.domain.*;
-import web.domain.aux_classes.CompleteLogOp;
-import web.domain.operation_classes.CardDependency;
+import web.dtos.aux_classes.CompleteLogOp;
+import web.operation_classes.CardDependency;
 import web.persistance.models.ResourceMember;
 import web.persistance.repositories.ResourceMemberRepository;
-import web.persistence_controllers.PersistenceController;
+import web.domain_controllers.DomainController;
 import web.services.ReplanFake;
 import web.services.ReplanService;
 import web.services.TrelloService;
@@ -23,14 +20,14 @@ import java.util.*;
 @RestController
 @RequestMapping("/logs")
 public class LogsController {
-    private PersistenceController persistenceController;
+    private DomainController domainController;
     @Autowired(required = true)
     private ResourceMemberRepository resourceMemberRepository;
     private CardDependency cardDependency;
 
     @Autowired
-    public LogsController(PersistenceController persistenceController){
-        this.persistenceController = persistenceController;
+    public LogsController(DomainController domainController){
+        this.domainController = domainController;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -38,10 +35,10 @@ public class LogsController {
         List<Log> logs;
         //all logs
         if(boardId == null){
-            logs = persistenceController.getLogs(username);
+            logs = domainController.getLogs(username);
         }
         else{
-           logs = persistenceController.getBoardLogs(boardId);
+           logs = domainController.getBoardLogs(boardId);
         }
         Collections.sort(logs);
         return logs;
@@ -50,19 +47,19 @@ public class LogsController {
     @RequestMapping(value = "/reject-card",method = RequestMethod.POST)
     public Log rejectCard(@RequestBody CardRejection rejection){
         System.out.println("Reject process");
-        User2 user = persistenceController.getUser(rejection.getUsername());
+        User2 user = domainController.getUser(rejection.getUsername());
         String userToken = user.getTrelloToken();
         String cardId = rejection.getCardId();
         String boardId = rejection.getBoardId();
         TrelloService trelloService = new TrelloService();
 
         //remove green label
-        String purpleLabelId = persistenceController.getLabelId(boardId,"purple");
+        String purpleLabelId = domainController.getLabelId(boardId,"purple");
         trelloService.removeLabel(cardId,purpleLabelId,userToken);
 
         //move card to In Progress list and add red label
-        String inProgressListId = persistenceController.getListId(boardId,"In Progress");
-        String redLabelId = persistenceController.getLabelId(boardId,"red");
+        String inProgressListId = domainController.getListId(boardId,"In Progress");
+        String redLabelId = domainController.getLabelId(boardId,"red");
         List<String> cardsIdList = new ArrayList<>();
         cardsIdList.add(cardId);
         trelloService.moveCardsAndAddLabel(cardsIdList,inProgressListId,redLabelId,userToken);
@@ -71,30 +68,30 @@ public class LogsController {
         trelloService.postComment(cardId,rejection.getComment(),userToken);
 
         //set previous finished log as rejected
-        persistenceController.setRejectedPreviousFinishedLog(cardId);
+        domainController.setRejectedPreviousFinishedLog(cardId);
 
         //create log
-        String boardName = persistenceController.getBoard(boardId).getName();
-        return persistenceController.saveLog(cardId,rejection.getCardName(),"Project Leader",LogType.REJECTED);
+        String boardName = domainController.getBoard(boardId).getName();
+        return domainController.saveLog(cardId,rejection.getCardName(),"Project Leader",LogType.REJECTED);
 
     }
 
     @RequestMapping(value = "/{logId}/completed",method = RequestMethod.POST)
     public CardReduced changeAcceptedLog(@PathVariable("logId") int logId, @RequestBody CompleteLogOp completeLogOp){
         System.out.println("Mark as completed");
-        return persistenceController.setAcceptedFinishedLog(logId,completeLogOp.isAccepted());
+        return domainController.setAcceptedFinishedLog(logId,completeLogOp.isAccepted());
     }
 
     @RequestMapping(value = "/replan", method = RequestMethod.POST)
     public String doReplanProvisional(@RequestBody String boardId){
         System.out.println("DO REPLAN");
         List<CompletedJob> completedJobs = new ArrayList<>();
-        Map<Integer,String> jobsInfo = persistenceController.jobsCompletedIds(boardId);
+        Map<Integer,String> jobsInfo = domainController.jobsCompletedIds(boardId);
         for (Map.Entry<Integer, String> entry : jobsInfo.entrySet()) {
             completedJobs.add(new CompletedJob(entry.getKey(),entry.getValue()));
         }
 
-        Map<String,String> info = persistenceController.getBoardReplanInfo(boardId);
+        Map<String,String> info = domainController.getBoardReplanInfo(boardId);
         ReplanService replanService = new ReplanService();
         return replanService.doReplan(info.get("endpoint"),Integer.parseInt(info.get("project")),Integer.parseInt(info.get("release")),completedJobs);
     }
@@ -102,7 +99,7 @@ public class LogsController {
     private List<Card> getNextCards(List<Card> cardsUpdated, String boardId, String readyListId) throws ParseException {
         //<memberId, nextcard of this member>
         Map<String,Card> nextCards = new HashMap<>();
-        String yellowLabelId = persistenceController.getLabelId(boardId,"yellow");
+        String yellowLabelId = domainController.getLabelId(boardId,"yellow");
         Card currentCard;
         List<String> members;
         Date currentCardStartDate, earliestCardStartDate;
@@ -129,7 +126,7 @@ public class LogsController {
             }
         }
         Card card;
-        String greenLabelId = persistenceController.getLabelId(boardId,"green");
+        String greenLabelId = domainController.getLabelId(boardId,"green");
         for (int j = 0; j < cardsUpdated.size(); j++) {
             card = cardsUpdated.get(j);
             if(nextCards.containsValue(card)){
@@ -146,38 +143,38 @@ public class LogsController {
     public List<Card> doReplanFake(@RequestBody String boardId) throws ParseException {
         System.out.println("DO REPLAN");
         List<CompletedJob> completedJobs = new ArrayList<>();
-        Map<Integer,String> jobsInfo = persistenceController.jobsCompletedIds(boardId);
+        Map<Integer,String> jobsInfo = domainController.jobsCompletedIds(boardId);
         for (Map.Entry<Integer, String> entry : jobsInfo.entrySet()) {
             completedJobs.add(new CompletedJob(entry.getKey(),entry.getValue()));
         }
 
-        String readyListId = persistenceController.getListId(boardId,"Ready");
-        User2 user = persistenceController.getBoardUser(boardId);
+        String readyListId = domainController.getListId(boardId,"Ready");
+        User2 user = domainController.getBoardUser(boardId);
 
-        String inProgressListId = persistenceController.getListId(boardId,"In Progress");
+        String inProgressListId = domainController.getListId(boardId,"In Progress");
         TrelloService trelloService = new TrelloService();
         Card[] inProgressCards = trelloService.getListCards(inProgressListId,user.getTrelloToken());
         List<String> cardsInProgressIds = new ArrayList<>();
         for(int i = 0; i < inProgressCards.length; i++){
             cardsInProgressIds.add(inProgressCards[i].getId());
         }
-        List<Integer> inProgressJobsIds = persistenceController.getInProgressJobs(cardsInProgressIds);
+        List<Integer> inProgressJobsIds = domainController.getInProgressJobs(cardsInProgressIds);
         List<InProgressJob> inProgressJobs = new ArrayList<>();
         for(int jid:inProgressJobsIds){
             inProgressJobs.add(new InProgressJob(jid));
         }
         JobsToReplan jobsToReplan = new JobsToReplan(completedJobs,inProgressJobs);
 
-        Map<String,String> info = persistenceController.getBoardReplanInfo(boardId);
+        Map<String,String> info = domainController.getBoardReplanInfo(boardId);
         int endpointId = Integer.parseInt(info.get("endpointId"));
         int projectId = Integer.parseInt(info.get("project"));
         int releaseId = Integer.parseInt(info.get("release"));
         System.out.println("endpointid "+endpointId+" projectid "+projectId+" releaseid "+releaseId);
-        ReplanFake replanFake = new ReplanFake(persistenceController);
+        ReplanFake replanFake = new ReplanFake(domainController);
         UpdatedPlan updatedPlan = replanFake.doReplanFake(info.get("endpoint"),projectId,releaseId,jobsToReplan);
 
         //Set cards corresponding to finsihed jobs as replanned
-        persistenceController.setCardsAsReplanned(boardId,new ArrayList<>(jobsInfo.keySet()));
+        domainController.setCardsAsReplanned(boardId,new ArrayList<>(jobsInfo.keySet()));
 
 
         //<featureId,cardId>, to avoid redundant accesses to db
@@ -187,8 +184,8 @@ public class LogsController {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        String onHoldListId = persistenceController.getListId(boardId,"On-hold");
-        String doneListId = persistenceController.getListId(boardId,"Done");
+        String onHoldListId = domainController.getListId(boardId,"On-hold");
+        String doneListId = domainController.getListId(boardId,"Done");
 
         List<Job> jobs = updatedPlan.getJobs();
         List<Card> newCards = new ArrayList<>();
@@ -198,7 +195,7 @@ public class LogsController {
         List<Job> jobList;
         cardDependency = new CardDependency();
         Card[] cardsDone = trelloService.getListCards(doneListId,user.getTrelloToken());
-        String yellowLabelId = persistenceController.getLabelId(boardId,"yellow");
+        String yellowLabelId = domainController.getLabelId(boardId,"yellow");
         for(Job job:jobs){
             feature = job.getFeature();
             featureId = feature.getId();
@@ -207,7 +204,7 @@ public class LogsController {
                 cardId = featureCardMaps.get(featureId);
             }
             else{
-                cardId = persistenceController.getCardId(featureId,endpointId,projectId,releaseId);
+                cardId = domainController.getCardId(featureId,endpointId,projectId,releaseId);
                 //New feature added to release plan, new card will be created
                 if(cardId == null){
                     //TODO Save job and card in persistence
@@ -231,7 +228,7 @@ public class LogsController {
                         int count = 0;
                         Feature featureDepending;
                         for (JobReduced jr : job.getDepends_on()) {
-                            featureDepending = persistenceController.getFeature(jr.getFeature_id(),endpointId,projectId,releaseId);
+                            featureDepending = domainController.getFeature(jr.getFeature_id(),endpointId,projectId,releaseId);
                             description += " ("+ Math.round(featureDepending.getEffort()) +") " + featureDepending.getName();
                             if(count < dependsOnSize - 1) {
                                 description += " ,";
@@ -368,7 +365,7 @@ public class LogsController {
         List<Integer> jobsOut = updatedPlan.getJobs_out();
         String cardOutId;
         for(int jobOutId:jobsOut) {
-            cardOutId = persistenceController.getCardIdOfJob(jobOutId,endpointId,projectId,releaseId);
+            cardOutId = domainController.getCardIdOfJob(jobOutId,endpointId,projectId,releaseId);
             //remove from trello
             trelloService.removeCard(cardOutId,user.getTrelloToken());
             //crear log que digui out of release (aquest log es mostrarà a card tracking i no a la taula

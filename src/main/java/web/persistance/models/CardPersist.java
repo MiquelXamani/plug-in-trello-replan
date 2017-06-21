@@ -1,8 +1,6 @@
 package web.persistance.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import web.domain.Board;
-import web.domain.Log;
 
 import javax.persistence.*;
 import java.util.ArrayList;
