@@ -25,6 +25,26 @@ public class ReplanFake {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startDate);
         calendar.add(Calendar.DATE,amount);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_YEAR);
+        int amm = 0;
+        if(dayOfMonth == 24 || dayOfMonth == 3){
+            if(amount < 0){
+                amm = -1;
+            }
+            else{
+                amm = 2;
+            }
+            calendar.add(Calendar.DATE,amm);
+        }
+        else if(dayOfMonth == 25 ||dayOfMonth == 4){
+            if(amount < 0){
+                amm = -2;
+            }
+            else{
+                amm = 1;
+            }
+            calendar.add(Calendar.DATE,amm);
+        }
         startDate = calendar.getTime();
         return dateFormat.format(startDate);
     }
@@ -46,7 +66,7 @@ public class ReplanFake {
         List<Integer> jobsNoModify = new ArrayList<>();
         List<Job> replannedJobs;
         Resource resource;
-        if(projectId == 4){
+        if(projectId == 4 || projectId == 5){
             String printjobsids="";
             for (CompletedJob cj:completedJobs) {
                 jobsNoModify.add(cj.getJob_id());
@@ -57,19 +77,23 @@ public class ReplanFake {
                 printjobsids+=" "+ipj.getJob_id();
             }
             System.out.println(printjobsids);
+            List<Integer> jobsOut;
+            List<Job> jobsDelayed, jobsAdvanced;
+            Feature newFeature;
+            Job dependingJob, aux, extraJob;
+            List<JobReduced> prevs;
             replannedJobs = domainController.getChangeableJobs(releaseId,jobsNoModify);
             switch (releaseId){
                 case 6:
                     //Disseny BD feature suffers a delay of 1 day, 3 features out
                     //Gestió inventari, Pàgina info usuari and Pàgina producte
-                    List<Integer> jobsOut = new ArrayList<>();
+                    jobsOut = new ArrayList<>();
                     jobsOut.add(21);
                     jobsOut.add(22);
                     jobsOut.add(20);
                     updatedPlan.setJobs_out(jobsOut);
                     //Delay all jobs one day (startdate and endate)
-                    List<Job> jobsDelayed = new ArrayList<>();
-                    Job aux;
+                    jobsDelayed = new ArrayList<>();
                     for (Job j:replannedJobs) {
                         try {
                             aux = delayJob(j,1);
@@ -84,13 +108,13 @@ public class ReplanFake {
                     updatedPlan.setId(releaseId);
                     break;
                 case 7:
-                    Feature feature = new Feature(34,"Banner publicitari","Bla, bla, bla",16.0,"2017-06-23T17:00:00.000Z");
+                    newFeature = new Feature(34,"Banner publicitari","Bla, bla, bla",16.0,"2017-06-23T17:00:00.000Z");
                     resource = domainController.getResourceByName("Sergi");
-                    Job dependingJob = domainController.getJobByJobId(19,releaseId);
-                    List<JobReduced> prev = new ArrayList<>();
-                    prev.add(new JobReduced(dependingJob.getId(),dependingJob.getStarts(),dependingJob.getEnds(),dependingJob.getFeature().getId(),dependingJob.getResource().getId()));
-                    Job extraJob = new Job(23,"2017-06-22T09:00:00.000Z",resource,feature,prev,"2017-06-23T17:00:00.000Z");
-                    //TODO save this new job in persistance fake
+                    dependingJob = domainController.getJobByJobId(19,releaseId);
+                    prevs = new ArrayList<>();
+                    prevs.add(new JobReduced(dependingJob.getId(),dependingJob.getStarts(),dependingJob.getEnds(),dependingJob.getFeature().getId(),dependingJob.getResource().getId()));
+                    extraJob = new Job(23,"2017-06-22T09:00:00.000Z",resource,newFeature,prevs,"2017-06-23T17:00:00.000Z");
+
                     replannedJobs.add(extraJob);
                     updatedPlan.setJobs(replannedJobs);
                     updatedPlan.setId(releaseId);
@@ -141,6 +165,59 @@ public class ReplanFake {
 
                     updatedPlan.setJobs(replannedJobs);
                     updatedPlan.setId(releaseId);
+                    break;
+                case 11:
+                    //"Cerca de producte" feature suffers a delay of 1 day, 2 features out
+                    //"Recuperació de contrasenya" and "Pàgina producte"
+                    jobsOut = new ArrayList<>();
+                    jobsOut.add(7);
+                    jobsOut.add(12);
+                    updatedPlan.setJobs_out(jobsOut);
+                    //Delay all jobs one day (startdate and endate)
+                    jobsDelayed = new ArrayList<>();
+                    for (Job j:replannedJobs) {
+                        try {
+                            if(j.getId() == 11) {
+                                //Back-end admin takes the place of pàgina del producte
+                                j.setStarts("2017-07-03T09:00:00.000Z");
+                                j.setEnds("2017-07-04T17:00:00.000Z");
+                                aux = j;
+                            }
+                            else{
+                                aux = delayJob(j,1);
+                            }
+                            jobsDelayed.add(aux);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    System.out.println("Jobs delayed size:"+jobsDelayed.size());
+                    updatedPlan.setJobs(jobsDelayed);
+                    updatedPlan.setId(releaseId);
+                    break;
+                case 12:
+                    newFeature = new Feature(13,"Pàgina informació de l'usuari","Bla, bla, bla",1.0,"2017-07-07T17:00:00.000Z");
+                    resource = domainController.getResourceByName("Maria");
+                    dependingJob = domainController.getJobByJobId(10,releaseId);
+                    prevs = new ArrayList<>();
+                    prevs.add(new JobReduced(dependingJob.getId(),dependingJob.getStarts(),dependingJob.getEnds(),dependingJob.getFeature().getId(),dependingJob.getResource().getId()));
+                    dependingJob = domainController.getJobByJobId(12,releaseId);
+                    prevs.add(new JobReduced(dependingJob.getId(),dependingJob.getStarts(),dependingJob.getEnds(),dependingJob.getFeature().getId(),dependingJob.getResource().getId()));
+                    extraJob = new Job(13,"2017-06-22T09:00:00.000Z",resource,newFeature,prevs,"2017-06-23T17:00:00.000Z");
+
+                    jobsAdvanced = new ArrayList<>();
+                    for (Job j:replannedJobs) {
+                        try {
+                            aux = delayJob(j,-1);
+                            jobsAdvanced.add(aux);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    jobsAdvanced.add(extraJob);
+                    updatedPlan.setJobs(jobsAdvanced);
+                    updatedPlan.setId(releaseId);
+                    break;
                 default:
                     break;
             }

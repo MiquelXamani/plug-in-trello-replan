@@ -391,13 +391,13 @@
     {
       "id": 8,
       "starts": "2017-06-28T09:00:00.000Z",
-      "ends": "2017-07-30T17:00:00.000Z",
+      "ends": "2017-07-29T17:00:00.000Z",
       "feature": {
         "id": 8,
         "code": 8,
         "name": "Gestió d'inventari",
         "description": "Bla, bla, bla",
-        "effort": "3.0",
+        "effort": "2.0",
         "deadline": "2017-07-06",
         "priority": 2,
         "release": {
@@ -449,9 +449,9 @@
         }
       },
       "resource": {
-        "id": 5,
-        "name": "Josep",
-        "description": "Josep Jackson",
+        "id": 6,
+        "name": "Maria",
+        "description": "Maria Miller",
         "availability": "100.0",
         "skills": [
           {
@@ -478,26 +478,6 @@
             "id": 9,
             "name": "SEO",
             "description": "Search Engine Optimization"
-          },
-          {
-            "id": 10,
-            "name": "SQL",
-            "description": "Cascading Stylesheets"
-          },
-          {
-            "id": 11,
-            "name": "Security",
-            "description": "Security"
-          },
-          {
-            "id": 12,
-            "name": "Oracle",
-            "description": "Oracle Database"
-          },
-          {
-            "id": 13,
-            "name": "Ubuntu Server",
-            "description": "Ubuntu Server"
           }
         ]
       },
@@ -513,14 +493,14 @@
     },
     {
       "id": 10,
-      "starts": "2017-07-03T09:00:00.000Z",
+      "starts": "2017-06-30T09:00:00.000Z",
       "ends": "2017-07-03T17:00:00.000Z",
       "feature": {
         "id": 10,
         "code": 10,
         "name": "Gestió d'informació de l'usuari",
         "description": "Bla, bla, bla",
-        "effort": "1.0",
+        "effort": "2.0",
         "deadline": "2017-07-06",
         "priority": 3,
         "release": {
