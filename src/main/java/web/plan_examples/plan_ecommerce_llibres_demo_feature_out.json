@@ -435,13 +435,13 @@
     {
       "id": 9,
       "starts": "2017-06-30T09:00:00.000Z",
-      "ends": "2017-07-06T17:00:00.000Z",
+      "ends": "2017-07-04T17:00:00.000Z",
       "feature": {
         "id": 9,
         "code": 9,
         "name": "Pàgina home",
         "description": "Bla, bla, bla",
-        "effort": "5.0",
+        "effort": "3.0",
         "deadline": "2017-07-06",
         "priority": 1,
         "release": {

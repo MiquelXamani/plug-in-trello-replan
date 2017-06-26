@@ -27,7 +27,7 @@ public class ReplanFake {
         calendar.add(Calendar.DATE,amount);
         int dayOfMonth = calendar.get(Calendar.DAY_OF_YEAR);
         int amm = 0;
-        if(dayOfMonth == 24 || dayOfMonth == 3){
+        if(dayOfMonth == 24 || dayOfMonth == 1){
             if(amount < 0){
                 amm = -1;
             }
@@ -36,7 +36,7 @@ public class ReplanFake {
             }
             calendar.add(Calendar.DATE,amm);
         }
-        else if(dayOfMonth == 25 ||dayOfMonth == 4){
+        else if(dayOfMonth == 25 ||dayOfMonth == 2){
             if(amount < 0){
                 amm = -2;
             }
