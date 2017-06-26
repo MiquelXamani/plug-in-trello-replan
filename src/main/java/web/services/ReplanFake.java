@@ -149,13 +149,15 @@ public class ReplanFake {
     }
 
     public Project[] getProjects(){
-        Project project = new Project(4,"E-commerce llibres");
-        Project[] projects = new Project[1];
+        Project project = new Project(4,"E-commerce llibres TESTING");
+        Project[] projects = new Project[2];
         projects[0] = project;
+        projects[1] = new Project(5,"E-commerce llibres DEMO");
         return  projects;
     }
 
     public Release[] getReleases(int projectId){
+        Release[] releases;
         if(projectId == 4) {
             Release genericRelease = new Release(5, "June Release Generic");
             Release featureOut = new Release(6, "\"Disseny Bd\" s'allarga fent que \"Pàg info usuari\", \"Gestió inventari\" i \"Pàgina producte\" quedin fora");
@@ -163,28 +165,47 @@ public class ReplanFake {
             Release canviDates = new Release(8, "\"Cercar producte\" acaba abans d'hora i es canvien les dates de cards següents");
             Release canviRecursAssignat = new Release(9, "Sergi acaba abans d'hora \"Maq. parts comunes\" i se li assigna \"FAQ\" que era de la Maria");
             Release canviDeNextCard = new Release(10, "Albert acaba \"Login\" i la seva next card era \"Control sessions\" però passa a ser \"Obt info usuari\"");
-            Release[] releases = new Release[6];
+            releases = new Release[6];
             releases[0] = genericRelease;
             releases[1] = featureOut;
             releases[2] = featureIn;
             releases[3] = canviDates;
             releases[4] = canviRecursAssignat;
             releases[5] = canviDeNextCard;
-            return releases;
+        }
+        else if(projectId == 5){
+            Release featuresOutDemo = new Release(11,"Eliminació de tasques de la release");
+            Release featureInDemo = new Release(12,"Incorporació de nova tasca a la release");
+            releases = new Release[2];
+            releases[0] = featuresOutDemo;
+            releases[1] = featureInDemo;
         }
         else{
+            releases = new Release[0];
             System.out.println("ProjectId incorrect");
-            return new Release[0];
         }
+        return releases;
     }
 
     public Plan getPlan(String projectId, String releaseId){
         Plan plan = new Plan();
-        if(Integer.parseInt(projectId) == 4){
+        if(Integer.parseInt(projectId) == 4 || Integer.parseInt(projectId) == 5){
             //Load json file as a plan
             ObjectMapper mapper = new ObjectMapper();
+            String basePath = "src/main/java/web/plan_examples/";
+            String path = "";
+            int rId = Integer.parseInt(releaseId);
+            if(rId >= 5 && rId <= 10){
+                path = basePath + "plan_ecommerce_llibres_testing.json";
+            }
+            else if(rId == 11){
+                path = basePath + "plan_ecommerce_llibres_demo_feature_out.json";
+            }
+            else if(rId == 12){
+                path = basePath + "plan_ecommerce_llibres_demo_new_feature.json";
+            }
             try {
-                plan = mapper.readValue(new File("src/main/java/web/plan_examples/plan_ecommerce_llibres.json"),Plan.class);
+                plan = mapper.readValue(new File(path),Plan.class);
                 System.out.println("Plan size jackson: "+plan.getJobs().size());
             } catch (IOException e) {
                 e.printStackTrace();

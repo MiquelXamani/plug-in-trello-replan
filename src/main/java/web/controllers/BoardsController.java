@@ -298,7 +298,7 @@ public class BoardsController {
         result.setCards(createdCards);
 
 
-        //TODO comentat perquè no dóna temps a reaccionar davant dels canvis de llista
+        //comentat perquè no dóna temps a reaccionar davant dels canvis de llista
         /*int endpointId = planBoardDTO.getEndpointId();
         int projectId = planBoardDTO.getProjectId();
         if(endpointId == 2 && projectId == 4){
