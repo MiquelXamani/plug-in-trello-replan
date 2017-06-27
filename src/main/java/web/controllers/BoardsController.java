@@ -68,6 +68,7 @@ public class BoardsController {
         Label yellowLabel = new Label();
         //For rejected cards
         Label redLabel = new Label();
+        Label orangeLabel = new Label();
         String labelColor;
         List<Label> labelList = new ArrayList<>();
         for(Label l: labels){
@@ -91,6 +92,10 @@ public class BoardsController {
             else if(labelColor.equals("red")){
                 redLabel = l;
                 labelList.add(redLabel);
+            }
+            else if(labelColor.equals("orange")){
+                orangeLabel = l;
+                labelList.add(orangeLabel);
             }
         }
 

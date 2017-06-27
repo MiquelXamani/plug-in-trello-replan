@@ -258,12 +258,24 @@ public class LogsController {
             }
         }
 
+        //notification card
+        Card notification = new Card();
+        Date date = new Date();
+        notification.setName("[" + dateFormat2.format(date) + "] Replannification");
+        String orangeLabelId = domainController.getLabelId(boardId,"orange");
+        notification.addLabel(orangeLabelId);
+        notification.setPos("top");
+        notification.setDesc("Notification card");
+        String notificationListId = domainController.getListId(boardId,"Notifications");
+        notification.setIdList(notificationListId);
+
         //create new cards
         newCards = trelloService.createCards(newCards,user.getTrelloToken());
+        trelloService.createWebhooks(newCards,user.getUsername(),user.getTrelloToken());
         System.out.println("new cards size: "+newCards.size());
         System.out.println("jobs out size: "+updatedPlan.getJobs_out().size());
 
-        //List<Card> oldCards = trelloService.getCards(new ArrayList<>(cardJobsMap.keySet()),user.getTrelloToken());
+
         List<Card> allCards = trelloService.getAllCards(boardId,user.getTrelloToken());
         List<Card> oldCards = new ArrayList<>();
         for(Card boardCard:allCards){

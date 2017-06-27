@@ -158,9 +158,12 @@
                     console.log(response);
                     vm.dataLoading = false;
                     if (response.success) {
+                        getLogs();
+                        $.snackbar({content: "Replannification successful!"});
                         console.log("REPLAN PETITION SUCCESSFUL");
                     }
                     else {
+                        $.snackbar({content: "Replannification failed!"});
                         console.log("REPLAN PETITION FAILURE");
                     }
                 })
