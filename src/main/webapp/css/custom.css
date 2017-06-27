@@ -1,3 +1,7 @@
+html{
+    background: #eee;;
+}
+
 p.warning-message{
     font-size:12px;
     color:red;
