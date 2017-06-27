@@ -368,9 +368,9 @@ public class LogsController {
         //recalculate nextcards after replan
         List<Card> updatedCards = getNextCards(oldCards,boardId,readyListId);
 
-        for(Card oc:oldCards){
+        /*for(Card oc:oldCards){
             System.out.println(oc.getName()+" "+oc.obtainStartDate()+" "+oc.getDue()+" "+oc.getDesc());
-        }
+        }*/
         //update cards in Trello
         trelloService.updateCards(updatedCards,user.getTrelloToken());
 

@@ -29,7 +29,7 @@ public class InitialDataLoader implements ApplicationRunner {
         userRepository.save(user);
 
         domainController.saveEndpoint("https://lit-savannah-17077.herokuapp.com/api/ui/v1","Development: Heroku Deployment");
-        domainController.saveEndpoint("simulation mode","Development: Replan simulated");
+        domainController.saveEndpoint("simulation mode","Development: Replan simulation");
 
         //ResourceMember resourceMember = new ResourceMember(new Long(1),1,"Josep","589b03b9b6ee4d99b0da3dca","josep248","Josep");
         //resourceMemberRepository.save(resourceMember);
