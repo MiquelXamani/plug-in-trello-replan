@@ -204,7 +204,7 @@ public class ReplanFake {
                     prevs.add(new JobReduced(dependingJob.getId(),dependingJob.getStarts(),dependingJob.getEnds(),dependingJob.getFeature().getId(),dependingJob.getResource().getId()));
                     dependingJob = domainController.getJobByJobId(12,releaseId);
                     prevs.add(new JobReduced(dependingJob.getId(),dependingJob.getStarts(),dependingJob.getEnds(),dependingJob.getFeature().getId(),dependingJob.getResource().getId()));
-                    extraJob = new Job(13,"2017-06-22T09:00:00.000Z",resource,newFeature,prevs,"2017-06-23T17:00:00.000Z");
+                    extraJob = new Job(13,"2017-07-06T09:00:00.000Z",resource,newFeature,prevs,"2017-07-06T17:00:00.000Z");
 
                     jobsAdvanced = new ArrayList<>();
                     for (Job j:replannedJobs) {
