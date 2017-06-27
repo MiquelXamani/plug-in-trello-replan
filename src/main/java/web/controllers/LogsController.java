@@ -268,7 +268,11 @@ public class LogsController {
         notification.setDesc("Notification card");
         String notificationListId = domainController.getListId(boardId,"Notifications");
         notification.setIdList(notificationListId);
-        newCards.add(notification);
+        List<Card> notifCards = new ArrayList<>();
+        notifCards.add(notification);
+        notifCards = trelloService.createCards(notifCards,user.getTrelloToken());
+        trelloService.createWebhooks(notifCards,user.getUsername(),user.getTrelloToken());
+
 
         //create new cards
         newCards = trelloService.createCards(newCards,user.getTrelloToken());
