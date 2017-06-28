@@ -198,7 +198,7 @@ public class ReplanFake {
                     break;
                 case 12:
                     newFeature = new Feature(13,"Pàgina informació de l'usuari","Bla, bla, bla",1.0,"2017-07-07T17:00:00.000Z");
-                    resource = domainController.getResourceByName("Maria");
+                    resource = domainController.getResourceByName("Josep");
                     dependingJob = domainController.getJobByJobId(10,releaseId);
                     prevs = new ArrayList<>();
                     prevs.add(new JobReduced(dependingJob.getId(),dependingJob.getStarts(),dependingJob.getEnds(),dependingJob.getFeature().getId(),dependingJob.getResource().getId()));
